@@ -3,7 +3,7 @@ Projeto em Haskell pra a disciplina de Paradigmas de linguagem de programação 
 
 
 # Proposta do projeto:
-	“Bytes&Dragons” será uma plataforma, acessível pela linha de comando, de auxílio de sessões de RPG de mesa, especificamente de Dungeons and Dragons. O intuito do projeto é facilitar e automatizar parte do trabalho do “mestre” ao longo de campanhas realizadas à distância.
+“Bytes&Dragons” será uma plataforma, acessível pela linha de comando, de auxílio de sessões de RPG de mesa, especificamente de Dungeons and Dragons. O intuito do projeto é facilitar e automatizar parte do trabalho do “mestre” ao longo de campanhas realizadas à distância.
 
 
 # Objetivos primários:
@@ -17,7 +17,7 @@ Atualizar e checar os dados de acordo com o progresso das sessões.
 Salvar todo o progresso entre as sessões.
 
 # Objetivo secundários:
-	Se possível, e o decorrer do projeto ocorrer sem problemas, poderá ser adicionado ao projeto mais funcionalidades como:
+Se possível, e o decorrer do projeto ocorrer sem problemas, poderá ser adicionado ao projeto mais funcionalidades como:
 Criação de salas.
 Criação de um bot que auxiliará no uso da ferramenta.
 
