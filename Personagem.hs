@@ -1,5 +1,6 @@
 module Persongem where
 import System.Random
+import Item
 
 
 data Habilidade = Habilidade {
@@ -8,7 +9,7 @@ data Habilidade = Habilidade {
     atributoAfetado :: String,
     chanceDeAcerto :: Int,
     tipoDeDano :: String
-} deriving(Show)
+} deriving(Show, Eq)
 
 data Personagem = Personagem {
     alcunha :: String
@@ -29,7 +30,7 @@ data Personagem = Personagem {
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
-} deriving(Show)
+} deriving(Show, Eq)
 
 cadastraPersonagem :: String -> String -> String -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
 cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
@@ -61,6 +62,40 @@ cadastraHabilidade nome intensidade atributoAfetado chanceDeAcerto tipoDeDano = 
                                                                                     ,chanceDeAcerto = chanceDeAcerto
                                                                                     ,tipoDeDano = tipoDeDano
                                                                                 })
+
+listarPersonagens :: [Personagem] -> String
+listarPersonagens [] = ""
+listarPersonagens (s:xs) = "---------------------------\n"
+                           ++ "Alcunha: " ++ show(alcunha s) ++ "\n"
+                           ++ "Raca: " ++ show(raca s) ++ "\n"
+                           ++ "Classe: " ++ show(classe s) ++ "\n"
+                           ++ "Vida: " ++ show(vida s) ++ "/" ++ show(vidaMaxima s) ++ "\n"
+                           ++ "Forca: " ++ show(forca s) ++ "\n"
+                           ++ "Inteligencia: " ++ show(inteligencia s) ++ "\n"
+                           ++ "Sabedoria: " ++ show(sabedoria s) ++ "\n"
+                           ++ "Destreza: " ++ show(destreza s) ++ "\n"
+                           ++ "Constituicao: " ++ show(constituicao s) ++ "\n"
+                           ++ "Carisma: " ++ show(carisma s) ++ "\n"
+                           ++ "Resistencia: " ++ show(resistencia s) ++ "\n"
+                           ++ "Dano: " ++ show(dano s) ++ "\n"
+                           ++ "Velocidade: " ++ show(velocidade s) ++ "\n"
+                           ++ "Ouro: " ++ show(ouro s) ++ "\n"
+                           ++ "Itens:\n"
+                           ++ "Equipaveis:\n"
+                           ++ listarEquipaveis equipaveis
+                           ++ "Consumiveis:\n"
+                           ++ listarConsumiveis consumiveis
+                           ++ "Habilidades:\n"
+                           ++ listarHabilidades habilidades
+                           ++ listarPersonagens xs
+
+listarHabilidades :: [Habilidade] -> String
+listarHabilidades [] = ""
+listarHabilidades (s:xs) = "---------------------------\n"
+                           ++ "Nome: " ++ show(nome s) ++ "\n"
+                           ++ "Causa " ++ show(intensidade s) ++ " do tipo " ++ show(tipoDeDano) ++ " no atributo " ++ show(atributoAfetado s) ++ "\n"
+                           ++ "Chance de acerto: " ++ show(chanceDeAcerto s) ++ "%" ++ "\n"
+                           ++ listarHabilidades xs
 
 bate :: Habilidade -> Personagem -> Personagem
 bate habilidade personagem =
