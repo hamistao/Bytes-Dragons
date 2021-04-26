@@ -2,6 +2,7 @@ module Persongem where
 import System.Random
 import Item
 
+
 data Habilidade = Habilidade {
     nome :: String,
     intensidade :: Int,
@@ -29,7 +30,7 @@ data Personagem = Personagem {
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
-} deriving(Show)
+} deriving(Show, Eq)
 
 cadastraPersonagem :: String -> String -> String -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
 cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
@@ -44,6 +45,9 @@ cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria d
                                                                                                                     ,destreza = destreza
                                                                                                                     ,constituicao = constituicao
                                                                                                                     ,carisma = carisma
+                                                                                                                    ,resistencia = resistencia
+                                                                                                                    ,dano = dano
+                                                                                                                    ,velocidade = velocidade
                                                                                                                     ,ouro = 0
                                                                                                                     ,equipaveis = []
                                                                                                                     ,consumiveis = []
@@ -106,12 +110,14 @@ bate habilidade personagem =
         ,destreza = personagem.destreza
         ,constituicao = personagem.constituicao
         ,carisma = personagem.carisma
+        ,resistencia = personagem.resistencia
+        ,dano = personagem.dano
+        ,velocidade = personagem.velocidade
         ,ouro = personagem.ouro
         ,equipaveis = personagem.equipaveis
         ,consumiveis = personagem.consumiveis
         ,habilidades = personagem.habilidades
     }
-
 equiparItem :: Equipavel -> Personagem -> Personagem
 equiparItem equipavel personagem = 
     Personagem{alcunha = personagem.alcunha
