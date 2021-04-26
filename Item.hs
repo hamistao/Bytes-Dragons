@@ -6,6 +6,7 @@ data Consumivel = Consumivel {
   , alteracao_resistencia :: Float
   , alteracao_dano :: Float
   , duracao :: Int
+  , durabilidade :: Int
   } deriving (Show, Eq)
 
 data Equipavel = Equipavel {
@@ -16,13 +17,14 @@ data Equipavel = Equipavel {
 
 
 cadastrarConsumivel :: String -> Int -> Float -> Float -> Int -> Consumivel
-cadastrarConsumivel nome alteracao_vida alteracao_resistencia alteracao_dano duracao = (Consumivel {
-                                                                                           nome = nome
-                                                                                           , alteracao_vida = alteracao_vida
-                                                                                           , alteracao_resistencia = alteracao_resistencia 
-                                                                                           , alteracao_dano = alteracao_dano
-                                                                                           , duracao = duracao
-                                                                                           })
+cadastrarConsumivel nome alteracao_vida alteracao_resistencia alteracao_dano durabilidade = (Consumivel {
+                                                                                              nome = nome
+                                                                                            , alteracao_vida = alteracao_vida
+                                                                                            , alteracao_resistencia = alteracao_resistencia 
+                                                                                            , alteracao_dano = alteracao_dano
+                                                                                            , duracao = durabilidade
+                                                                                            , durabilidade = durabilidade
+                                                                                            })
 
 cadastrarEquipavel :: String -> Int -> Float -> Equipavel
 cadastrarEquipavel nome_equipavel alteracao_resistencia_equipavel alteracao_velocidade = (Equipavel {
@@ -38,6 +40,7 @@ listarConsumiveis (s:xs) = "---------------------------\n"
                            ++ "Alteração à vida: " ++ show(alteracao_vida s) ++ "\n"
                            ++ "Alteração à resistência: " ++ show(alteracao_resistencia s) ++ "\n"
                            ++ "Alteração ao dano: " ++ show(alteracao_dano s) ++ "\n"
+                           ++ "Durabilidade: " ++ show(duracao s) ++ "/" ++ show(durabilidade s)
                            ++ listarConsumiveis xs
 
 listarEquipaveis :: [Equipavel] -> String

@@ -1,4 +1,4 @@
-module Persongem where
+module Personagem where
 import System.Random
 import Item
 
@@ -118,6 +118,7 @@ bate habilidade personagem =
         ,consumiveis = personagem.consumiveis
         ,habilidades = personagem.habilidades
     }
+
 equiparItem :: Equipavel -> Personagem -> Personagem
 equiparItem equipavel personagem = 
     Personagem{alcunha = personagem.alcunha
@@ -140,6 +141,29 @@ equiparItem equipavel personagem =
         ,habilidades = personagem.habilidades
     }
 
+guardarConsumivel :: Consumivel -> Personagem
+guardarConsumivel item personagem =
+    Personagem{alcunha = personagem.alcunha
+        ,raca = personagem.raca
+        ,classe = personagem.classe
+        ,vida = personagem.vida
+        ,vidaMaxima = personagem.vidaMaxima
+        ,forca = personagem.forca
+        ,inteligencia = personagem.inteligencia
+        ,sabedoria = personagem.sabedoria
+        ,destreza = personagem.destreza
+        ,constituicao = personagem.constituicao
+        ,carisma = personagem.carisma
+        ,resistencia = personagem.resistencia
+        ,dano = personagem.dano
+        ,velocidade = personagem.velocidade
+        ,ouro = personagem.ouro
+        ,equipaveis = personagem.equipaveis
+        ,consumiveis = personagem.consumiveis ++ consumivel
+        ,habilidades = personagem.habilidades
+    }
+
+
 usarItem :: Consumivel -> Personagem -> Personagem
 usarItem consumivel personagem =
     Personagem{alcunha = personagem.alcunha
@@ -158,6 +182,7 @@ usarItem consumivel personagem =
         ,velocidade = personagem.velocidade
         ,ouro = personagem.ouro
         ,equipaveis = personagem.equipaveis
-        ,consumiveis = personagem.consumiveis
+        ,consumiveis | consumivel.duracao == 0 = [item | item <- personagem.consumiveis, item.nome /= consumivel.nome] ++ consumivel
+                     | otherwise = [item | item <- personagem.consumiveis, item.nome /= consumivel.nome]
         ,habilidades = personagem.habilidades
     }
