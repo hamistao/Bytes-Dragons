@@ -3,7 +3,6 @@ import System.IO
 import System.Directory
 import System.FilePath.Posix
 import System.Process
-import System.Info as Info
 
 main :: IO ()
 main = do
@@ -37,12 +36,12 @@ lerCampanha = do
             handle <- openFile filePath ReadMode
             contents <- hGetContents handle
             system "clear"
+            print "--->"
             putStrLn $ contents
+            print "<---"
             restart main
         else do
-            createDirectoryIfMissing True $ takeDirectory filePath
-            writeFile filePath ""
-            putStrLn "Campanha não criada ainda\nEnter parar voltar ao Menu"
+            putStrLn "Campanha não criada ainda\nNecessário iniciar uma Campanha\nEnter parar voltar ao Menu"
             restart main
     
     where filePath = "data/campanha.lore"
@@ -86,3 +85,5 @@ sairBunitinho :: IO ()
 sairBunitinho = do
     putStrLn "Encerrando o programa..."
     system "clear"
+    putStrLn "Programa encerrado"
+
