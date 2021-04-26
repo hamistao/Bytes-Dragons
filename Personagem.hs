@@ -182,7 +182,7 @@ usarItem consumivel personagem =
         ,velocidade = personagem.velocidade
         ,ouro = personagem.ouro
         ,equipaveis = personagem.equipaveis
-        ,consumiveis | consumivel.duracao == 0 = [item | item <- personagem.consumiveis, item.nome /= consumivel.nome] ++ consumivel
+        ,consumiveis | consumivel.duracao != 0 = [item | item <- personagem.consumiveis, item.nome /= consumivel.nome] ++ consumivel
                      | otherwise = [item | item <- personagem.consumiveis, item.nome /= consumivel.nome]
         ,habilidades = personagem.habilidades
     }
