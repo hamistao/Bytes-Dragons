@@ -1,6 +1,7 @@
 module Persongem where
 import System.Random
 
+
 data Habilidade = Habilidade {
     nome :: String,
     intensidade :: Int,
@@ -21,6 +22,9 @@ data Personagem = Personagem {
     ,destreza :: Int
     ,constituicao :: Int
     ,carisma :: Int
+    ,resistencia :: Int
+    ,dano :: Int
+    ,velocidade :: Int
     ,ouro :: Int
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
@@ -40,6 +44,9 @@ cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria d
                                                                                                                     ,destreza = destreza
                                                                                                                     ,constituicao = constituicao
                                                                                                                     ,carisma = carisma
+                                                                                                                    ,resistencia = resistencia
+                                                                                                                    ,dano = dano
+                                                                                                                    ,velocidade = velocidade
                                                                                                                     ,ouro = 0
                                                                                                                     ,equipaveis = []
                                                                                                                     ,consumiveis = []
@@ -68,6 +75,52 @@ bate habilidade personagem =
         ,destreza = personagem.destreza
         ,constituicao = personagem.constituicao
         ,carisma = personagem.carisma
+        ,resistencia = personagem.resistencia
+        ,dano = personagem.dano
+        ,velocidade = personagem.velocidade
+        ,ouro = personagem.ouro
+        ,equipaveis = personagem.equipaveis
+        ,consumiveis = personagem.consumiveis
+        ,habilidades = personagem.habilidades
+    }
+equiparItem :: Equipavel -> Personagem -> Personagem
+equiparItem equipavel personagem = 
+    Personagem{alcunha = personagem.alcunha
+        ,raca = personagem.raca
+        ,classe = personagem.classe
+        ,vida = personagem.vida
+        ,vidaMaxima = personagem.vidaMaxima
+        ,forca = personagem.forca
+        ,inteligencia = personagem.inteligencia
+        ,sabedoria = personagem.sabedoria
+        ,destreza = personagem.destreza
+        ,constituicao = personagem.constituicao
+        ,carisma = personagem.carisma
+        ,resistencia = personagem.resistencia + equipavel.alteracao_resistencia_equipavel
+        ,dano = personagem.dano
+        ,velocidade = personagem.velocidade + equipavel.alteracao_velocidade
+        ,ouro = personagem.ouro
+        ,equipaveis = personagem.equipaveis ++ equipavel
+        ,consumiveis = personagem.consumiveis
+        ,habilidades = personagem.habilidades
+    }
+
+usarItem :: Consumivel -> Personagem -> Personagem
+usarItem consumivel personagem =
+    Personagem{alcunha = personagem.alcunha
+        ,raca = personagem.raca
+        ,classe = personagem.classe
+        ,vida = personagem.vida + consumivel.alteracao_vida
+        ,vidaMaxima = personagem.vidaMaxima
+        ,forca = personagem.forca
+        ,inteligencia = personagem.inteligencia
+        ,sabedoria = personagem.sabedoria
+        ,destreza = personagem.destreza
+        ,constituicao = personagem.constituicao
+        ,carisma = personagem.carisma
+        ,resistencia = personagem.resistencia + consumivel.alteracao_resistencia
+        ,dano = personagem.dano + equipavel.alteracao_dano
+        ,velocidade = personagem.velocidade
         ,ouro = personagem.ouro
         ,equipaveis = personagem.equipaveis
         ,consumiveis = personagem.consumiveis
