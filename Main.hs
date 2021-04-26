@@ -22,6 +22,10 @@ verificaEntradaMenu (Just a) = a
 menus::[(String, IO ())]
 menus = [ ("1", lerCampanha)
         , ("2", iniciarcampanha)
+        , ("3", sairBunitinho)
+        , ("4", sairBunitinho)
+        , ("5", sairBunitinho)
+        , ("9", sairBunitinho)
         ]
 
 
@@ -76,3 +80,9 @@ getMultipleLines = do
         else do
             xs <- getMultipleLines
             return (x:xs)
+
+
+sairBunitinho :: IO ()
+sairBunitinho = do
+    putStrLn "Encerrando o programa..."
+    system "clear"
