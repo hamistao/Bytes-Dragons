@@ -29,7 +29,7 @@ data Personagem = Personagem {
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
-} deriving(Show, Eq)
+} deriving(Show)
 
 cadastraPersonagem :: String -> String -> String -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
 cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
@@ -172,8 +172,8 @@ guardarConsumivel item personagem =
 
 removeItem :: Consumivel -> Personagem -> [Consumivel]
 removeItem consumivel personagem
-    | duracao consumivel /= 0 = [item | item <- consumiveis personagem, nome item /= nome consumivel] ++ [consumivel]
-    | otherwise = [item | item <- consumiveis personagem, nome item /= nome consumivel]
+    | duracao consumivel /= 0 = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel] ++ [consumivel]
+    | otherwise = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
 
 usarItem :: Consumivel -> Personagem -> Personagem
 usarItem consumivel personagem =
@@ -189,7 +189,7 @@ usarItem consumivel personagem =
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
         ,resistencia = resistencia personagem + alteracao_resistencia consumivel
-        ,dano = dano personagem + alteracao_dano equipavel
+        ,dano = dano personagem + alteracao_dano consumivel
         ,velocidade = velocidade personagem
         ,ouro = ouro personagem
         ,equipaveis = equipaveis personagem
