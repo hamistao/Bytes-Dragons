@@ -4,6 +4,7 @@ import System.Directory
 import System.FilePath.Posix
 import System.Process
 import Item as Item
+import Personagem as Persona
 import Data.List
 
 main :: IO ()
@@ -20,11 +21,11 @@ verificaEntradaMenu Nothing = putStrLn "\nEntrada Invalida brooo, vlw flw\n\n"
 verificaEntradaMenu (Just a) = a
 
 
-menus:: String -> [(String, IO ())]
+menus :: String -> [(String, IO ())]
 menus "main" = 
         [ ("1", lerCampanha)
         , ("2", iniciarcampanha)
-        , ("3", sairBunitinho)
+        , ("3", menuPersng)
         , ("4", menuItem)
         , ("9", sairBunitinho)
         ]
@@ -32,8 +33,12 @@ menus "item" =
         [ ("1", menuEquip)
         , ("2", menuConsumvl)
         ]
+menus "persona" =
+        [ ("1", listarPersng)
+        , ("2", criarPersng)
+        , ("3", detalhesPersng)
+        , ("9", (restart main))]
 menus x = []
-
 
 menusItens :: [(String, (String -> IO ()))]
 menusItens =
@@ -169,24 +174,18 @@ getDetalheItem path contents
 
 checkListaEquip :: [Equipavel] -> IO ()
 checkListaEquip itens = do
-    putStrLn "Qual o Nome do Equipavel?"
-    nome <- getLine
-    let nomes = map (Item.nome_equipavel) itens
-    if nome `elem` (nomes)
-        then do
-            mapM_ putStrLn (map Item.listarEquipavel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
-        else putStrLn "Item Inexistente\n"
+    putStrLn "Qual o ID do Equipavel?"
+    id <- getLine
+    if id < (length itens) then putStrLn (Item.exibirEquipavel( itens !! id))
+        else putStrLn "ID inválido"
 
 
 checkListaConsmvl :: [Consumivel] -> IO ()
 checkListaConsmvl itens = do
-    putStrLn "Qual o Nome do Consumivel?"
-    nome <- getLine
-    let nomes = map (Item.nomeConsumivel) itens
-    if nome `elem` (nomes)
-        then do
-            mapM_ putStrLn (map Item.listarConsumivel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
-        else putStrLn "Item Inexistente\n"
+    putStrLn "Qual o ID do Consumivel?"
+    id <- getLine
+    if id < (length itens) then putStrLn (Item.exibirConsumivel (itens !! id))
+        else putStrLn "ID inválido\n"
 
 
 listarItensNomes :: String -> IO ()
@@ -199,7 +198,7 @@ listarItensNomes tipo = do
             handle <- openFile tipo ReadMode
             contents <- hGetContents handle
             print "---> "
-            putStrLn $ getItens tipo contents
+            zipWith (\num item -> putStrLn "Item - " ++ num ++ "  ---------->\n" ++ item) [0,1..] (getItens tipo contents)
             print " <---"
             hClose handle
             restart menuItem
@@ -233,15 +232,27 @@ criarItemTipo tipo
 
 criarItemEquipavel :: String -> IO ()
 criarItemEquipavel path = do
-    putStrLn "Qual o nome do Equipavel?"
+    putStrLn "Qual o nome do Equipável?"
     nome <- getLine
-    putStrLn "Qual a Alteração de Resistência?"
-    resistnc <- getLine
+    putStrLn "Qual a Alteração de Vida Máxima?"
+    vida_maxima <- getLine
+    putStrLn "Qual a Alteração de Força?"
+    forca <- getLine
+    putStrLn "Qual a Alteração de Inteligência?"
+    inteligencia <- getLine
+    putStrLn "Qual a Alteração de Sabedoria?"
+    sabedoria <- getLine
+    putStrLn "Qual a Alteração de Destreza?"
+    destreza <- getLine
+    putStrLn "Qual a Alteração de Constituição?"
+    constituicao <- getLine
+    putStrLn "Qual a Alteração de Carisma?"
+    carisma <- getLine
     putStrLn "Qual a Alteração de Velocidade?"
     velocd <- getLine
-    putStrLn "Onde sera Equipavel (Torso, Cabeca, Pernas, Maos)"
+    putStrLn "Onde será Equipável (Torso, Cabeca, Pernas, Maos)"
     tipo <- getLine
-    appendFile path (show (Item.criarEquipavel nome (read resistnc) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
+    appendFile path (show (Item.criaEquipavel nome (read vida_maxima) (read foca) (read inteligencia) (read sabedoria) (read destreza) (read constituicaco) (read carisma) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
     putStrLn "Item Criado"
     restart menuEquip
 
@@ -252,22 +263,22 @@ criarItemConsmvl path = do
     nome <- getLine
     putStrLn "Qual a Alteração de Vida?"
     vida <- getLine
-    putStrLn "Qual a Alteração de Resistência?"
-    resistnc <- getLine
     putStrLn "Qual a Alteração de Dano?"
     dano <- getLine
+    putStrLn "Qual a Alteração de Velocidade?"
+    velocidade <- getLine
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
-    appendFile path (show (Item.criarConsumivel nome (read vida) (read resistnc) (read dano) (read durac)) ++ "\n")
+    appendFile path (show (Item.criaConsumivel nome (read vida) (read dano) (read velocidade) (read durac)) ++ "\n")
     putStrLn "Item Criado"
     restart menuConsumvl
 
 
-getItens :: String -> String -> String
+getItens :: String -> String -> [String]
 getItens tipo contents
     | tipo == "data/equip.info" = Item.listarEquipaveis (transformaListaEquipavel (lines contents))
     | tipo == "data/consmvl.info" = Item.listarConsumiveis (transformaListaConsumivel (lines contents))
-    | otherwise = "Erro na leitura de Arquivo\n"
+    | otherwise = ["Erro na leitura de Arquivo\n"]
 
 
 transformaListaEquipavel :: [String] -> [Equipavel]
@@ -308,13 +319,12 @@ getArquivoExcluir path contents
 
 checkExcluirEquip :: [Equipavel] -> IO ()
 checkExcluirEquip itens = do
-    putStrLn "Qual o Nome dos Equipaveis? (Todos com esse nome serão deletados)"
-    nome <- getLine
-    let nomes = map (Item.nome_equipavel) itens
-    if nome `elem` (nomes)
+    putStrLn "Qual o ID do Equipavel?"
+    id <- getLine
+    if id < (length itens) 
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
-            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            let newItens = delete (itens !! id) itens
             hPutStr tempHandle $ unlines (map show newItens)
             hClose tempHandle
             removeFile "data/equip.info"
@@ -336,3 +346,65 @@ checkExcluirConsmvl itens = do
             removeFile "data/consmvl.info"
             renameFile tempName "data/consmvl.info"
         else putStrLn "Item Inexistente\n"
+
+
+menuPersng :: IO ()
+menuPersng = do
+    system "clear"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Inicar Conflito entre Personagens\n8 - Excluir Personagem\n9 - Voltar Menu"
+    tipo <- getLine
+    let action = lookup tipo (menus "persona")
+    verificaEntradaMenu action
+
+
+listarPersng :: IO ()
+listarPersng = do
+    system "clear"
+    exists <- doesFileExist "data/persngs.bd"
+    if existsEquip
+        then do
+            handle <- openFile tipo ReadMode
+            contents <- hGetContents handle
+            print "---> "
+            getPersngs (transformaListaPersonagem (lines contents))
+            print " <---"
+            hClose handle
+            restart menuPersng
+        else do
+            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
+            writeFile "data/persngs.bd" ""
+            return listarPersng
+
+
+getPersngs :: [Personagem] -> IO ()
+getPersngs personas = do
+    zipWith (\num pers -> putStrLn "Personagem " ++ a ++ " ---------->\n" ++ b) [0,1..] (Persona.listarPersonagens personas)
+
+
+detalhesPersng :: IO ()
+detalhesPersng = do
+    system "clear"
+    exists <- doesFileExist "data/persngs.bd"
+    if existsEquip
+        then do
+            putStrLn "Qual o Nome do Personagem?"
+            nome <- getLine
+            handle <- openFile tipo ReadMode
+            contents <- hGetContents handle
+            getDetalhesPersng (lines contents) nome
+            hClose handle
+            restart menuPersng
+        else do
+            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
+            writeFile "data/persngs.bd" ""
+            return detalhesPersng
+
+
+getDetalhesPersng :: [String] -> String -> IO ()
+getDetalhesPersng personas nome = do
+    putStrLn (Personagem.exibePersonagem (transformaListaPersonagem personas) nome)
+
+
+transformaListaPersonagem :: [String] -> [Personagem]
+transformaListaPersonagem [] = []
+transformaListaPersonagem (x:xs) = (read x :: Personagem) : (transformaListaPersonagem xs)
