@@ -147,7 +147,7 @@ isEquipavel (x:xs) tipoEquipavel = if(x == []) then Nothing
                                    else isEquipavel xs
 
 usarItemEquipavel :: Equipavel -> Personagem -> Personagem
-usarItem equipavel personagem = equiparItem equipavel (desequiparItem equipavel personagem)
+usarItemEquipavel equipavel personagem = equiparItem equipavel (desequiparItem equipavel personagem)
 
 
 desequiparItem :: Equipavel -> Personagem -> Personagem
@@ -218,12 +218,12 @@ guardarConsumivel item personagem =
     }
 
 removeConsumivel :: Consumivel -> Personagem -> [Consumivel]
-removeItem consumivel personagem
+removeConsumivel consumivel personagem
     | duracao consumivel /= 0 = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel] ++ [consumivel]
     | otherwise = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
 
 usarItemConsumivel :: Consumivel -> Personagem -> Personagem
-usarItem consumivel personagem =
+usarItemConsumivel consumivel personagem =
     Personagem{alcunha = alcunha personagem
         ,raca = raca personagem
         ,classe = classe personagem
