@@ -134,9 +134,6 @@ listarItensNomes = do
             print "---> "
             putStrLn $ contents
             print " <---"
-<<<<<<< Updated upstream
-            restart main
-=======
             hClose handle
             restart menuItem
         else do
@@ -228,7 +225,6 @@ excluiItem tipo = do
             getArquivoExcluir tipo contents
             hClose handle
             restart menuItem
->>>>>>> Stashed changes
         else do
             putStrLn "Não ha itens criados\nNecessário criar pelo menos um Item\nEnter parar voltar ao Menu"
             restart main
