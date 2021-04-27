@@ -228,7 +228,7 @@ usarItemConsumivel consumivel personagem =
     Personagem{alcunha = alcunha personagem
         ,raca = raca personagem
         ,classe = classe personagem
-        ,vida = cura vida vidaMaxima alteracaoVida
+        ,vida = cura (vida personagem) (vidaMaxima personagem) (alteracaoVida personagem)
         ,vidaMaxima = vidaMaxima personagem
         ,forca = forca personagem
         ,inteligencia = inteligencia personagem
@@ -243,3 +243,7 @@ usarItemConsumivel consumivel personagem =
         ,consumiveis = removeConsumivel consumivel personagem
         ,habilidades = habilidades personagem
     }
+
+cura :: Int -> Int -> Int -> Int
+cura atual maximo alteracao | atual + alteracao >= maximo = maximo
+                            | otherwise = atual + alteracao
