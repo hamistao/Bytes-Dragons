@@ -10,11 +10,12 @@ data Raca = Raca {
     ,mod_destreza :: Int
     ,mod_constituicao :: Int
     ,mod_carisma :: Int
-}
+} deriving (Show, Eq, Read)
 
 data Classe = Classe {
     nome_classe :: String
-}
+    -- to be continued
+} deriving (Show, Eq, Read)
 
 data Habilidade = Habilidade {
     nome_habilidade :: String,
@@ -24,7 +25,7 @@ data Habilidade = Habilidade {
     atributo_relacionado :: String,
     pontosParaAcerto :: Int,
     tipoDeDano :: String
-} deriving(Show, Eq)
+} deriving(Show, Eq, Read)
 
 data Personagem = Personagem {
     nome_personagem :: String
@@ -44,7 +45,7 @@ data Personagem = Personagem {
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
-} deriving(Show, Eq)
+} deriving(Show, Eq, Read)
 
 cadastraPersonagem :: String -> Classe -> Raca -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
 cadastraPersonagem nome_personagem classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
@@ -83,16 +84,16 @@ listarPersonagens :: [Personagem] -> String
 listarPersonagens [] = ""
 listarPersonagens (s:xs) = "---------------------------\n"
                            ++ "Nome: " ++ show(nome_personagem s) ++ "\n"
-                           ++ "Raca: " ++ show(nome_raca (raca s)) ++ "\n"
-                           ++ "Classe: " ++ show(nome_classe (classe s)) ++ "\n"
+                           ++ "Raca: " ++ show(raca s) ++ "\n"
+                           ++ "Classe: " ++ show(classe s) ++ "\n"
                            ++ listarPersonagens xs
 
 exibePersonagem :: [Personagem] -> String -> String
 exibePersonagem [] nome = "Personagem inexistente"
 exibePersonagem (s:xs) nome
     | nome == (nome_personagem s) = "Nome: " ++ show(nome_personagem s) ++ "\n"
-                        ++ "Raca: " ++ show(nome_raca (raca s)) ++ "\n"
-                        ++ "Classe: " ++ show(nome_classe (classe s)) ++ "\n"
+                        ++ "Raca: " ++ show(raca s) ++ "\n"
+                        ++ "Classe: " ++ show(classe s) ++ "\n"
                         ++ "Vida: " ++ show(vida s) ++ "/" ++ show(vidaMaxima s) ++ "\n"
                         ++ "Forca: " ++ show(forca s) ++ "\n"
                         ++ "Inteligencia: " ++ show(inteligencia s) ++ "\n"
@@ -123,37 +124,6 @@ listarHabilidade habilidade = "---------------------------\n"
 listarHabilidades :: [Habilidade] -> [String]
 listarHabilidades [] = [""]
 listarHabilidades (s:xs) = ("Nome: " ++ show(nome_habilidade s) ++ "\n"): listarHabilidades xs
-
-selecionaAtributoRelacionado :: String -> Personagem -> Int
-selecionaAtributoRelacionado atributo personagem
-    | atributo == "forca" = forca personagem
-    | atributo == "inteligencia" = inteligencia personagem
-    | atributo == "sabedoria" = sabedoria personagem
-    | atributo == "destreza" = destreza personagem
-    | atributo == "constituicao" = constituicao personagem
-    | atributo == "casrisma" = carisma personagem
-    | otherwise = 0
-
-usaHabilidade :: Habilidade -> Personagem -> Personagem
-usaHabilidade habilidade personagem =
-    Personagem{nome_personagem = nome_personagem personagem
-        ,raca = raca personagem
-        ,classe = classe personagem
-        ,vida = vida personagem + impacto_vida habilidade
-        ,vidaMaxima = vidaMaxima personagem
-        ,forca = forca personagem
-        ,inteligencia = inteligencia personagem
-        ,sabedoria = sabedoria personagem
-        ,destreza = destreza personagem
-        ,constituicao = constituicao personagem
-        ,carisma = carisma personagem
-        ,dano = dano personagem + impacto_dano habilidade
-        ,velocidade = velocidade personagem + impacto_velocidade habilidade
-        ,ouro = ouro personagem
-        ,equipaveis = equipaveis personagem
-        ,consumiveis = consumiveis personagem
-        ,habilidades = habilidades personagem
-    }
 
 equiparItem :: Equipavel -> Personagem -> Personagem
 equiparItem equipavel personagem = 
