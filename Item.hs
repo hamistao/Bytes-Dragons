@@ -12,25 +12,26 @@ data Equipavel = Equipavel {
   nome_equipavel :: String
   , alteracao_resistencia_equipavel :: Int
   , alteracao_velocidade :: Int
-  , tipo :: TipoEquipavel
+  , tipoEquipavel :: TipoEquipavel
   } deriving (Show)
 
 data TipoEquipavel = Cabeca | Torso | Pernas | Maos deriving(Show)
 
 criarConsumivel :: String -> Int -> Int -> Int -> Int -> Consumivel
-criarConsumivel nomeConsumivel alteracao_vida alteracao_resistencia alteracao_dano durabilidade = (Consumivel {
+criarConsumivel nomeConsumivel alteracao_vida alteracao_resistencia alteracao_dano duracao = (Consumivel {
                                                                                               nomeConsumivel = nomeConsumivel                                                                                           
                                                                                             , alteracao_vida = alteracao_vida
                                                                                             , alteracao_resistencia = alteracao_resistencia 
                                                                                             , alteracao_dano = alteracao_dano
-                                                                                            , duracao = durabilidade
+                                                                                            , duracao = duracao
                                                                                             })
 
-criarEquipavel :: String -> Int -> Int -> Equipavel
-criarEquipavel nome_equipavel alteracao_resistencia_equipavel alteracao_velocidade = (Equipavel {
+criarEquipavel :: String -> Int -> Int -> TipoEquipavel -> Equipavel
+criarEquipavel nome_equipavel alteracao_resistencia_equipavel alteracao_velocidade tipoEquipavel = (Equipavel {
                                                                                              nome_equipavel = nome_equipavel
                                                                                              , alteracao_resistencia_equipavel = alteracao_resistencia_equipavel 
                                                                                              , alteracao_velocidade = alteracao_velocidade
+                                                                                             , tipoEquipavel = tipoEquipavel
                                                                                              })
 
 listarConsumiveis :: [Consumivel] -> String
@@ -55,4 +56,4 @@ listarEquipavel :: Equipavel -> String
 listarEquipavel equipavel = "Nome: " ++ show(nome_equipavel equipavel) ++ "\n"
                            ++ "Alteração à resistência: " ++ show(alteracao_resistencia_equipavel equipavel) ++ "\n"
                            ++ "Alteração à velocidade: " ++ show(alteracao_velocidade equipavel) ++ "\n"
-                           ++ "Equipavel em: " ++ show(tipo equipavel)
+                           ++ "Equipavel em: " ++ show(tipoEquipavel equipavel)
