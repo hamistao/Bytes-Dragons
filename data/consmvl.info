@@ -1,0 +1,1 @@
+Consumivel {nomeConsumivel = "Flip", alteracao_vida = 2, alteracao_resistencia = 6, alteracao_dano = 8, duracao = 5}
