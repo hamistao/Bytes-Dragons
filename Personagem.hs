@@ -143,8 +143,8 @@ usaHabilidade habilidade personagem =
     }
 
 isEquipavel :: [Equipavel] -> TipoEquipavel -> Maybe(Equipavel)
-isEquipavel (x:xs) tipoEquipavel = if(x == []) then Nothing
-                                   else if(x.tipo == tipoEquipavel) then (Just x) 
+isEquipavel (x:xs) tipo = if(x == []) then Nothing
+                                   else if(tipoEquipavel x == tipo) then (Just x) 
                                    else isEquipavel xs
 
 usarItemEquipavel :: Equipavel -> Personagem -> Personagem
@@ -152,7 +152,7 @@ usarItemEquipavel equipavel personagem = equiparItem equipavel (desequiparItem e
 
 
 desequiparItem :: Equipavel -> Personagem -> Personagem
-desequiparItem equipavel personagem = if (isNothing (isEquipavel personagem.equipaveis equipavel.tipo)) then personagem
+desequiparItem equipavel personagem = if (isNothing (isEquipavel equipaveis personagem tipoEquipavel equipavel)) then personagem
                                       else  Personagem{ alcunha = alcunha personagem
                                                         ,raca = raca personagem
                                                         ,classe = classe personagem
@@ -195,7 +195,7 @@ equiparItem equipavel personagem =
     }
 
 removerEquipavel :: [Equipavel] -> Equipavel -> [Equipavel]
-removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipo equipavel /= tipo x]
+removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipoEquipavel equipavel /= tipoEquipavel x]
 
 guardarConsumivel :: Consumivel -> Personagem -> Personagem
 guardarConsumivel item personagem =
@@ -228,7 +228,7 @@ usarItemConsumivel consumivel personagem =
     Personagem{alcunha = alcunha personagem
         ,raca = raca personagem
         ,classe = classe personagem
-        ,vida = vida personagem + alteracaoVida consumivel
+        ,vida = cura vida vidaMaxima alteracaoVida
         ,vidaMaxima = vidaMaxima personagem
         ,forca = forca personagem
         ,inteligencia = inteligencia personagem
