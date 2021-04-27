@@ -13,9 +13,9 @@ data Equipavel = Equipavel {
   , alteracao_resistencia_equipavel :: Int
   , alteracao_velocidade :: Int
   , tipoEquipavel :: TipoEquipavel
-  } deriving (Show, Read)
+  } deriving (Show, Read, Eq)
 
-data TipoEquipavel = Cabeca | Torso | Pernas | Maos deriving(Show, Read)
+data TipoEquipavel = Cabeca | Torso | Pernas | Maos deriving(Show, Read, Eq)
 
 criarConsumivel :: String -> Int -> Int -> Int -> Int -> Consumivel
 criarConsumivel nomeConsumivel alteracao_vida alteracao_resistencia alteracao_dano duracao = (Consumivel {
