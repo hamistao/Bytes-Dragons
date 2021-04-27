@@ -2,6 +2,20 @@ module Personagem where
 import System.Random
 import Item
 
+data Raca = Raca {
+    nome_raca :: String
+    ,mod_forca :: Int
+    ,mod_inteligencia :: Int
+    ,mod_sabedoria :: Int
+    ,mod_destreza :: Int
+    ,mod_constituicao :: Int
+    ,mod_carisma :: Int
+}
+
+data Classe = Classe {
+    nome_classe :: String
+}
+
 data Habilidade = Habilidade {
     nome_habilidade :: String,
     impacto_vida :: Int,
@@ -14,9 +28,9 @@ data Habilidade = Habilidade {
 } deriving(Show, Eq)
 
 data Personagem = Personagem {
-    alcunha :: String
-    ,raca :: String
-    ,classe :: String
+    nome_personagem :: String
+    ,raca :: Raca
+    ,classe :: Classe
     ,vida :: Int
     ,vidaMaxima :: Int
     ,forca :: Int
@@ -34,20 +48,19 @@ data Personagem = Personagem {
     ,habilidades :: [Habilidade]
 } deriving(Show)
 
-cadastraPersonagem :: String -> String -> String -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
-cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
-                                                                                                                    alcunha = alcunha
+cadastraPersonagem :: String -> Classe -> Raca -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
+cadastraPersonagem nome_personagem classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
+                                                                                                                    nome_personagem = nome_personagem
                                                                                                                     ,vida = vidaMaxima
                                                                                                                     ,classe = classe
                                                                                                                     ,raca = raca
                                                                                                                     ,vidaMaxima = vidaMaxima
-                                                                                                                    ,forca = forca
-                                                                                                                    ,inteligencia = inteligencia
-                                                                                                                    ,sabedoria = sabedoria
-                                                                                                                    ,destreza = destreza
-                                                                                                                    ,constituicao = constituicao
-                                                                                                                    ,carisma = carisma
-                                                                                                                    ,resistencia = constituicao
+                                                                                                                    ,forca = forca + mod_forca raca
+                                                                                                                    ,inteligencia = inteligencia + mod_inteligencia raca
+                                                                                                                    ,sabedoria = sabedoria + mod_sabedoria raca
+                                                                                                                    ,destreza = destreza + mod_destreza raca
+                                                                                                                    ,constituicao = constituicao + mod_constituicao raca
+                                                                                                                    ,carisma = carisma + mod_carisma raca
                                                                                                                     ,dano = forca
                                                                                                                     ,velocidade = destreza
                                                                                                                     ,ouro = 0
