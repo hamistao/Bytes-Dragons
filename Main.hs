@@ -21,7 +21,7 @@ verificaEntradaMenu Nothing = putStrLn "\nEntrada Invalida brooo, vlw flw\n\n"
 verificaEntradaMenu (Just a) = a
 
 
-menus:: String -> [(String, IO ())]
+menus :: String -> [(String, IO ())]
 menus "main" = 
         [ ("1", lerCampanha)
         , ("2", iniciarcampanha)
@@ -232,15 +232,27 @@ criarItemTipo tipo
 
 criarItemEquipavel :: String -> IO ()
 criarItemEquipavel path = do
-    putStrLn "Qual o nome do Equipavel?"
+    putStrLn "Qual o nome do Equipável?"
     nome <- getLine
-    putStrLn "Qual a Alteração de Resistência?"
-    resistnc <- getLine
+    putStrLn "Qual a Alteração de Vida Máxima?"
+    vida_maxima <- getLine
+    putStrLn "Qual a Alteração de Força?"
+    forca <- getLine
+    putStrLn "Qual a Alteração de Inteligência?"
+    inteligencia <- getLine
+    putStrLn "Qual a Alteração de Sabedoria?"
+    sabedoria <- getLine
+    putStrLn "Qual a Alteração de Destreza?"
+    destreza <- getLine
+    putStrLn "Qual a Alteração de Constituição?"
+    constituicao <- getLine
+    putStrLn "Qual a Alteração de Carisma?"
+    carisma <- getLine
     putStrLn "Qual a Alteração de Velocidade?"
     velocd <- getLine
-    putStrLn "Onde sera Equipavel (Torso, Cabeca, Pernas, Maos)"
+    putStrLn "Onde será Equipável (Torso, Cabeca, Pernas, Maos)"
     tipo <- getLine
-    appendFile path (show (Item.criarEquipavel nome (read resistnc) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
+    appendFile path (show (Item.criaEquipavel nome (read vida_maxima) (read foca) (read inteligencia) (read sabedoria) (read destreza) (read constituicaco) (read carisma) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
     putStrLn "Item Criado"
     restart menuEquip
 
@@ -251,13 +263,13 @@ criarItemConsmvl path = do
     nome <- getLine
     putStrLn "Qual a Alteração de Vida?"
     vida <- getLine
-    putStrLn "Qual a Alteração de Resistência?"
-    resistnc <- getLine
     putStrLn "Qual a Alteração de Dano?"
     dano <- getLine
+    putStrLn "Qual a Alteração de Velocidade?"
+    velocidade <- getLine
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
-    appendFile path (show (Item.criarConsumivel nome (read vida) (read resistnc) (read dano) (read durac)) ++ "\n")
+    appendFile path (show (Item.criaConsumivel nome (read vida) (read dano) (read velocidade) (read durac)) ++ "\n")
     putStrLn "Item Criado"
     restart menuConsumvl
 
