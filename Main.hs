@@ -47,6 +47,7 @@ menusItens :: [(String, (String -> IO ()))]
 menusItens =
         [ ("1", listarItensNomes)
         , ("2", cadastrarItem)
+        , ("3", excluiItem)
         , ("4", detalheItem)
         , ("9", voltaMain)
         ]
@@ -71,6 +72,7 @@ lerCampanha = do
             print "---> "
             putStrLn $ contents
             print " <---"
+            hClose handle
             restart main
         else do
             putStrLn "Campanha não criada ainda\nNecessário iniciar uma Campanha\nEnter parar voltar ao Menu"
@@ -166,6 +168,7 @@ detalheItem tipo = do
             handle <- openFile tipo ReadMode
             contents <- hGetContents handle
             getDetalheItem tipo contents
+            hClose handle
             restart menuItem
         else do
             createDirectoryIfMissing True $ takeDirectory tipo
@@ -176,13 +179,13 @@ detalheItem tipo = do
 
 getDetalheItem :: String -> String -> IO ()
 getDetalheItem path contents
-    | path == "data/equip.info" = checkSingleEquip (transformaListaEquipavel (lines contents))
-    | path == "data/consmvl.info" = checkSingleConsmvl (transformaListaConsumivel (lines contents))
+    | path == "data/equip.info" = checkListaEquip (transformaListaEquipavel (lines contents))
+    | path == "data/consmvl.info" = checkListaConsmvl (transformaListaConsumivel (lines contents))
     | otherwise = putStrLn "Erro na leitura de Arquivo\n"
 
 
-checkSingleEquip :: [Equipavel] -> IO ()
-checkSingleEquip itens = do
+checkListaEquip :: [Equipavel] -> IO ()
+checkListaEquip itens = do
     putStrLn "Qual o Nome do Equipavel?"
     nome <- getLine
     let nomes = map (Item.nome_equipavel) itens
@@ -192,9 +195,9 @@ checkSingleEquip itens = do
         else putStrLn "Item Inexistente\n"
 
 
-checkSingleConsmvl :: [Consumivel] -> IO ()
-checkSingleConsmvl itens = do
-    putStrLn "Qual o Nome do Equipavel?"
+checkListaConsmvl :: [Consumivel] -> IO ()
+checkListaConsmvl itens = do
+    putStrLn "Qual o Nome do Consumivel?"
     nome <- getLine
     let nomes = map (Item.nomeConsumivel) itens
     if nome `elem` (nomes)
@@ -215,6 +218,7 @@ listarItensNomes tipo = do
             print "---> "
             putStrLn $ getItens tipo contents
             print " <---"
+            hClose handle
             restart menuItem
         else do
             createDirectoryIfMissing True $ takeDirectory tipo
@@ -230,7 +234,6 @@ cadastrarItem tipo = do
     if existsEquip && existsConsmvl
         then do
             criarItemTipo tipo
-            putStrLn "Item Criado"
         else do
             createDirectoryIfMissing True $ takeDirectory tipo
             writeFile "data/equip.info" ""
@@ -256,6 +259,7 @@ criarItemEquipavel path = do
     putStrLn "Onde sera Equipavel (Torso, Cabeca, Pernas, Maos)"
     tipo <- getLine
     appendFile path (show (Item.criarEquipavel nome (read resistnc) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
+    putStrLn "Item Criado"
     restart menuEquip
 
 
@@ -272,6 +276,7 @@ criarItemConsmvl path = do
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
     appendFile path (show (Item.criarConsumivel nome (read vida) (read resistnc) (read dano) (read durac)) ++ "\n")
+    putStrLn "Item Criado"
     restart menuConsumvl
 
 
@@ -291,3 +296,60 @@ transformaListaConsumivel :: [String] -> [Consumivel]
 transformaListaConsumivel [] = []
 transformaListaConsumivel (x:xs) = (read x :: Consumivel) : (transformaListaConsumivel xs)
 
+
+excluiItem :: String -> IO ()
+excluiItem tipo = do
+    system "clear"
+    existsEquip <- doesFileExist "data/equip.info"
+    existsConsmvl <- doesFileExist "data/consmvl.info"
+    if existsEquip && existsConsmvl
+        then do
+            handle <- openFile tipo ReadMode
+            contents <- hGetContents handle
+            getArquivoExcluir tipo contents
+            hClose handle
+            restart menuItem
+        else do
+            createDirectoryIfMissing True $ takeDirectory tipo
+            writeFile "data/equip.info" ""
+            writeFile "data/consmvl.info" ""
+            detalheItem tipo
+
+
+getArquivoExcluir :: String -> String -> IO ()
+getArquivoExcluir path contents
+    | path == "data/equip.info" = checkExcluirEquip (transformaListaEquipavel (lines contents))
+    | path == "data/consmvl.info" = checkExcluirConsmvl (transformaListaConsumivel (lines contents))
+    | otherwise = putStrLn "Erro na leitura de Arquivo\n"
+
+
+checkExcluirEquip :: [Equipavel] -> IO ()
+checkExcluirEquip itens = do
+    putStrLn "Qual o Nome dos Equipaveis? (Todos com esse nome serão deletados)"
+    nome <- getLine
+    let nomes = map (Item.nome_equipavel) itens
+    if nome `elem` (nomes)
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            hPutStr tempHandle $ unlines (map show newItens)
+            hClose tempHandle
+            removeFile "data/equip.info"
+            renameFile tempName "data/equip.info"
+        else putStrLn "Item Inexistente\n"
+
+
+checkExcluirConsmvl :: [Consumivel] -> IO ()
+checkExcluirConsmvl itens = do
+    putStrLn "Qual o Nome dos Consumiveis? (Todos com esse nome serão deletados)"
+    nome <- getLine
+    let nomes = map (Item.nomeConsumivel) itens
+    if nome `elem` (nomes)
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            hPutStr tempHandle $ unlines (map show newItens)
+            hClose tempHandle
+            removeFile "data/consmvl.info"
+            renameFile tempName "data/consmvl.info"
+        else putStrLn "Item Inexistente\n"
