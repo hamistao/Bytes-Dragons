@@ -176,10 +176,10 @@ checkListaEquip :: [Equipavel] -> IO ()
 checkListaEquip itens = do
     putStrLn "Qual o Nome do Equipavel?"
     nome <- getLine
-    let nomes = map (Item.nome_equipavel) itens
+    let nomes = map (Item.nomeEquipavel) itens
     if nome `elem` (nomes)
         then do
-            mapM_ putStrLn (map Item.listarEquipavel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            mapM_ putStrLn (map Item.exibirEquipavel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
         else putStrLn "Item Inexistente\n"
 
 
@@ -190,7 +190,7 @@ checkListaConsmvl itens = do
     let nomes = map (Item.nomeConsumivel) itens
     if nome `elem` (nomes)
         then do
-            mapM_ putStrLn (map Item.listarConsumivel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            mapM_ putStrLn (map Item.exibirConsumivel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
         else putStrLn "Item Inexistente\n"
 
 
@@ -238,15 +238,27 @@ criarItemTipo tipo
 
 criarItemEquipavel :: String -> IO ()
 criarItemEquipavel path = do
-    putStrLn "Qual o nome do Equipavel?"
+    putStrLn "Qual o nome do Equipável?"
     nome <- getLine
-    putStrLn "Qual a Alteração de Resistência?"
-    resistnc <- getLine
+    putStrLn "Qual a Alteração de Vida Máxima?"
+    vida_maxima <- getLine
+    putStrLn "Qual a Alteração de Força?"
+    forca <- getLine
+    putStrLn "Qual a Alteração de Inteligência?"
+    inteligencia <- getLine
+    putStrLn "Qual a Alteração de Sabedoria?"
+    sabedoria <- getLine
+    putStrLn "Qual a Alteração de Destreza?"
+    destreza <- getLine
+    putStrLn "Qual a Alteração de Constituição?"
+    constituicao <- getLine
+    putStrLn "Qual a Alteração de Carisma?"
+    carisma <- getLine
     putStrLn "Qual a Alteração de Velocidade?"
     velocd <- getLine
-    putStrLn "Onde sera Equipavel (Torso, Cabeca, Pernas, Maos)"
+    putStrLn "Onde será Equipável (Torso, Cabeca, Pernas, Maos)"
     tipo <- getLine
-    appendFile path (show (Item.criarEquipavel nome (read resistnc) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
+    appendFile path (show (Item.criaEquipavel nome (read vida_maxima) (read foca) (read inteligencia) (read sabedoria) (read destreza) (read constituicaco) (read carisma) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
     putStrLn "Item Criado"
     restart menuEquip
 
@@ -257,13 +269,13 @@ criarItemConsmvl path = do
     nome <- getLine
     putStrLn "Qual a Alteração de Vida?"
     vida <- getLine
-    putStrLn "Qual a Alteração de Resistência?"
-    resistnc <- getLine
     putStrLn "Qual a Alteração de Dano?"
     dano <- getLine
+    putStrLn "Qual a Alteração de Velocidade?"
+    velocidade <- getLine
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
-    appendFile path (show (Item.criarConsumivel nome (read vida) (read resistnc) (read dano) (read durac)) ++ "\n")
+    appendFile path (show (Item.criaConsumivel nome (read vida) (read dano) (read velocidade) (read durac)) ++ "\n")
     putStrLn "Item Criado"
     restart menuConsumvl
 
@@ -315,7 +327,7 @@ checkExcluirEquip :: [Equipavel] -> IO ()
 checkExcluirEquip itens = do
     putStrLn "Qual o ID do Equipaveis? (Todos com esse nome serão deletados)"
     nome <- getLine
-    let nomes = map (Item.nome_equipavel) itens
+    let nomes = map (Item.nomeEquipavel) itens
     if nome `elem` (nomes)
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
