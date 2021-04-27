@@ -103,7 +103,7 @@ exibePersonagem (s:xs) nome
     | otherwise = exibePersonagem xs nome
 
 listarHabilidade :: Habilidade -> String
-exbibeHabilidade habilidade = "---------------------------\n"
+listarHabilidade habilidade = "---------------------------\n"
                            ++ "Nome: " ++ show(nome_habilidade habilidade) ++ "\n"
                            ++ if (impacto_vida habilidade /= 0) then "Causa " ++ show(impacto_dano habilidade) ++ " de dano do tipo " ++ show(tipoDeDano habilidade) ++ "\n" else ""
                            ++ if (impacto_resistencia habilidade /= 0) then "Causa " ++ show(impacto_resistencia habilidade) ++ " de dano na resistencia\n" else ""
@@ -111,7 +111,7 @@ exbibeHabilidade habilidade = "---------------------------\n"
                            ++ if (impacto_dano habilidade /= 0) then "Causa " ++ show(impacto_velocidade habilidade) ++ " de dano na velocidade\n" else ""
                            ++ "Pontos para acerto: " ++ show(pontosParaAcerto habilidade) ++ "%\n"
 
-listarHabilidades :: [Habilidade] -> String
+listarHabilidades :: [Habilidade] -> [String]
 listarHabilidades [] = ""
 listarHabilidades (s:xs) = ("Nome: " ++ show(nome_habilidade habilidade) ++ "\n"): listarHabilidades xs
 
