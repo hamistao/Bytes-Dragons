@@ -4,11 +4,12 @@ import System.Directory
 import System.FilePath.Posix
 import System.Process
 import Item as Item
+import Data.List
 
 main :: IO ()
 main = do
     system "clear"
-    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de NPC,\n9 - Sair\n"
+    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n9 - Sair\n"
     opcao <- getLine
     let action = lookup opcao (menus "main")
     verificaEntradaMenu action
@@ -24,25 +25,32 @@ menus "main" =
         [ ("1", lerCampanha)
         , ("2", iniciarcampanha)
         , ("3", sairBunitinho)
-        , ("4", sairBunitinho)
-        , ("5", menuNpc)
-        , ("9", sairBunitinho)
-        ]
-menus "npc" =
-        [ ("1", sairBunitinho)
-        , ("2", sairBunitinho)
-        , ("3", sairBunitinho)
-        , ("4", sairBunitinho)
+        , ("4", menuItem)
         , ("9", sairBunitinho)
         ]
 menus "item" =
-        [ ("1", sairBunitinho)
-        , ("2", sairBunitinho)
-        , ("3", sairBunitinho)
-        , ("4", sairBunitinho)
-        , ("9", sairBunitinho)
+        [ ("1", menuEquip)
+        , ("2", menuConsumvl)
         ]
 menus x = []
+
+
+menusItens :: [(String, (String -> IO ()))]
+menusItens =
+        [ ("1", listarItensNomes)
+        , ("2", cadastrarItem)
+        , ("3", excluiItem)
+        , ("4", detalheItem)
+        , ("9", voltaMain)
+        ]
+
+verificaEntradaMenuComplex :: Maybe ((String -> IO ())) -> (String -> IO ())
+verificaEntradaMenuComplex Nothing = (\ a -> putStrLn a)
+verificaEntradaMenuComplex (Just a) = a
+
+
+voltaMain :: String -> IO ()
+voltaMain _ = main
 
 
 lerCampanha :: IO ()
@@ -56,6 +64,7 @@ lerCampanha = do
             print "---> "
             putStrLn $ contents
             print " <---"
+            hClose handle
             restart main
         else do
             putStrLn "Campanha não criada ainda\nNecessário iniciar uma Campanha\nEnter parar voltar ao Menu"
@@ -105,34 +114,92 @@ sairBunitinho = do
     putStrLn "Programa encerrado"
 
 
-menuNpc :: IO ()
-menuNpc = do
-    system "clear"
-    putStrLn "1 - Listar NPCs,\n2 - Cadastrar NPC,\n3 - Excluir NPC\n4 - Detalhes NPC,\n9 - Retorna Menu\n"
-    opcao <- getLine
-    let action = lookup opcao (menus "npc")
-    verificaEntradaMenu action
-
-
 menuItem :: IO ()
 menuItem = do
     system "clear"
-    putStrLn "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
-    opcao <- getLine
-    let action = lookup opcao (menus "item")
+    putStrLn "1 - Item Equipavel\nOu\n2 - Item Consumível"
+    tipo <- getLine
+    let action = lookup tipo (menus "item")
     verificaEntradaMenu action
 
 
-listarItensNomes :: IO ()
-listarItensNomes = do
+menuEquip :: IO ()
+menuEquip = do
     system "clear"
-    exists <- doesFileExist filePath
-    if exists
+    putStrLn "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
+    opcao <- getLine
+    let action = lookup opcao (menusItens)
+    (verificaEntradaMenuComplex action) ("data/equip.info" )
+
+
+menuConsumvl :: IO ()
+menuConsumvl = do
+    system "clear"
+    putStrLn "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
+    opcao <- getLine
+    let action = lookup opcao (menusItens)
+    (verificaEntradaMenuComplex action) "data/consmvl.info" 
+
+
+detalheItem :: String -> IO ()
+detalheItem tipo = do
+    system "clear"
+    existsEquip <- doesFileExist "data/equip.info"
+    existsConsmvl <- doesFileExist "data/consmvl.info"
+    if existsEquip && existsConsmvl
         then do
-            handle <- openFile filePath ReadMode
+            handle <- openFile tipo ReadMode
+            contents <- hGetContents handle
+            getDetalheItem tipo contents
+            hClose handle
+            restart menuItem
+        else do
+            createDirectoryIfMissing True $ takeDirectory tipo
+            writeFile "data/equip.info" ""
+            writeFile "data/consmvl.info" ""
+            detalheItem tipo
+
+
+getDetalheItem :: String -> String -> IO ()
+getDetalheItem path contents
+    | path == "data/equip.info" = checkListaEquip (transformaListaEquipavel (lines contents))
+    | path == "data/consmvl.info" = checkListaConsmvl (transformaListaConsumivel (lines contents))
+    | otherwise = putStrLn "Erro na leitura de Arquivo\n"
+
+
+checkListaEquip :: [Equipavel] -> IO ()
+checkListaEquip itens = do
+    putStrLn "Qual o Nome do Equipavel?"
+    nome <- getLine
+    let nomes = map (Item.nome_equipavel) itens
+    if nome `elem` (nomes)
+        then do
+            mapM_ putStrLn (map Item.listarEquipavel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+        else putStrLn "Item Inexistente\n"
+
+
+checkListaConsmvl :: [Consumivel] -> IO ()
+checkListaConsmvl itens = do
+    putStrLn "Qual o Nome do Consumivel?"
+    nome <- getLine
+    let nomes = map (Item.nomeConsumivel) itens
+    if nome `elem` (nomes)
+        then do
+            mapM_ putStrLn (map Item.listarConsumivel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+        else putStrLn "Item Inexistente\n"
+
+
+listarItensNomes :: String -> IO ()
+listarItensNomes tipo = do
+    system "clear"
+    existsEquip <- doesFileExist "data/equip.info"
+    existsConsmvl <- doesFileExist "data/consmvl.info"
+    if existsEquip && existsConsmvl
+        then do
+            handle <- openFile tipo ReadMode
             contents <- hGetContents handle
             print "---> "
-            putStrLn $ contents
+            putStrLn $ getItens tipo contents
             print " <---"
             hClose handle
             restart menuItem
@@ -174,7 +241,7 @@ criarItemEquipavel path = do
     velocd <- getLine
     putStrLn "Onde sera Equipavel (Torso, Cabeca, Pernas, Maos)"
     tipo <- getLine
-    appendFile path (show (Item.criaEquipavel nome (read resistnc) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
+    appendFile path (show (Item.criarEquipavel nome (read resistnc) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
     putStrLn "Item Criado"
     restart menuEquip
 
@@ -191,7 +258,7 @@ criarItemConsmvl path = do
     dano <- getLine
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
-    appendFile path (show (Item.criaConsumivel nome (read vida) (read resistnc) (read dano) (read durac)) ++ "\n")
+    appendFile path (show (Item.criarConsumivel nome (read vida) (read resistnc) (read dano) (read durac)) ++ "\n")
     putStrLn "Item Criado"
     restart menuConsumvl
 
@@ -226,7 +293,46 @@ excluiItem tipo = do
             hClose handle
             restart menuItem
         else do
-            putStrLn "Não ha itens criados\nNecessário criar pelo menos um Item\nEnter parar voltar ao Menu"
-            restart main
-    
-    where filePath = "data/itens.db"
+            createDirectoryIfMissing True $ takeDirectory tipo
+            writeFile "data/equip.info" ""
+            writeFile "data/consmvl.info" ""
+            detalheItem tipo
+
+
+getArquivoExcluir :: String -> String -> IO ()
+getArquivoExcluir path contents
+    | path == "data/equip.info" = checkExcluirEquip (transformaListaEquipavel (lines contents))
+    | path == "data/consmvl.info" = checkExcluirConsmvl (transformaListaConsumivel (lines contents))
+    | otherwise = putStrLn "Erro na leitura de Arquivo\n"
+
+
+checkExcluirEquip :: [Equipavel] -> IO ()
+checkExcluirEquip itens = do
+    putStrLn "Qual o Nome dos Equipaveis? (Todos com esse nome serão deletados)"
+    nome <- getLine
+    let nomes = map (Item.nome_equipavel) itens
+    if nome `elem` (nomes)
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            hPutStr tempHandle $ unlines (map show newItens)
+            hClose tempHandle
+            removeFile "data/equip.info"
+            renameFile tempName "data/equip.info"
+        else putStrLn "Item Inexistente\n"
+
+
+checkExcluirConsmvl :: [Consumivel] -> IO ()
+checkExcluirConsmvl itens = do
+    putStrLn "Qual o Nome dos Consumiveis? (Todos com esse nome serão deletados)"
+    nome <- getLine
+    let nomes = map (Item.nomeConsumivel) itens
+    if nome `elem` (nomes)
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            hPutStr tempHandle $ unlines (map show newItens)
+            hClose tempHandle
+            removeFile "data/consmvl.info"
+            renameFile tempName "data/consmvl.info"
+        else putStrLn "Item Inexistente\n"
