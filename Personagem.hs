@@ -143,16 +143,16 @@ usaHabilidade habilidade personagem =
     }
 
 isEquipavel :: [Equipavel] -> TipoEquipavel -> Maybe(Equipavel)
-isEquipavel (x:xs) tipo = if(x == []) then Nothing
-                                   else if(tipoEquipavel x == tipo) then (Just x) 
-                                   else isEquipavel xs
+isEquipavel [] _ = Nothing
+isEquipavel (x:xs) tipo = if(tipoEquipavel x == tipo) then (Just x) 
+                          else isEquipavel xs tipo
 
 usarItemEquipavel :: Equipavel -> Personagem -> Personagem
 usarItemEquipavel equipavel personagem = equiparItem equipavel (desequiparItem equipavel personagem)
 
 
 desequiparItem :: Equipavel -> Personagem -> Personagem
-desequiparItem equipavel personagem = if (isNothing (isEquipavel equipaveis personagem tipoEquipavel equipavel)) then personagem
+desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis personagem) (tipoEquipavel equipavel))) then personagem
                                       else  Personagem{ alcunha = alcunha personagem
                                                         ,raca = raca personagem
                                                         ,classe = classe personagem
@@ -164,10 +164,10 @@ desequiparItem equipavel personagem = if (isNothing (isEquipavel equipaveis pers
                                                         ,destreza = destreza personagem - alteracaoDestreza equipavel
                                                         ,constituicao = constituicao personagem - alteracaoConstituicao equipavel
                                                         ,carisma = carisma personagem - alteracaoCarisma equipavel
-                                                        ,dano = dano personagem - alteracaoDano equipavel
+                                                        ,dano = dano personagem
                                                         ,velocidade = velocidade personagem - alteracaoVelocidadeEquipavel equipavel
                                                         ,ouro = ouro personagem
-                                                        ,equipaveis = removerEquipavel equipaveis equipavel
+                                                        ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
                                                         ,consumiveis = consumiveis personagem
                                                         ,habilidades = habilidades personagem
                                                     } 
@@ -186,7 +186,7 @@ equiparItem equipavel personagem =
         ,destreza = destreza personagem + alteracaoDestreza equipavel
         ,constituicao = constituicao personagem + alteracaoConstituicao equipavel
         ,carisma = carisma personagem + alteracaoCarisma equipavel
-        ,dano = dano personagem + alteracaoDano equipavel
+        ,dano = dano personagem
         ,velocidade = velocidade personagem + alteracaoVelocidadeEquipavel equipavel
         ,ouro = ouro personagem
         ,equipaveis = equipaveis personagem ++ [equipavel]
@@ -228,7 +228,7 @@ usarItemConsumivel consumivel personagem =
     Personagem{alcunha = alcunha personagem
         ,raca = raca personagem
         ,classe = classe personagem
-        ,vida = cura (vida personagem) (vidaMaxima personagem) (alteracaoVida personagem)
+        ,vida = cura (vida personagem) (vidaMaxima personagem) (alteracaoVida consumivel)
         ,vidaMaxima = vidaMaxima personagem
         ,forca = forca personagem
         ,inteligencia = inteligencia personagem
