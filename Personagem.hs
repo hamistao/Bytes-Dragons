@@ -4,9 +4,12 @@ import Item
 
 data Habilidade = Habilidade {
     nome_habilidade :: String,
-    intensidade :: Int,
-    atributoAfetado :: String,
-    chanceDeAcerto :: Int,
+    impacto_vida :: Int,
+    impacto_resistencia :: Int,
+    impacto_dano :: Int,
+    impacto_velocidade :: Int,
+    atributo_relacionado :: String,
+    pontosParaAcerto :: Int,
     tipoDeDano :: String
 } deriving(Show, Eq)
 
@@ -53,14 +56,17 @@ cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria d
                                                                                                                     ,habilidades = []
                                                                                                                 })
 
-cadastraHabilidade :: String -> Int -> String -> Int -> String -> Habilidade
-cadastraHabilidade nome intensidade atributoAfetado chanceDeAcerto tipoDeDano = (Habilidade {
-                                                                                    nome_habilidade = nome
-                                                                                    ,intensidade = intensidade
-                                                                                    ,atributoAfetado = atributoAfetado
-                                                                                    ,chanceDeAcerto = chanceDeAcerto
-                                                                                    ,tipoDeDano = tipoDeDano
-                                                                                })
+cadastraHabilidade :: String -> Int -> Int -> Int -> Int -> String -> Int -> String -> Habilidade
+cadastraHabilidade nome impacto_vida impacto_resistencia impacto_dano impacto_velocidade atributo_relacionado pontosParaAcerto tipoDeDano = (Habilidade {
+                                                                                                                            nome_habilidade = nome
+                                                                                                                            ,impacto_vida = impacto_vida
+                                                                                                                            ,impacto_resistencia = impacto_resistencia
+                                                                                                                            ,impacto_dano = impacto_dano
+                                                                                                                            ,impacto_velocidade = impacto_velocidade
+                                                                                                                            ,atributo_relacionado = atributo_relacionado
+                                                                                                                            ,pontosParaAcerto = pontosParaAcerto
+                                                                                                                            ,tipoDeDano = tipoDeDano
+                                                                                                                        })
 
 listarPersonagens :: [Personagem] -> String
 listarPersonagens [] = ""
@@ -96,20 +102,35 @@ exibePersonagem (s:xs) nome
                         ++ listarHabilidades (habilidades s)
     | otherwise = exibePersonagem xs nome
 
+exbibeHabilidade :: Habilidade -> String
+exbibeHabilidade habilidade = "---------------------------\n"
+                           ++ "Nome: " ++ show(nome_habilidade habilidade) ++ "\n"
+                           ++ if (impacto_vida habilidade /= 0) then "Causa " ++ show(impacto_dano habilidade) ++ " de dano do tipo " ++ show(tipoDeDano habilidade) ++ "\n" else ""
+                           ++ if (impacto_resistencia habilidade /= 0) then "Causa " ++ show(impacto_resistencia habilidade) ++ " de dano na resistencia\n" else ""
+                           ++ if (impacto_dano habilidade /= 0) then "Causa " ++ show(impacto_resistencia habilidade) ++ " de dano no dano\n" else ""
+                           ++ if (impacto_dano habilidade /= 0) then "Causa " ++ show(impacto_velocidade habilidade) ++ " de dano na velocidade\n" else ""
+                           ++ "Pontos para acerto: " ++ show(pontosParaAcerto habilidade) ++ "%\n"
+
 listarHabilidades :: [Habilidade] -> String
 listarHabilidades [] = ""
-listarHabilidades (s:xs) = "---------------------------\n"
-                           ++ "Nome: " ++ show(nome_habilidade s) ++ "\n"
-                           ++ "Causa " ++ show(intensidade s) ++ " do tipo " ++ show(tipoDeDano s) ++ " no atributo " ++ show(atributoAfetado s) ++ "\n"
-                           ++ "Chance de acerto: " ++ show(chanceDeAcerto s) ++ "%\n"
-                           ++ listarHabilidades xs
+listarHabilidades (s:xs) = exbibeHabilidade s ++ listarHabilidades xs
 
-turno :: Habilidade -> Personagem -> Personagem
-turno habilidade personagem =
+selecionaAtributoRelacionado :: String -> Personagem -> Int
+selecionaAtributoRelacionado atributo personagem
+    | atributo == "forca" = forca personagem
+    | atributo == "inteligencia" = inteligencia personagem
+    | atributo == "sabedoria" = sabedoria personagem
+    | atributo == "destreza" = destreza personagem
+    | atributo == "constituicao" = constituicao personagem
+    | atributo == "casrisma" = carisma personagem
+    | otherwise = 0
+
+usaHabilidade :: Habilidade -> Personagem -> Personagem
+usaHabilidade habilidade personagem =
     Personagem{alcunha = alcunha personagem
         ,raca = raca personagem
         ,classe = classe personagem
-        ,vida = vida personagem + intensidade habilidade
+        ,vida = vida personagem + impacto_vida habilidade
         ,vidaMaxima = vidaMaxima personagem
         ,forca = forca personagem
         ,inteligencia = inteligencia personagem
@@ -117,9 +138,9 @@ turno habilidade personagem =
         ,destreza = destreza personagem
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
-        ,resistencia = resistencia personagem
-        ,dano = dano personagem
-        ,velocidade = velocidade personagem
+        ,resistencia = resistencia personagem + impacto_resistencia habilidade
+        ,dano = dano personagem + impacto_dano habilidade
+        ,velocidade = velocidade personagem + impacto_velocidade habilidade
         ,ouro = ouro personagem
         ,equipaveis = equipaveis personagem
         ,consumiveis = consumiveis personagem
@@ -180,7 +201,7 @@ usarItem consumivel personagem =
     Personagem{alcunha = alcunha personagem
         ,raca = raca personagem
         ,classe = classe personagem
-        ,vida = vida personagem + alteracao_vida consumivel
+        ,vida = vida personagem + ganho_vida consumivel
         ,vidaMaxima = vidaMaxima personagem
         ,forca = forca personagem
         ,inteligencia = inteligencia personagem
@@ -188,8 +209,8 @@ usarItem consumivel personagem =
         ,destreza = destreza personagem
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
-        ,resistencia = resistencia personagem + alteracao_resistencia consumivel
-        ,dano = dano personagem + alteracao_dano consumivel
+        ,resistencia = resistencia personagem + ganho_resistencia consumivel
+        ,dano = dano personagem + ganho_dano consumivel
         ,velocidade = velocidade personagem
         ,ouro = ouro personagem
         ,equipaveis = equipaveis personagem
