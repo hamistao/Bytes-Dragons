@@ -1,4 +1,4 @@
-module Persongem where
+module Personagem where
 import System.Random
 import Item
 
@@ -8,7 +8,7 @@ data Habilidade = Habilidade {
     atributoAfetado :: String,
     chanceDeAcerto :: Int,
     tipoDeDano :: String
-} deriving(Show)
+} deriving(Show, Eq)
 
 data Personagem = Personagem {
     alcunha :: String
@@ -29,7 +29,7 @@ data Personagem = Personagem {
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
-} deriving(Show)
+} deriving(Show, Eq)
 
 cadastraPersonagem :: String -> String -> String -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
 cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
