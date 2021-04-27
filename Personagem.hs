@@ -95,14 +95,14 @@ exibePersonagem (s:xs) nome
                         ++ "Ouro: " ++ show(ouro s) ++ "\n"
                         ++ "Itens:\n"
                         ++ "Equipaveis:\n"
-                        ++ listarEquipaveis (equipaveis s)
+                        ++ (unline (listarEquipaveis (equipaveis s)))
                         ++ "Consumiveis:\n"
-                        ++ listarConsumiveis (consumiveis s)
+                        ++ (unline (listarConsumiveis (consumiveis s)))
                         ++ "Habilidades:\n"
-                        ++ listarHabilidades (habilidades s)
+                        ++ (unline (listarHabilidades (habilidades s)))
     | otherwise = exibePersonagem xs nome
 
-exbibeHabilidade :: Habilidade -> String
+listarHabilidade :: Habilidade -> String
 exbibeHabilidade habilidade = "---------------------------\n"
                            ++ "Nome: " ++ show(nome_habilidade habilidade) ++ "\n"
                            ++ if (impacto_vida habilidade /= 0) then "Causa " ++ show(impacto_dano habilidade) ++ " de dano do tipo " ++ show(tipoDeDano habilidade) ++ "\n" else ""
@@ -113,7 +113,7 @@ exbibeHabilidade habilidade = "---------------------------\n"
 
 listarHabilidades :: [Habilidade] -> String
 listarHabilidades [] = ""
-listarHabilidades (s:xs) = exbibeHabilidade s ++ listarHabilidades xs
+listarHabilidades (s:xs) = ("Nome: " ++ show(nome_habilidade habilidade) ++ "\n"): listarHabilidades xs
 
 selecionaAtributoRelacionado :: String -> Personagem -> Int
 selecionaAtributoRelacionado atributo personagem
