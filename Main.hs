@@ -9,7 +9,7 @@ import Data.List
 main :: IO ()
 main = do
     system "clear"
-    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de NPC,\n9 - Sair\n"
+    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n9 - Sair\n"
     opcao <- getLine
     let action = lookup opcao (menus "main")
     verificaEntradaMenu action
@@ -26,14 +26,6 @@ menus "main" =
         , ("2", iniciarcampanha)
         , ("3", sairBunitinho)
         , ("4", menuItem)
-        , ("5", menuNpc)
-        , ("9", sairBunitinho)
-        ]
-menus "npc" =
-        [ ("1", sairBunitinho)
-        , ("2", sairBunitinho)
-        , ("3", sairBunitinho)
-        , ("4", sairBunitinho)
         , ("9", sairBunitinho)
         ]
 menus "item" =
@@ -120,15 +112,6 @@ sairBunitinho = do
     putStrLn "Encerrando o programa..."
     system "clear"
     putStrLn "Programa encerrado"
-
-
-menuNpc :: IO ()
-menuNpc = do
-    system "clear"
-    putStrLn "1 - Listar NPCs,\n2 - Cadastrar NPC,\n3 - Excluir NPC\n4 - Detalhes NPC,\n9 - Retorna Menu\n"
-    opcao <- getLine
-    let action = lookup opcao (menus "npc")
-    verificaEntradaMenu action
 
 
 menuItem :: IO ()
