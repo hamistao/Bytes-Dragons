@@ -174,24 +174,18 @@ getDetalheItem path contents
 
 checkListaEquip :: [Equipavel] -> IO ()
 checkListaEquip itens = do
-    putStrLn "Qual o Nome do Equipavel?"
-    nome <- getLine
-    let nomes = map (Item.nome_equipavel) itens
-    if nome `elem` (nomes)
-        then do
-            mapM_ putStrLn (map Item.listarEquipavel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
-        else putStrLn "Item Inexistente\n"
+    putStrLn "Qual o ID do Equipavel?"
+    id <- getLine
+    if id < (length itens) then putStrLn (Item.exibirEquipavel( itens !! id))
+        else putStrLn "ID inválido"
 
 
 checkListaConsmvl :: [Consumivel] -> IO ()
 checkListaConsmvl itens = do
-    putStrLn "Qual o Nome do Consumivel?"
-    nome <- getLine
-    let nomes = map (Item.nomeConsumivel) itens
-    if nome `elem` (nomes)
-        then do
-            mapM_ putStrLn (map Item.listarConsumivel (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
-        else putStrLn "Item Inexistente\n"
+    putStrLn "Qual o ID do Consumivel?"
+    id <- getLine
+    if id < (length itens) then putStrLn (Item.exibirConsumivel (itens !! id))
+        else putStrLn "ID inválido\n"
 
 
 listarItensNomes :: String -> IO ()
@@ -204,7 +198,7 @@ listarItensNomes tipo = do
             handle <- openFile tipo ReadMode
             contents <- hGetContents handle
             print "---> "
-            putStrLn $ getItens tipo contents
+            zipWith (\num item -> putStrLn "Item - " ++ num ++ "  ---------->\n" ++ item) [0,1..] (getItens tipo contents)
             print " <---"
             hClose handle
             restart menuItem
@@ -268,11 +262,11 @@ criarItemConsmvl path = do
     restart menuConsumvl
 
 
-getItens :: String -> String -> String
+getItens :: String -> String -> [String]
 getItens tipo contents
     | tipo == "data/equip.info" = Item.listarEquipaveis (transformaListaEquipavel (lines contents))
     | tipo == "data/consmvl.info" = Item.listarConsumiveis (transformaListaConsumivel (lines contents))
-    | otherwise = "Erro na leitura de Arquivo\n"
+    | otherwise = ["Erro na leitura de Arquivo\n"]
 
 
 transformaListaEquipavel :: [String] -> [Equipavel]
@@ -313,13 +307,12 @@ getArquivoExcluir path contents
 
 checkExcluirEquip :: [Equipavel] -> IO ()
 checkExcluirEquip itens = do
-    putStrLn "Qual o ID do Equipaveis? (Todos com esse nome serão deletados)"
-    nome <- getLine
-    let nomes = map (Item.nome_equipavel) itens
-    if nome `elem` (nomes)
+    putStrLn "Qual o ID do Equipavel?"
+    id <- getLine
+    if id < (length itens) 
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
-            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            let newItens = delete (itens !! id) itens
             hPutStr tempHandle $ unlines (map show newItens)
             hClose tempHandle
             removeFile "data/equip.info"
