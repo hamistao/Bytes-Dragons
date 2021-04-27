@@ -21,7 +21,7 @@ verificaEntradaMenu Nothing = putStrLn "\nEntrada Invalida brooo, vlw flw\n\n"
 verificaEntradaMenu (Just a) = a
 
 
-menus:: String -> [(String, IO ())]
+menus :: String -> [(String, IO ())]
 menus "main" = 
         [ ("1", lerCampanha)
         , ("2", iniciarcampanha)
