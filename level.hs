@@ -79,6 +79,81 @@ mudaXPUp personagem novoXPUp = Personagem {
   }
 
 
+aumentaVidaMaxima :: Personagem -> Int -> Personagem
+aumentaVidaMaxima personagem aumento = Personagem {
+  alcunha = alcunha personagem
+  , raca = raca personagem
+  , classe = classe personagem
+  , vida = vida personagem
+  , vidaMaxima = vidaMaxima personagem + aumento
+  , forca = forca personagem
+  , inteligencia = inteligencia personagem
+  , sabedoria = sabedoria personagem
+  , destreza = destreza personagem
+  , constituicao = constituicao personagem
+  , carisma = carisma personagem
+  , dano = dano personagem
+  , velocidade = velocidade personagem
+  , ouro = ouro personagem
+  , xp = xp personagem
+  , xpUp = xpUp personagem
+  , nivel = nivel personagem
+  , equipaveis = equipaveis personagem
+  , consumiveis = consumiveis personagem
+  , habilidades = habilidades personagem
+  }
+
+
+aumentaVelocidade :: Personagem -> Int -> Personagem
+aumentaVelocidade personagem aumento = Personagem {
+  alcunha = alcunha personagem
+  , raca = raca personagem
+  , classe = classe personagem
+  , vida = vida personagem
+  , vidaMaxima = vidaMaxima personagem
+  , forca = forca personagem
+  , inteligencia = inteligencia personagem
+  , sabedoria = sabedoria personagem
+  , destreza = destreza personagem
+  , constituicao = constituicao personagem
+  , carisma = carisma personagem
+  , dano = dano personagem
+  , velocidade = velocidade personagem + aumento
+  , ouro = ouro personagem
+  , xp = xp personagem
+  , xpUp = xpUp personagem
+  , nivel = nivel personagem
+  , equipaveis = equipaveis personagem
+  , consumiveis = consumiveis personagem
+  , habilidades = habilidades personagem
+  }
+
+
+aumentaDano :: Personagem -> Int -> Personagem
+aumentaDano personagem aumento = Personagem {
+  alcunha = alcunha personagem
+  , raca = raca personagem
+  , classe = classe personagem
+  , vida = vida personagem
+  , vidaMaxima = vidaMaxima personagem
+  , forca = forca personagem
+  , inteligencia = inteligencia personagem
+  , sabedoria = sabedoria personagem
+  , destreza = destreza personagem
+  , constituicao = constituicao personagem
+  , carisma = carisma personagem
+  , dano = dano personagem + aumento
+  , velocidade = velocidade personagem
+  , ouro = ouro personagem
+  , xp = xp personagem
+  , xpUp = xpUp personagem
+  , nivel = nivel personagem
+  , equipaveis = equipaveis personagem
+  , consumiveis = consumiveis personagem
+  , habilidades = habilidades personagem
+  }
+
+
 aumentaPontosAtributo :: String -> Int -> Personagem -> Personagem
 aumentaPontosAtributo atributo pontos personagem
   | atributo == "forca" = aumentaForca personagem pontos
@@ -162,6 +237,7 @@ aumentaSabedoria personagem pontos = Personagem {
   , consumiveis = consumiveis personagem
   , habilidades = habilidades personagem
   }
+
 
 aumentaDestreza :: Personagem -> Int -> Personagem
 aumentaDestreza personagem pontos = Personagem {
