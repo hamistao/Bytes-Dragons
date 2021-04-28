@@ -6,6 +6,7 @@ import System.Process
 import Item as Item
 import Personagem as Persona
 import Data.List
+import Data.Maybe
 
 main :: IO ()
 main = do
@@ -37,7 +38,8 @@ menus "persona" =
         [ ("1", listarPersng)
         , ("2", criarPersng)
         , ("3", detalhesPersng)
-        , ("9", (restart main))]
+        , ("8", excluirPersng)
+        , ("9", (main))]
 menus x = []
 
 menusItens :: [(String, (String -> IO ()))]
@@ -122,7 +124,7 @@ sairBunitinho = do
 menuItem :: IO ()
 menuItem = do
     system "clear"
-    putStrLn "1 - Item Equipavel\nOu\n2 - Item Consumível"
+    putStrLn "1 - Item Equipavel\nOu\n2 - Item Consumível\n"
     tipo <- getLine
     let action = lookup tipo (menus "item")
     verificaEntradaMenu action
@@ -354,7 +356,7 @@ checkExcluirConsmvl itens = do
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Inicar Conflito entre Personagens\n8 - Excluir Personagem\n9 - Voltar Menu"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Inicar Conflito entre Personagens\n8 - Excluir Personagem\n9 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
@@ -389,7 +391,7 @@ detalhesPersng = do
             nome <- getLine
             handle <- openFile "data/persngs.bd" ReadMode
             contents <- hGetContents handle
-            getDetalhesPersng (lines contents) nome
+            putStrLn (getDetalhesPersng (lines contents) nome)
             hClose handle
             restart menuPersng
         else do
@@ -398,9 +400,9 @@ detalhesPersng = do
             detalhesPersng
 
 
-getDetalhesPersng :: [String] -> String -> IO ()
-getDetalhesPersng personas nome = do
-    putStrLn (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
+getDetalhesPersng :: [String] -> String -> String
+getDetalhesPersng personas nome = 
+    (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
 
 transformaListaPersonagem :: [String] -> [Personagem]
@@ -433,3 +435,44 @@ criarPersng = do
     appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome classe raca (read vida_maxima) (read forca) (read inteligencia) (read sabedoria) (read destreza) (read constituicao) (read carisma)) ++ "\n")
     putStrLn "Personagem Criado"
     restart menuPersng
+
+
+excluirPersng :: IO ()
+excluirPersng = do
+    system "clear"
+    exists <- doesFileExist "data/persngs.bd"
+    if exists
+        then do
+            putStrLn "Qual o Nome do Personagem?"
+            nome <- getLine
+            handle <- openFile "data/persngs.bd" ReadMode
+            contents <- hGetContents handle
+            let persng_possi = getDetalhesPersng (lines contents) nome
+            if (persng_possi == "Personagem inexistente\n") then (putStrLn persng_possi) else (deletePersng (lines contents) (getPersng (transformaListaPersonagem (lines contents)) nome))
+            restart menuPersng
+        else do
+            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
+            writeFile "data/persngs.bd" ""
+            detalhesPersng
+
+
+
+getPersng :: [Personagem] -> String -> (Maybe (Personagem))
+getPersng [] nome = Nothing
+getPersng (s:xs) nome
+    | nome == (alcunha s) = (Just s)
+    | otherwise = getPersng xs nome
+
+
+deletePersng ::  [String] -> (Maybe (Personagem)) -> IO ()
+deletePersng listaPersng persngMayb = do
+    if (not (isNothing persngMayb))
+        then do
+            let persng = fromJust (persngMayb)
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            hPutStr tempHandle $ unlines ((listaPersng \\ [(show persng)]))
+            hClose tempHandle
+            removeFile "data/persngs.bd"
+            renameFile tempName "data/persngs.bd"
+            putStrLn "Personagem excluido com Sucesso\n"
+        else putStrLn "Personagem inexistente\n"
