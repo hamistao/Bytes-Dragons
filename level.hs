@@ -1,12 +1,11 @@
 import Personagem
 
-
 aumentaXP :: Personagem -> Int -> Personagem
 aumentaXP personagem quantidadeXP
   | xp personagem + quantidadeXP == xpUp personagem = upa personagem
   | xp personagem + quantidadeXP > xpUp personagem = aumentaXP (upa personagem) (xp personagem + quantidadeXP - xpUp personagem)
   | otherwise = Personagem {
-      alcunha = alcunha personagem
+      nome_personagem = nome_personagem personagem
       , raca = raca personagem
       , classe = classe personagem
       , vida = vida personagem
@@ -17,7 +16,6 @@ aumentaXP personagem quantidadeXP
       , destreza = destreza personagem
       , constituicao = constituicao personagem
       , carisma = carisma personagem
-      , dano = dano personagem
       , velocidade = velocidade personagem
       , ouro = ouro personagem
       , xp = xp personagem + quantidadeXP
@@ -31,7 +29,7 @@ aumentaXP personagem quantidadeXP
 
 upa :: Personagem -> Personagem
 upa personagem = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -42,7 +40,6 @@ upa personagem = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = 0
@@ -56,7 +53,7 @@ upa personagem = Personagem {
 
 mudaXPUp :: Personagem -> Int -> Personagem
 mudaXPUp personagem novoXPUp = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -67,7 +64,6 @@ mudaXPUp personagem novoXPUp = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -81,7 +77,7 @@ mudaXPUp personagem novoXPUp = Personagem {
 
 aumentaVidaMaxima :: Personagem -> Int -> Personagem
 aumentaVidaMaxima personagem aumento = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -92,7 +88,6 @@ aumentaVidaMaxima personagem aumento = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -106,7 +101,7 @@ aumentaVidaMaxima personagem aumento = Personagem {
 
 aumentaVelocidade :: Personagem -> Int -> Personagem
 aumentaVelocidade personagem aumento = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -117,7 +112,6 @@ aumentaVelocidade personagem aumento = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem + aumento
   , ouro = ouro personagem
   , xp = xp personagem
@@ -131,7 +125,7 @@ aumentaVelocidade personagem aumento = Personagem {
 
 aumentaDano :: Personagem -> Int -> Personagem
 aumentaDano personagem aumento = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -142,7 +136,6 @@ aumentaDano personagem aumento = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem + aumento
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -166,7 +159,7 @@ aumentaPontosAtributo atributo pontos personagem
 
 aumentaForca :: Personagem -> Int -> Personagem
 aumentaForca personagem pontos = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -177,7 +170,6 @@ aumentaForca personagem pontos = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -191,7 +183,7 @@ aumentaForca personagem pontos = Personagem {
 
 aumentaInteligencia :: Personagem -> Int -> Personagem
 aumentaInteligencia personagem pontos = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -202,7 +194,6 @@ aumentaInteligencia personagem pontos = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -216,7 +207,7 @@ aumentaInteligencia personagem pontos = Personagem {
 
 aumentaSabedoria :: Personagem -> Int -> Personagem
 aumentaSabedoria personagem pontos = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -227,7 +218,6 @@ aumentaSabedoria personagem pontos = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -241,7 +231,7 @@ aumentaSabedoria personagem pontos = Personagem {
 
 aumentaDestreza :: Personagem -> Int -> Personagem
 aumentaDestreza personagem pontos = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -252,7 +242,6 @@ aumentaDestreza personagem pontos = Personagem {
   , destreza = destreza personagem + pontos
   , constituicao = constituicao personagem
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -266,7 +255,7 @@ aumentaDestreza personagem pontos = Personagem {
 
 aumentaConstituicao :: Personagem -> Int -> Personagem
 aumentaConstituicao personagem pontos = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -277,7 +266,6 @@ aumentaConstituicao personagem pontos = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem + pontos
   , carisma = carisma personagem
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
@@ -291,7 +279,7 @@ aumentaConstituicao personagem pontos = Personagem {
 
 aumentaCarisma :: Personagem -> Int -> Personagem
 aumentaCarisma personagem pontos = Personagem {
-  alcunha = alcunha personagem
+  nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
@@ -302,7 +290,6 @@ aumentaCarisma personagem pontos = Personagem {
   , destreza = destreza personagem
   , constituicao = constituicao personagem
   , carisma = carisma personagem + pontos
-  , dano = dano personagem
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = xp personagem
