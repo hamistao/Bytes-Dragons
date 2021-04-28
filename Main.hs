@@ -398,7 +398,10 @@ detalhesPersng = do
             createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
             writeFile "data/persngs.bd" ""
             detalhesPersng
-
+            
+getDetalhesPersng :: [String] -> String -> String
+getDetalhesPersng personas nome = 
+    (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
 getDetalhesPersng :: [String] -> String -> String
 getDetalhesPersng personas nome = 
@@ -458,9 +461,8 @@ excluirPersng = do
 getPersng :: [Personagem] -> String -> (Maybe (Personagem))
 getPersng [] nome = Nothing
 getPersng (s:xs) nome
-    | nome == (nome_personagem s) = (Just s)
+    | nome == (alcunha s) = (Just s)
     | otherwise = getPersng xs nome
-
 
 deletePersng ::  [String] -> (Maybe (Personagem)) -> IO ()
 deletePersng listaPersng persngMayb = do
