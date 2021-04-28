@@ -404,11 +404,9 @@ getDetalhesPersng :: [String] -> String -> String
 getDetalhesPersng personas nome = 
     (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
-
 transformaListaPersonagem :: [String] -> [Personagem]
 transformaListaPersonagem [] = []
 transformaListaPersonagem (x:xs) = ((read :: String -> Personagem) x) : (transformaListaPersonagem xs)
-
 
 criarPersng :: IO ()
 criarPersng = do

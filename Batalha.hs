@@ -23,7 +23,6 @@ usaHabilidade habilidade personagem =
         ,destreza = destreza personagem
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
-        ,dano = dano personagem + impacto_dano habilidade
         ,velocidade = velocidade personagem + impacto_velocidade habilidade
         ,ouro = ouro personagem
         ,xp = xp personagem

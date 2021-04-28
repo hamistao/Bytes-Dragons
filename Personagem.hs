@@ -5,6 +5,7 @@ import Data.Maybe
 
 data Raca = Raca {
     nome_raca :: String
+    ,mod_vidaMaxima :: Int
     ,mod_forca :: Int
     ,mod_inteligencia :: Int
     ,mod_sabedoria :: Int
@@ -15,7 +16,14 @@ data Raca = Raca {
 
 data Classe = Classe {
     nome_classe :: String
-    -- to be continued
+    ,vidaMaxima_classe :: Int
+    ,forca_classe :: Int
+    ,inteligencia_classe :: Int
+    ,sabedoria_classe :: Int
+    ,destreza_classe :: Int
+    ,constituicao_classe :: Int
+    ,carisma_classe :: Int
+    ,gold_classe :: Int
 } deriving (Show, Eq, Read)
 
 data Habilidade = Habilidade {
@@ -40,7 +48,6 @@ data Personagem = Personagem {
     ,destreza :: Int
     ,constituicao :: Int
     ,carisma :: Int
-    ,dano :: Int
     ,velocidade :: Int
     ,ouro :: Int
     ,xp :: Int
@@ -51,29 +58,28 @@ data Personagem = Personagem {
     ,habilidades :: [Habilidade]
 } deriving(Show, Eq, Read)
 
-cadastraPersonagem :: String -> Classe -> Raca -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Personagem
-cadastraPersonagem nome_personagem classe raca vidaMaxima forca inteligencia sabedoria destreza constituicao carisma = (Personagem {
-                                                                                                                    nome_personagem = nome_personagem
-                                                                                                                    ,vida = vidaMaxima
-                                                                                                                    ,classe = classe
-                                                                                                                    ,raca = raca
-                                                                                                                    ,vidaMaxima = vidaMaxima
-                                                                                                                    ,forca = forca + mod_forca raca
-                                                                                                                    ,inteligencia = inteligencia + mod_inteligencia raca
-                                                                                                                    ,sabedoria = sabedoria + mod_sabedoria raca
-                                                                                                                    ,destreza = destreza + mod_destreza raca
-                                                                                                                    ,constituicao = constituicao + mod_constituicao raca
-                                                                                                                    ,carisma = carisma + mod_carisma raca
-                                                                                                                    ,dano = forca
-                                                                                                                    ,velocidade = destreza
-                                                                                                                    ,ouro = 0
-                                                                                                                    ,xp = 0
-                                                                                                                    ,xpUp = 1000
-                                                                                                                    ,nivel = 1
-                                                                                                                    ,equipaveis = []
-                                                                                                                    ,consumiveis = []
-                                                                                                                    ,habilidades = []
-                                                                                                                })
+cadastraPersonagem :: String -> Classe -> Raca -> Personagem
+cadastraPersonagem nome_personagem classe raca = (Personagem {
+                                                            nome_personagem = nome_personagem
+                                                            ,raca = raca
+                                                            ,classe = classe
+                                                            ,vidaMaxima = vidaMaxima_classe classe + mod_vidaMaxima raca
+                                                            ,vida = vidaMaxima_classe classe + mod_vidaMaxima raca
+                                                            ,forca = forca_classe classe + mod_forca raca
+                                                            ,inteligencia = inteligencia_classe classe + mod_inteligencia raca
+                                                            ,sabedoria = sabedoria_classe classe + mod_sabedoria raca
+                                                            ,destreza = destreza_classe classe+ mod_destreza raca
+                                                            ,constituicao = constituicao_classe classe + mod_constituicao raca
+                                                            ,carisma = carisma_classe classe + mod_carisma raca
+                                                            ,velocidade = destreza_classe classe+ mod_destreza raca - (constituicao_classe classe + mod_constituicao raca)
+                                                            ,ouro = gold_classe classe
+                                                            ,xp = 0
+                                                            ,xpUp = 1000
+                                                            ,nivel = 1
+                                                            ,equipaveis = []
+                                                            ,consumiveis = []
+                                                            ,habilidades = []
+                                                })
 
 
 cadastraHabilidade :: String -> Int -> Int -> Int -> String -> Int -> String -> Habilidade
@@ -108,7 +114,6 @@ exibePersonagem (s:xs) nome
                         ++ "Destreza: " ++ show(destreza s) ++ "\n"
                         ++ "Constituicao: " ++ show(constituicao s) ++ "\n"
                         ++ "Carisma: " ++ show(carisma s) ++ "\n"
-                        ++ "Dano: " ++ show(dano s) ++ "\n"
                         ++ "Velocidade: " ++ show(velocidade s) ++ "\n"
                         ++ "Ouro: " ++ show(ouro s) ++ "\n"
                         ++ "XP: " ++ show(xp s) ++ "/" ++ show(xpUp s) ++ "\n"
@@ -157,7 +162,6 @@ usaHabilidade habilidade personagem =
         ,destreza = destreza personagem
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
-        ,dano = dano personagem + impacto_dano habilidade
         ,velocidade = velocidade personagem + impacto_velocidade habilidade
         ,ouro = ouro personagem
         ,xp = xp personagem
@@ -190,7 +194,6 @@ desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis per
                                                         ,destreza = destreza personagem - alteracaoDestreza equipavel
                                                         ,constituicao = constituicao personagem - alteracaoConstituicao equipavel
                                                         ,carisma = carisma personagem - alteracaoCarisma equipavel
-                                                        ,dano = dano personagem
                                                         ,velocidade = velocidade personagem - alteracaoVelocidadeEquipavel equipavel
                                                         ,ouro = ouro personagem
                                                         ,xp = xp personagem
@@ -215,7 +218,6 @@ equiparItem equipavel personagem =
         ,destreza = destreza personagem + alteracaoDestreza equipavel
         ,constituicao = constituicao personagem + alteracaoConstituicao equipavel
         ,carisma = carisma personagem + alteracaoCarisma equipavel
-        ,dano = dano personagem
         ,velocidade = velocidade personagem + alteracaoVelocidadeEquipavel equipavel
         ,ouro = ouro personagem
         ,xp = xp personagem
@@ -242,7 +244,6 @@ guardarConsumivel item personagem =
         ,destreza = destreza personagem
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
-        ,dano = dano personagem
         ,velocidade = velocidade personagem
         ,ouro = ouro personagem
         ,xp = xp personagem
@@ -280,7 +281,6 @@ usarItemConsumivel consumivel personagem =
         ,destreza = destreza personagem
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
-        ,dano = dano personagem + alteracaoDano consumivel
         ,velocidade = velocidade personagem + alteracaoVelocidadeConsumivel consumivel
         ,ouro = ouro personagem
         ,xp = xp personagem
