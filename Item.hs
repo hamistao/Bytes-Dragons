@@ -48,7 +48,7 @@ criaEquipavel nomeEquipavel alteracaoVidaMaxima alteracaoForca alteracaoIntelige
                                                                                                })
 
 listarConsumiveis :: [Consumivel] -> [String]
-listarConsumiveis [] = [""]
+listarConsumiveis [] = []
 listarConsumiveis (s:xs) = (show(nomeConsumivel s) ++ "\n") : listarConsumiveis xs
 
 exibirConsumivel :: Consumivel -> String
@@ -59,7 +59,7 @@ exibirConsumivel consumivel = "Nome: " ++ show(nomeConsumivel consumivel) ++ "\n
                               ++ "Duração: " ++ show(duracao consumivel)
 
 listarEquipaveis :: [Equipavel] -> [String]
-listarEquipaveis [] = [""]
+listarEquipaveis [] = []
 listarEquipaveis (s:xs) =  (show(nomeEquipavel s) ++ "\n") : listarEquipaveis xs
                           
 exibirEquipavel :: Equipavel -> String

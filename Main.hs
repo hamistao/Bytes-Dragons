@@ -202,7 +202,7 @@ listarItensNomes tipo = do
             handle <- openFile tipo ReadMode
             contents <- hGetContents handle
             print "---> "
-            putStrLn $ unlines (zipWith (\num item -> "Item - " ++ show num ++ "  ---------->\n" ++ item) [0..] (getItens tipo contents))
+            putStrLn $ unlines (zipWith (\num item -> "Item - " ++ show num ++ "  ---------->\n" ++ item) [0..] ((getItens tipo contents)))
             print " <---"
             hClose handle
             restart menuItem
