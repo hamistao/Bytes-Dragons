@@ -43,10 +43,10 @@ menus "persona" =
         , ("9", main)
         ]
 menus "habil" = 
-        [ ("1", sairBunitinho)
-        , ("2", sairBunitinho)
-        , ("3", sairBunitinho)
-        , ("4", sairBunitinho)
+        [ ("1", listarHabil)
+        , ("2", criarHabil)
+        , ("3", detalhesHabil)
+        , ("4", excluirHabil)
         , ("9", main)
         ]
 menus x = []
@@ -348,13 +348,13 @@ checkExcluirEquip itens = do
 
 checkExcluirConsmvl :: [Consumivel] -> IO ()
 checkExcluirConsmvl itens = do
-    putStrLn "Qual o Nome dos Consumiveis? (Todos com esse nome serão deletados)"
-    nome <- getLine
-    let nomes = map (Item.nomeConsumivel) itens
-    if nome `elem` (nomes)
+    putStrLn "Qual o ID do Consumivel?"
+    entrada <- getLine
+    let id = read entrada :: Int
+    if id < (length itens) 
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
-            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            let newItens = delete (itens !! id) itens
             hPutStr tempHandle $ unlines (map show newItens)
             hClose tempHandle
             removeFile "data/consmvl.info"
@@ -513,7 +513,7 @@ criarHabil = do
     putStrLn "Qual o Tipo do Dano?"
     tipo <- getLine
     appendFile "data/habil.info" (show (Persona.cadastraHabilidade nome (read vida) (read dano) (read velocidade) attr (read acerto) tipo) ++ "\n")
-    putStrLn "Personagem Criado"
+    putStrLn "Habilidade Criada"
     restart menuHabilis
 
 
@@ -540,22 +540,23 @@ listarHabil = do
 
 printHabilidades :: [String] -> IO ()
 printHabilidades habilidades = do
-    putStrLn $ unlines (zipWith (\num item -> "Item - " ++ show num ++ "  ---------->\n" ++ item) [0..] (habilidades))
+    putStrLn $ unlines (zipWith (\num item -> "Habilidade - " ++ show num ++ "  ---------->\n" ++ item) [0..] (habilidades))
 
 
 detalhesHabil :: IO ()
 detalhesHabil = do
     system "clear"
-    existsConsmvl <- doesFileExist filePath
-    if existsEquip && existsConsmvl
+    exists <- doesFileExist filePath
+    if exists
         then do
             putStrLn "Qual o ID da Habilidade?"
             entrada <- getLine
+            handle <- openFile filePath ReadMode
+            contents <- hGetContents handle
+            let habilidades = lines contents
             let id = read entrada :: Int
             if id < (length habilidades) then do
-                handle <- openFile filePath ReadMode
-                contents <- hGetContents handle
-                getDetalhesHabil ((lines contents) !! id)
+                getDetalhesHabil (habilidades !! id)
                 hClose handle
                 restart menuHabilis
                 else do
@@ -567,7 +568,6 @@ detalhesHabil = do
     where
         filePath = "data/habil.info"
 
-
 getDetalhesHabil :: String -> IO ()
 getDetalhesHabil habili = do
     putStrLn $ Persona.listarHabilidade (read habili :: Habilidade)
@@ -575,8 +575,11 @@ getDetalhesHabil habili = do
 
 excluirHabil :: IO ()
 excluirHabil = do
+    let filePath = "data/habil.info"
     exists <- doesFileExist filePath
     if exists then do
+        habilis_io <- readFile filePath
+        let habilidades = lines (habilis_io)
         putStrLn "Qual o ID da Habilidade?"
         entrada <- getLine
         let id = read entrada :: Int
@@ -588,16 +591,14 @@ excluirHabil = do
                 hClose tempHandle
                 removeFile filePath
                 renameFile tempName filePath
+                menuHabilis
             else putStrLn "Habilidade Inexistente\n"
-
-    where 
-        filePath = "data/habil.info"
-        habilidades = lines (readFile filePath))
-
-
-
+        else do
+            createDirectoryIfMissing True $ takeDirectory filePath
+            writeFile filePath ""
+            detalhesHabil
 
 
 transformaListaHabilidades :: [String] -> [Habilidade]
 transformaListaHabilidades [] = []
-transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x) : (transformaListaHabilidades xs)
+transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x):(transformaListaHabilidades xs)
