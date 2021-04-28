@@ -1,1 +1,1 @@
-Consumivel {nomeConsumivel = "Flip", alteracao_vida = 2, alteracao_resistencia = 6, alteracao_dano = 8, duracao = 5}
+Consumivel {nomeConsumivel = "Pedin Bala", alteracaoVida = 3, alteracaoDano = 10, alteracaoVelocidadeConsumivel = 15, duracao = 20}
