@@ -1,1 +1,1 @@
-Equipavel {nomeEquipavel = "Melk", alteracaoVidaMaxima = 1000, alteracaoForca = 2, alteracaoInteligencia = 10000, alteracaoSabedoria = 15, alteracaoDestreza = 3, alteracaoConstituicao = -4, alteracaoCarisma = 100000, alteracaoVelocidadeEquipavel = 2, tipoEquipavel = Cabeca}
+Equipavel {nomeEquipavel = "Melk", alteracaoVidaMaxima = 10, alteracaoForca = 10, alteracaoInteligencia = 10, alteracaoSabedoria = 10, alteracaoDestreza = 10, alteracaoConstituicao = 10, alteracaoCarisma = 10, alteracaoVelocidadeEquipavel = 10, tipoEquipavel = Torso}
