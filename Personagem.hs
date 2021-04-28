@@ -28,6 +28,9 @@ data Personagem = Personagem {
     ,dano :: Int
     ,velocidade :: Int
     ,ouro :: Int
+    ,xp :: Int
+    ,xpUp :: Int
+    ,nivel :: Int
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
@@ -49,6 +52,9 @@ cadastraPersonagem alcunha classe raca vidaMaxima forca inteligencia sabedoria d
                                                                                                                     ,dano = forca
                                                                                                                     ,velocidade = destreza
                                                                                                                     ,ouro = 0
+                                                                                                                    ,xp = 0
+                                                                                                                    ,xpUp = 1000
+                                                                                                                    ,nivel = 1
                                                                                                                     ,equipaveis = []
                                                                                                                     ,consumiveis = []
                                                                                                                     ,habilidades = []
@@ -90,6 +96,8 @@ exibePersonagem (s:xs) nome
                         ++ "Dano: " ++ show(dano s) ++ "\n"
                         ++ "Velocidade: " ++ show(velocidade s) ++ "\n"
                         ++ "Ouro: " ++ show(ouro s) ++ "\n"
+                        ++ "XP: " ++ show(xp s) ++ "/" ++ show(xpUp s) ++ "\n"
+                        ++ "Nível: " ++ show(nivel s) ++ "\n"
                         ++ "Itens:\n"
                         ++ "Equipaveis:\n"
                         ++ (unlines (listarEquipaveis (equipaveis s)))
@@ -118,7 +126,7 @@ selecionaAtributoRelacionado atributo personagem
     | atributo == "sabedoria" = sabedoria personagem
     | atributo == "destreza" = destreza personagem
     | atributo == "constituicao" = constituicao personagem
-    | atributo == "casrisma" = carisma personagem
+    | atributo == "carisma" = carisma personagem
     | otherwise = 0
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
@@ -137,6 +145,9 @@ usaHabilidade habilidade personagem =
         ,dano = dano personagem + impacto_dano habilidade
         ,velocidade = velocidade personagem + impacto_velocidade habilidade
         ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem
         ,consumiveis = consumiveis personagem
         ,habilidades = habilidades personagem
@@ -167,6 +178,9 @@ desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis per
                                                         ,dano = dano personagem
                                                         ,velocidade = velocidade personagem - alteracaoVelocidadeEquipavel equipavel
                                                         ,ouro = ouro personagem
+                                                        ,xp = xp personagem
+                                                        ,xpUp = xpUp personagem
+                                                        ,nivel = nivel personagem
                                                         ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
                                                         ,consumiveis = consumiveis personagem
                                                         ,habilidades = habilidades personagem
@@ -189,6 +203,9 @@ equiparItem equipavel personagem =
         ,dano = dano personagem
         ,velocidade = velocidade personagem + alteracaoVelocidadeEquipavel equipavel
         ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem ++ [equipavel]
         ,consumiveis = consumiveis personagem
         ,habilidades = habilidades personagem
@@ -213,6 +230,9 @@ guardarConsumivel item personagem =
         ,dano = dano personagem
         ,velocidade = velocidade personagem
         ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem
         ,consumiveis = consumiveis personagem ++ [item]
         ,habilidades = habilidades personagem
@@ -239,6 +259,9 @@ usarItemConsumivel consumivel personagem =
         ,dano = dano personagem + alteracaoDano consumivel
         ,velocidade = velocidade personagem + alteracaoVelocidadeConsumivel consumivel
         ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem
         ,consumiveis = removeConsumivel consumivel personagem
         ,habilidades = habilidades personagem
@@ -247,3 +270,78 @@ usarItemConsumivel consumivel personagem =
 cura :: Int -> Int -> Int -> Int
 cura atual maximo alteracao | atual + alteracao >= maximo = maximo
                             | otherwise = atual + alteracao
+
+aumentaXP :: Personagem -> Int -> Personagem
+aumentaXP personagem quantidadeXP
+  | xp personagem + quantidadeXP == xpUp personagem = upa personagem
+  | xp personagem + quantidadeXP > xpUp personagem = aumentaXP (upa personagem) (xp personagem + quantidadeXP - xpUp personagem)
+  | otherwise = Personagem {
+      alcunha = alcunha personagem
+      , raca = raca personagem
+      , classe = classe personagem
+      , vida = vida personagem
+      , vidaMaxima = vidaMaxima personagem
+      , forca = forca personagem
+      , inteligencia = inteligencia personagem
+      , sabedoria = sabedoria personagem
+      , destreza = destreza personagem
+      , constituicao = constituicao personagem
+      , carisma = carisma personagem
+      , dano = dano personagem
+      , velocidade = velocidade personagem
+      , ouro = ouro personagem
+      , xp = xp personagem + quantidadeXP
+      , xpUp = xpUp personagem
+      , nivel = nivel personagem
+      , equipaveis = equipaveis personagem
+      , consumiveis = consumiveis personagem
+      , habilidades = habilidades personagem
+      }
+
+upa :: Personagem -> Personagem
+upa personagem = Personagem {
+  alcunha = alcunha personagem
+  , raca = raca personagem
+  , classe = classe personagem
+  , vida = vida personagem
+  , vidaMaxima = vidaMaxima personagem
+  , forca = forca personagem
+  , inteligencia = inteligencia personagem
+  , sabedoria = sabedoria personagem
+  , destreza = destreza personagem
+  , constituicao = constituicao personagem
+  , carisma = carisma personagem
+  , dano = dano personagem
+  , velocidade = velocidade personagem
+  , ouro = ouro personagem
+  , xp = 0
+  , xpUp = xpUp personagem
+  , nivel = nivel personagem + 1
+  , equipaveis = equipaveis personagem
+  , consumiveis = consumiveis personagem
+  , habilidades = habilidades personagem
+  }
+
+mudaXPUp :: Personagem -> Int -> Personagem
+mudaXPUp personagem novoXPUp = Personagem {
+  alcunha = alcunha personagem
+  , raca = raca personagem
+  , classe = classe personagem
+  , vida = vida personagem
+  , vidaMaxima = vidaMaxima personagem
+  , forca = forca personagem
+  , inteligencia = inteligencia personagem
+  , sabedoria = sabedoria personagem
+  , destreza = destreza personagem
+  , constituicao = constituicao personagem
+  , carisma = carisma personagem
+  , dano = dano personagem
+  , velocidade = velocidade personagem
+  , ouro = ouro personagem
+  , xp = xp personagem
+  , xpUp = novoXPUp
+  , nivel = nivel personagem
+  , equipaveis = equipaveis personagem
+  , consumiveis = consumiveis personagem
+  , habilidades = habilidades personagem
+  }
