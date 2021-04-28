@@ -407,17 +407,18 @@ detalhesPersng = do
             createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
             writeFile "data/persngs.bd" ""
             detalhesPersng
-
+            
+getDetalhesPersng :: [String] -> String -> String
+getDetalhesPersng personas nome = 
+    (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
 getDetalhesPersng :: [String] -> String -> String
 getDetalhesPersng personas nome = 
     (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
-
 transformaListaPersonagem :: [String] -> [Personagem]
 transformaListaPersonagem [] = []
 transformaListaPersonagem (x:xs) = ((read :: String -> Personagem) x) : (transformaListaPersonagem xs)
-
 
 criarPersng :: IO ()
 criarPersng = do
@@ -471,7 +472,6 @@ getPersng [] nome = Nothing
 getPersng (s:xs) nome
     | nome == (alcunha s) = (Just s)
     | otherwise = getPersng xs nome
-
 
 deletePersng ::  [String] -> (Maybe (Personagem)) -> IO ()
 deletePersng listaPersng persngMayb = do
