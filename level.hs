@@ -24,7 +24,8 @@ aumentaXP personagem quantidadeXP
       , nivel = nivel personagem
       , equipaveis = equipaveis personagem
       , consumiveis = consumiveis personagem
-      , habilidades = habilidades personagem
+      , habilidades_personagem = habilidades_personagem personagem
+      , imunidades = imunidades personagem
       }
 
 
@@ -48,7 +49,8 @@ upa personagem = Personagem {
   , nivel = nivel personagem + 1
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -72,7 +74,8 @@ mudaXPUp personagem novoXPUp = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -96,7 +99,8 @@ aumentaVidaMaxima personagem aumento = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -120,7 +124,8 @@ aumentaVelocidade personagem aumento = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -144,7 +149,8 @@ aumentaDano personagem aumento = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -176,7 +182,8 @@ aumentaForca personagem pontos = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -200,7 +207,8 @@ aumentaInteligencia personagem pontos = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -224,7 +232,8 @@ aumentaSabedoria personagem pontos = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -248,7 +257,8 @@ aumentaDestreza personagem pontos = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -272,7 +282,8 @@ aumentaConstituicao personagem pontos = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }
 
 
@@ -296,5 +307,6 @@ aumentaCarisma personagem pontos = Personagem {
   , nivel = nivel personagem
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
-  , habilidades = habilidades personagem
+  , habilidades_personagem = habilidades_personagem personagem
+  , imunidades = imunidades personagem
   }

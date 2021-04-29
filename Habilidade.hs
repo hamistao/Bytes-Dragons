@@ -18,8 +18,8 @@ listarHabilidade :: Habilidade -> String
 listarHabilidade habilidade = "---------------------------\n"
                            ++ "Nome: " ++ show(nome_habilidade habilidade) ++ "\n"
                            ++ if (impacto_vida habilidade /= 0) then "Causa " ++ show(impacto_dano habilidade) ++ " de dano do tipo " ++ show(tipoDeDano habilidade) ++ "\n" else ""
-                           ++ if (impacto_dano habilidade /= 0) then "Causa " ++ show(impacto_dano habilidade) ++ " de dano no dano\n" else ""
-                           ++ if (impacto_velocidade habilidade /= 0) then "Causa " ++ show(impacto_velocidade habilidade) ++ " de dano na velocidade\n" else ""
+                           ++ if (impacto_dano habilidade /= 0) then "Modifica o dano do alvo em " ++ show(impacto_dano habilidade) ++ "\n" else ""
+                           ++ if (impacto_velocidade habilidade /= 0) then "Modifica a velocidade do alvo em " ++ show(impacto_velocidade habilidade) ++ "\n" else ""
                            ++ "Pontos para acerto: " ++ show(pontosParaAcerto habilidade) ++ "%\n"
 
 listarHabilidades :: [Habilidade] -> [String]
