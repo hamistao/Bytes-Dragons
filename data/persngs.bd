@@ -1,0 +1,1 @@
+Personagem {nome_personagem = "Melk", raca = Humano, classe = Bardo, vida = 100, vidaMaxima = 100, forca = 1, inteligencia = 1, sabedoria = 1, destreza = 2, constituicao = 1, carisma = 3, velocidade = 1, ouro = 0, xp = 0, xpUp = 1000, nivel = 1, equipaveis = [], consumiveis = [], habilidades_personagem = [], imunidades = []}

@@ -1,0 +1,1 @@
+Habilidade {nome_habilidade = "Bola de Fogo", impacto_vida = 0, impacto_dano = 10, impacto_velocidade = 0, atributo_relacionado = Inteligencia, pontosParaAcerto = 10, tipoDeDano = Fogo}

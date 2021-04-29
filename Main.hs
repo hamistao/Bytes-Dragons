@@ -3,9 +3,11 @@ import System.IO
 import System.Directory
 import System.FilePath.Posix
 import System.Process
+import System.Random
 import Item as Item
 import Personagem as Persona
 import Habilidade as Habil
+import Batalha
 import Raca
 import Classe
 import Data.List
@@ -17,13 +19,21 @@ main = do
     existsConsmvl <- doesFileExist "data/consmvl.info"
     existsPerson <- doesFileExist "data/persngs.bd"
     existsHabil <- doesFileExist "data/habil.info"
-    if (not (existsEquipavel && existsHabil && existsConsmvl && existsPerson)) then criarArquivos
+    if (existsEquipavel && existsHabil && existsConsmvl && existsPerson)
+        then do
+            menu
         else do
-            system "clear"
-            putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n9 - Sair\n"
-            opcao <- getLine
-            let action = lookup opcao (menus "main")
-            verificaEntradaMenu action
+            criarArquivos
+            menu
+
+
+menu :: IO ()
+menu = do
+    system "clear"
+    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n9 - Sair\n"
+    opcao <- getLine
+    let action = lookup opcao (menus "menu")
+    verificaEntradaMenu action
 
 
 criarArquivos :: IO ()
@@ -41,7 +51,7 @@ verificaEntradaMenu (Just a) = a
 
 
 menus :: String -> [(String, IO ())]
-menus "main" = 
+menus "menu" = 
         [ ("1", lerCampanha)
         , ("2", iniciarcampanha)
         , ("3", menuPersng)
@@ -59,7 +69,9 @@ menus "persona" =
         , ("3", detalhesPersng)
         , ("4", excluirPersng)
         , ("5", menuItemHabil)
-        , ("0", main)
+        , ("6", menuOuro)
+        , ("9", menuBatalhaInicial)
+        , ("0", menu)
         ]
 menus "itemHabilPerson" = 
         [ ("1", linkarItemPersng)
@@ -73,7 +85,7 @@ menus "habil" =
         , ("2", criarHabil)
         , ("3", detalhesHabil)
         , ("4", excluirHabil)
-        , ("9", main)
+        , ("9", menu)
         ]
 menus x = []
 
@@ -92,7 +104,7 @@ verificaEntradaMenuComplex (Just a) = a
 
 
 voltaMain :: String -> IO ()
-voltaMain _ = main
+voltaMain _ = menu
 
 
 lerCampanha :: IO ()
@@ -107,18 +119,18 @@ lerCampanha = do
             putStrLn $ contents
             print " <---"
             hClose handle
-            restart main
+            restart menu
         else do
             putStrLn "Campanha não criada ainda\nNecessário iniciar uma Campanha\nEnter parar voltar ao Menu"
-            restart main
+            restart menu
     
     where filePath = "data/campanha.lore"
 
 
 restart :: IO () -> IO ()
-restart main = do
+restart menu = do
     opcao <- getLine
-    if opcao == "" then main else restart main
+    if opcao == "" then menu else restart menu
 
 
 iniciarcampanha :: IO ()
@@ -130,7 +142,7 @@ iniciarcampanha = do
         then do
             content <- getMultipleLines
             writeFile filePath (unlines content)
-            restart main
+            restart menu
         else do
             createDirectoryIfMissing True $ takeDirectory filePath
             writeFile filePath ""
@@ -528,10 +540,30 @@ getPersngFromString persng = (read persng :: Personagem)
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n9 - Inicar Conflito entre Personagens\n0 - Voltar Menu\n"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Alterar ouro de Personagem\n9 - Inicar Batalha entre Personagens\n0 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
+
+
+menuOuro :: IO ()
+menuOuro = do
+    putStrLn "Quanto de Ouro sera alterado?"
+    entrada <- getLine
+    let valor = read entrada
+    putStrLn "Qual o nome do Personagem?"
+    nome <- getLine
+    filePerson <- readFile "data/persngs.bd"
+    let persngsString = lines filePerson
+    let person = getPersng (transformaListaPersonagem persngsString) nome
+    if (isNothing person)
+        then do
+            putStrLn "Personagem Inexistente"
+            restart menuPersng
+        else do
+            replacePersonOnFile (fromJust person) (Persona.alteraGold (fromJust person) valor)
+            restart menuPersng
+
 
 
 menuItemHabil :: IO ()
@@ -541,8 +573,6 @@ menuItemHabil = do
     tipo <- getLine
     let action = lookup tipo (menus "menuItemHabil")
     verificaEntradaMenu action
-
-
 
 
 linkarItemPersng :: IO ()
@@ -564,10 +594,13 @@ linkarItemPersng = do
                     filePerson <- readFile "data/persngs.bd"
                     let persngsString = lines filePerson
                     let person = getPersng (transformaListaPersonagem persngsString) nome
-                    if (isNothing person) then putStrLn "Personagem Inexistente"
+                    if (isNothing person)
+                        then do
+                            putStrLn "Personagem Inexistente"
                         else do
                             if (tipo == "1") then (linkarEquipPerson (fromJust person) (getEquipavelFromString item))
                                 else (linkarConsmvlPerson (fromJust person) (getConsmvlFromString item))
+    restart menuPersng
 
 
 getFromTipo :: String -> IO String
@@ -598,7 +631,12 @@ replacePersonOnFile :: Personagem -> Personagem -> IO ()
 replacePersonOnFile new old = do
     contents <- readFile "data/persngs.bd"
     let personagens = transformaListaPersonagem (lines contents)
-    writeFile "data/persngs.bd" (unlines (map show (replacePerson new old personagens)))
+    let personagens_finais = (unlines (map show (replacePerson new old personagens)))
+    (tempName, tempHandle) <- openTempFile "data/" "temp"
+    hPutStr tempHandle personagens_finais
+    hClose tempHandle
+    removeFile "data/persngs.bd"
+    renameFile tempName "data/persngs.bd"
 
 
 linkarHabil :: IO ()
@@ -619,6 +657,7 @@ linkarHabil = do
             if (isNothing person) then putStrLn "Personagem Inexistente"
                 else do
                     linkarHabilPerson (fromJust person) (getHabilFromString habilidade)
+    restart menuPersng
 
 
 linkarHabilPerson :: Personagem -> Habilidade -> IO ()
@@ -645,6 +684,7 @@ desalocarHabil = do
             if (isNothing person) then putStrLn "Personagem Inexistente"
                 else do
                     desalocarHabilPerson (fromJust person) (getHabilFromString habilidade)
+    restart menuPersng
 
 
 desalocarHabilPerson :: Personagem -> Habilidade -> IO ()
@@ -676,6 +716,7 @@ desequiparItemPerson = do
                         else do
                             if (tipo == "1") then (desequiparEquipPerson (fromJust person) (getEquipavelFromString item))
                                 else (desequiparConsmvlPerson (fromJust person) (getConsmvlFromString item))
+    restart menuPersng
 
 
 desequiparEquipPerson :: Personagem -> Equipavel -> IO ()
@@ -688,3 +729,164 @@ desequiparConsmvlPerson :: Personagem -> Consumivel -> IO ()
 desequiparConsmvlPerson persng item = do
     let new_person = Persona.desequiparConsumivel item persng
     replacePersonOnFile new_person persng
+
+
+menuBatalhaInicial :: IO ()
+menuBatalhaInicial = do
+    system "clear"
+    putStrLn "Quais são os Personagem que irão participar da Batalha? (Nomes)"
+    nomes <- getMultipleLines
+    personagensString <- readFile "data/persngs.bd"
+    let personagens = getPersonagens nomes (transformaListaPersonagem (lines personagensString))
+    putStrLn "Os personagens escolhidos foram:"
+    putStrLn (Persona.listarPersonagens personagens)
+    putStrLn "Presione _ para\n(R)e-escolher personagens\nOu\n(C)ontinuar?"
+    escolha <- getLine
+    if escolha == "R" then menuBatalhaInicial
+        else do
+            system "clear"
+            menuBatalha personagens
+
+
+getPersonagens :: [String] -> [Personagem] -> [Personagem]
+getPersonagens [] _ = []
+getPersonagens (x:xs) personagens
+    | isNothing (getPersng personagens x) = (getPersonagens xs personagens)
+    | otherwise = (fromJust(getPersng personagens x)):(getPersonagens xs personagens)
+
+
+menuBatalha :: [Personagem] -> IO ()
+menuBatalha personagens = do
+    putStrLn "Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Comsumivel\n3 - Checar Personagens\n9 - Limpar as mensagens anteriores\n0 -Encerrar a Batalha\n"
+    opcao <- getLine
+    let action = lookup opcao [("1", batalhaHabilis), ("2", batalhaConsmvl), ("3", checarPersons),("9", limparChat), ("0", encerramento)]
+    verificaEntradaBatalha action personagens
+
+
+checarPersons :: [Personagem] -> IO ()
+checarPersons persons = do
+    putStrLn $ unlines (printarPersonagens persons)
+    menuBatalha persons
+
+
+printarPersonagens :: [Personagem] -> [String]
+printarPersonagens [] = []
+printarPersonagens (p:ps) = (Persona.exibePersonagemString p):(printarPersonagens ps)
+
+
+verificaEntradaBatalha :: Maybe ([Personagem] -> IO ()) -> ([Personagem] -> IO ())
+verificaEntradaBatalha Nothing = (\ a -> putStrLn "\nEntrada Invalida brooo, vlw flw\n\nps. tuas alteracoees n foram salvas :(\n\n")
+verificaEntradaBatalha (Just a) = a
+
+
+batalhaConsmvl :: [Personagem] -> IO ()
+batalhaConsmvl personagens = do
+    putStrLn "Qual dos Personagens usara o Consumivel? (Nome)"
+    putStrLn (Persona.listarPersonagens personagens)
+    nome <- getLine
+    if not(isNothing (getPersng personagens nome)) then do
+        putStrLn "Em Qual dos Personagens sera aplicado o Consumivel? (Nome)"
+        putStrLn (Persona.listarPersonagens personagens)
+        nome2 <- getLine
+        if not((isNothing (getPersng personagens nome2)))
+            then do
+                putStrLn "Qual o ID do Consumivel que sera usado? (ID Geral)"
+                entrada <- getLine
+                let id = read entrada :: Int
+                contents <- readFile "data/consmvl.info"
+                let itens = lines contents
+                if id < length itens
+                    then do
+                        let envolvidos = getPersonagens [nome, nome2] personagens 
+                        let newPerson = Batalha.turnoConsumivel (head envolvidos) (last envolvidos) (getConsmvlFromString (itens !! id))
+                        putStrLn "O Personagem agora esta assim:"
+                        putStrLn $ Persona.exibePersonagemString newPerson
+                        putStrLn "\nEnter para voltar a batalha"
+
+                        restartBatalha menuBatalha (Persona.atualizaPersonagem personagens newPerson)
+                    else do
+                        putStrLn "ID Invalido"
+                        restartBatalha menuBatalha personagens
+            else do
+                putStrLn "Personagem Inexistente"
+                restartBatalha menuBatalha personagens
+        else do
+            putStrLn "Personagem Inexistente"
+            restartBatalha menuBatalha personagens
+
+
+restartBatalha :: ([Personagem] -> IO ()) -> [Personagem] -> IO ()
+restartBatalha battle personagens = do
+    opcao <- getLine
+    if opcao == "" then battle personagens else (restartBatalha battle personagens)
+
+
+
+limparChat :: [Personagem] -> IO ()
+limparChat personagens = do
+    system "clear"
+    menuBatalha personagens
+
+
+batalhaHabilis :: [Personagem] -> IO ()
+batalhaHabilis personagens = do
+    putStrLn "Qual dos Personagens usara a Habilidade? (Nome)"
+    putStrLn (Persona.listarPersonagens personagens)
+    nome <- getLine
+    if not((isNothing (getPersng personagens nome))) then do
+        putStrLn "Em Qual dos Personagens sera aplicado a Habilidade? (Nome)"
+        putStrLn (Persona.listarPersonagens personagens)
+        nome2 <- getLine
+        if not((isNothing (getPersng personagens nome2)))
+            then do
+                putStrLn "Qual o ID da habilidade que sera usada? (ID Geral)"
+                entrada <- getLine
+                let id = read entrada :: Int
+                contents <- readFile "data/habil.info"
+                let habilidades = lines contents
+                if id < length habilidades
+                    then do
+                        let envolvidos = getPersonagens [nome, nome2] personagens
+                        random_gen <- newStdGen
+                        let dados = take 2 (randomRs (1,20) random_gen)
+                        let newPerson = Batalha.turnoHabilidade (head envolvidos) (last envolvidos) (getHabilFromString (habilidades !! id)) (head dados) (last dados)
+                        putStrLn "O Personagem agora esta assim:"
+                        putStrLn $ Persona.exibePersonagemString newPerson
+                        putStrLn "\nEnter para voltar a batalha"
+
+                        restartBatalha menuBatalha (Persona.atualizaPersonagem personagens newPerson)
+                    else do
+                        putStrLn "ID Invalido"
+                        restartBatalha menuBatalha personagens
+            else do
+                putStrLn "Personagem Inexistente"
+                restartBatalha menuBatalha personagens
+        else do
+            putStrLn "Personagem Inexistente"
+            restartBatalha menuBatalha personagens
+
+
+
+encerramento :: [Personagem] -> IO ()
+encerramento personagens = do
+    putStrLn "Batalha Encerrada"
+    let mortos = [p | p <- personagens, Batalha.taVivo p]
+    putStrLn "Os Personagens que morreram foram:\n"
+    putStrLn $ Persona.listarPersonagens mortos
+    let vivos = [p | p <- personagens, not (Batalha.taVivo p)]
+    putStrLn "\nOs Personagens que sobreviveram foram:\n"
+    putStrLn $ Persona.listarPersonagens vivos
+    putStrLn "\n\nQuais Personagens voce gostaria de resetar a vida para o maximo?"
+    zumbis <- getMultipleLines
+    putStrLn "Quais Personagens voce gostaria de resetar completamente?"
+    apagar <- getMultipleLines
+    let regenerados = regenera personagens (getPersonagens zumbis personagens)
+    let personagens_finais = [p | p <- regenerados, (p `notElem` (getPersonagens apagar regenerados))]
+    writeFile "data/persngs.bd" (unlines(map show personagens_finais))
+    putStrLn "\n\nAlteracoes Salvas\nRetornando ao Menu\n"
+    menu
+
+regenera :: [Personagem] -> [Personagem] -> [Personagem]
+regenera personagens []  = personagens
+regenera personagens (p:ps) = regenera (Persona.atualizaPersonagem personagens p) ps
+

@@ -85,8 +85,36 @@ listarPersonagens (s:xs) = "---------------------------\n"
                            ++ "Classe: " ++ show(classe s) ++ "\n"
                            ++ listarPersonagens xs
 
-exibePersonagem :: Personagem -> String
-exibePersonagem personagem = "Nome: " ++ show(nome_personagem personagem) ++ "\n"
+
+exibePersonagem :: [Personagem] -> String -> String
+exibePersonagem [] nome = "Personagem inexistente"
+exibePersonagem (s:xs) nome
+    | nome == (nome_personagem s) = "Nome: " ++ show(nome_personagem s) ++ "\n"
+                        ++ "Raca: " ++ show(raca s) ++ "\n"
+                        ++ "Classe: " ++ show(classe s) ++ "\n"
+                        ++ "Vida: " ++ show(vida s) ++ "/" ++ show(vidaMaxima s) ++ "\n"
+                        ++ "Forca: " ++ show(forca s) ++ "\n"
+                        ++ "Inteligencia: " ++ show(inteligencia s) ++ "\n"
+                        ++ "Sabedoria: " ++ show(sabedoria s) ++ "\n"
+                        ++ "Destreza: " ++ show(destreza s) ++ "\n"
+                        ++ "Constituicao: " ++ show(constituicao s) ++ "\n"
+                        ++ "Carisma: " ++ show(carisma s) ++ "\n"
+                        ++ "Velocidade: " ++ show(velocidade s) ++ "\n"
+                        ++ "Ouro: " ++ show(ouro s) ++ "\n"
+                        ++ "XP: " ++ show(xp s) ++ "/" ++ show(xpUp s) ++ "\n"
+                        ++ "Nível: " ++ show(nivel s) ++ "\n"
+                        ++ "Itens:\n"
+                        ++ "Equipaveis:\n"
+                        ++ (unlines (listarEquipaveis (equipaveis s)))
+                        ++ "Consumiveis:\n"
+                        ++ (unlines (listarConsumiveis (consumiveis s)))
+                        ++ "Habilidades:\n"
+                        ++ (unlines (listarHabilidades (habilidades_personagem s)))
+    | otherwise = exibePersonagem xs nome
+
+
+exibePersonagemString :: Personagem -> String
+exibePersonagemString personagem = "Nome: " ++ show(nome_personagem personagem) ++ "\n"
                         ++ "Raca: " ++ show(raca personagem) ++ "\n"
                         ++ "Classe: " ++ show(classe personagem) ++ "\n"
                         ++ "Vida: " ++ show(vida personagem) ++ "/" ++ show(vidaMaxima personagem) ++ "\n"
