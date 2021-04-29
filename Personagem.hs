@@ -65,6 +65,18 @@ cadastraHabilidade nome impacto_vida impacto_dano impacto_velocidade atributo_re
                                                                                                                             ,tipoDeDano = tipoDeDano
                                                                                                                         })
 
+temHabilidade :: Personagem -> Habilidade -> Bool
+temHabilidade personagem habilidade = (personagemTemHabilidade personagem habilidade) || (itemTemHabilidade (equipaveis personagem) habilidade) 
+
+personagemTemHabilidade :: Personagem -> Habilidade -> Bool
+personagemTemHabilidade personagem habilidade = habilidade `elem` (habilidades_personagem personagem)
+
+itemTemHabilidade :: [Equipavel] -> Habilidade -> Bool
+itemTemHabilidade [] _ = False
+itemTemHabilidade (x:xs) habilidade = if(habilidade `elem` (habilidades x)) then True
+                                      else itemTemHabilidade xs habilidade  
+
+
 listarPersonagens :: [Personagem] -> String
 listarPersonagens [] = ""
 listarPersonagens (s:xs) = "---------------------------\n"
@@ -369,3 +381,25 @@ removerImunidade personagem imunidade = Personagem{nome_personagem = nome_person
                                                     ,imunidades = [x | x <- (imunidades personagem), imunidade /= x]
                                                     }
 
+alteraGold :: Personagem -> Int -> Personagem
+alteraGold personagem valor = Personagem{nome_personagem = nome_personagem personagem
+                                        ,raca = raca personagem
+                                        ,classe = classe personagem
+                                        ,vida = vida personagem
+                                        ,vidaMaxima = vidaMaxima personagem
+                                        ,forca = forca personagem
+                                        ,inteligencia = inteligencia personagem
+                                        ,sabedoria = sabedoria personagem
+                                        ,destreza = destreza personagem
+                                        ,constituicao = constituicao personagem
+                                        ,carisma = carisma personagem
+                                        ,velocidade = velocidade personagem
+                                        ,ouro = (ouro personagem) - valor 
+                                        ,xp = xp personagem
+                                        ,xpUp = xpUp personagem
+                                        ,nivel = nivel personagem
+                                        ,equipaveis = equipaveis personagem
+                                        ,consumiveis = consumiveis personagem
+                                        ,habilidades_personagem = habilidades_personagem personagem
+                                        ,imunidades = imunidades personagem
+                                        }
