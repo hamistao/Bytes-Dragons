@@ -331,9 +331,11 @@ usarItemConsumivel consumivel personagem =
 cura :: Int -> Int -> Int -> Int
 cura atual maximo alteracao | atual + alteracao >= maximo = maximo
                             | otherwise = atual + alteracao
+
+                            
 listarImunidades :: [TipoDano] -> [String]
 listarImunidades [] = []
-listarImunidades (s:sx) = (show(s) ++ "\n"): listarImunidades sx  
+listarImunidades (s:sx) = (show(s) ++ "\n"): listarImunidades sx
 
 adicionarImunidade :: Personagem -> TipoDano -> Personagem
 adicionarImunidade personagem imunidade = Personagem{nome_personagem = nome_personagem personagem
@@ -394,7 +396,7 @@ alteraGold personagem valor = Personagem{nome_personagem = nome_personagem perso
                                         ,constituicao = constituicao personagem
                                         ,carisma = carisma personagem
                                         ,velocidade = velocidade personagem
-                                        ,ouro = (ouro personagem) - valor 
+                                        ,ouro = (ouro personagem) + valor 
                                         ,xp = xp personagem
                                         ,xpUp = xpUp personagem
                                         ,nivel = nivel personagem
@@ -413,3 +415,27 @@ temConsumivel :: Personagem -> Consumivel -> Bool
 temConsumivel personagem consumivel
   | consumivel `elem` consumiveis personagem = True
   | otherwise                                = False
+
+
+alteraVida :: Personagem -> Int -> Personagem
+alteraVida personagem valor = Personagem{nome_personagem = nome_personagem personagem
+                                        ,raca = raca personagem
+                                        ,classe = classe personagem
+                                        ,vida = vida personagem + valor
+                                        ,vidaMaxima = vidaMaxima personagem
+                                        ,forca = forca personagem
+                                        ,inteligencia = inteligencia personagem
+                                        ,sabedoria = sabedoria personagem
+                                        ,destreza = destreza personagem
+                                        ,constituicao = constituicao personagem
+                                        ,carisma = carisma personagem
+                                        ,velocidade = velocidade personagem
+                                        ,ouro = ouro personagem
+                                        ,xp = xp personagem
+                                        ,xpUp = xpUp personagem
+                                        ,nivel = nivel personagem
+                                        ,equipaveis = equipaveis personagem
+                                        ,consumiveis = consumiveis personagem
+                                        ,habilidades_personagem = habilidades_personagem personagem
+                                        ,imunidades = imunidades personagem
+                                        }
