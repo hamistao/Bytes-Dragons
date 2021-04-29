@@ -32,3 +32,9 @@ usaHabilidade habilidade personagem =
         ,consumiveis = consumiveis personagem
         ,habilidades = habilidades personagem
     }
+    
+turnoConsumivel :: Personagem -> Personagem -> Consumivel -> Personagem 
+turnoConsumivel personagemEmissor personagemReceptor consumivel = usarItemConsumivel consumivel personagemReceptor 
+turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Personagem
+turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDados = if (selecionaAtributoRelacionado (atributo_relacionado habilidade) + numeroDados ) >= pontosParaAcerto habilidade then usaHabilidade habilidade personagemReceptor
+                                                                              else personagem2   
