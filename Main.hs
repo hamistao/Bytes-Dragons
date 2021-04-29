@@ -560,21 +560,23 @@ getFromTipo _ = readFile "data/consmvl.info"
 
 linkarEquipPerson :: Personagem -> Equipavel -> IO ()
 linkarEquipPerson persng item = do
-    let person = Persona.equiparItem item persng
-    contents <- readFile "data/persngs.bd"
-    let personagens = transformaListaPersonagem (lines contents)
-    writeFile "data/persngs.bd" (unlines (map show personagens))
-
+    let new_person = Persona.equiparItem item persng
+    replacePersonOnFile new_person persng
 
 linkarConsmvlPerson :: Personagem -> Consumivel -> IO ()
 linkarConsmvlPerson persng item = do
-    let person = Persona.guardarConsumivel item persng
-    contents <- readFile "data/persngs.bd"
-    let personagens = transformaListaPersonagem (lines contents)
-    writeFile "data/persngs.bd" (unlines (map show personagens))
+    let new_person = Persona.guardarConsumivel item persng
+    replacePersonOnFile new_person persng
 
 replacePerson :: Personagem -> Personagem -> [Personagem] -> [Personagem]
 replacePerson new old [] =  []
 replacePerson new old (x:xs)
     | old == x = (new:xs)
     | otherwise = x:(replacePerson new old xs)
+
+
+replacePersonOnFile :: Personagem -> Personagem -> IO ()
+replacePersonOnFile new old = do
+    contents <- readFile "data/persngs.bd"
+    let personagens = transformaListaPersonagem (lines contents)
+    writeFile "data/persngs.bd" (unlines (map show (replacePerson new old personagens)))
