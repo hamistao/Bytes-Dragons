@@ -956,6 +956,8 @@ batalhaHabilis personagens = do
                         let envolvidos = getPersonagens [nome, nome2] personagens
                         random_gen <- newStdGen
                         let dados = take 2 (randomRs (1,20) random_gen)
+                        putStrLn "Os Dados tirados Foram:\n"
+                        putStrLn ((show (head dados)) ++ " - " ++ (show (last dados)))
                         let newPerson = Batalha.turnoHabilidade (head envolvidos) (last envolvidos) (getHabilFromString (habilidades !! id)) (head dados) (last dados)
                         putStrLn "O Personagem agora esta assim:"
                         putStrLn $ Persona.exibePersonagemString newPerson
