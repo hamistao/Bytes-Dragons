@@ -1,14 +1,14 @@
 import Personagem
+import Habilidade
 
 selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
-selecionaAtributoRelacionado atributo personagem
-    | atributo == Forca = forca personagem
-    | atributo == Inteligencia = inteligencia personagem
-    | atributo == Sabedoria = sabedoria personagem
-    | atributo == Destreza = destreza personagem
-    | atributo == Constituicao = constituicao personagem
-    | atributo == Carisma = carisma personagem
-    | otherwise = 0
+selecionaAtributoRelacionado Forca personagem = forca personagem
+selecionaAtributoRelacionado Inteligencia personagem = inteligencia personagem
+selecionaAtributoRelacionado Sabedoria personagem = sabedoria personagem
+selecionaAtributoRelacionado Destreza personagem = destreza personagem
+selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
+selecionaAtributoRelacionado Carisma personagem = carisma personagem
+selecionaAtributoRelacionado _ personagem = 0
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
 usaHabilidade habilidade personagem =

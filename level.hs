@@ -1,4 +1,5 @@
 import Personagem
+import Habilidade
 
 aumentaXP :: Personagem -> Int -> Personagem
 aumentaXP personagem quantidadeXP
@@ -147,15 +148,13 @@ aumentaDano personagem aumento = Personagem {
   }
 
 
-aumentaPontosAtributo :: String -> Int -> Personagem -> Personagem
-aumentaPontosAtributo atributo pontos personagem
-  | atributo == "forca" = aumentaForca personagem pontos
-  | atributo == "inteligencia" = aumentaInteligencia personagem pontos
-  | atributo == "sabedoria" = aumentaSabedoria personagem pontos
-  | atributo == "destreza" = aumentaDestreza personagem pontos
-  | atributo == "constituicao" = aumentaConstituicao personagem pontos
-  | atributo == "carisma" = aumentaCarisma personagem pontos
-
+aumentaPontosAtributo :: Atributo -> Int -> Personagem -> Personagem
+aumentaPontosAtributo Forca pontos personagem = aumentaForca personagem pontos
+aumentaPontosAtributo Inteligencia pontos personagem = aumentaInteligencia personagem pontos
+aumentaPontosAtributo Sabedoria pontos personagem = aumentaSabedoria personagem pontos
+aumentaPontosAtributo Destreza pontos personagem = aumentaDestreza personagem pontos
+aumentaPontosAtributo Constituicao pontos personagem = aumentaConstituicao personagem pontos
+aumentaPontosAtributo Carisma pontos personagem = aumentaCarisma personagem pontos
 
 aumentaForca :: Personagem -> Int -> Personagem
 aumentaForca personagem pontos = Personagem {
