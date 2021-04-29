@@ -1,5 +1,6 @@
 module Personagem where
 -- import System.Random
+import Classe
 import Item
 import Data.Maybe
 
@@ -35,7 +36,7 @@ data Habilidade = Habilidade {
     impacto_velocidade :: Int,
     atributo_relacionado :: Atributo,
     pontosParaAcerto :: Int,
-    tipoDeDano :: String
+    tipoDeDano :: TipoDano
 } deriving(Show, Eq, Read)
 
 data Personagem = Personagem {
@@ -58,7 +59,10 @@ data Personagem = Personagem {
     ,equipaveis :: [Equipavel]
     ,consumiveis :: [Consumivel]
     ,habilidades :: [Habilidade]
+    ,imunidade :: [TipoDano]
 } deriving(Show, Eq, Read)
+
+data TipoDano = Cortante | Magico | Venenoso | Fogo | Gelo | Fisico  deriving (Show, Read, Eq)
 
 cadastraPersonagem :: String -> Classe -> Raca -> Personagem
 cadastraPersonagem nome_personagem classe raca = (Personagem {
@@ -73,14 +77,15 @@ cadastraPersonagem nome_personagem classe raca = (Personagem {
                                                             ,destreza = destreza_classe classe+ mod_destreza raca
                                                             ,constituicao = constituicao_classe classe + mod_constituicao raca
                                                             ,carisma = carisma_classe classe + mod_carisma raca
-                                                            ,velocidade = destreza_classe classe+ mod_destreza raca - (constituicao_classe classe + mod_constituicao raca)
-                                                            ,ouro = gold_classe classe
+                                                            ,velocidade = destreza_classe classe + mod_destreza raca - (constituicao_classe classe + mod_constituicao raca)
+                                                            ,ouro = 0
                                                             ,xp = 0
                                                             ,xpUp = 1000
                                                             ,nivel = 1
                                                             ,equipaveis = []
                                                             ,consumiveis = []
                                                             ,habilidades = []
+                                                            ,imunidades = []
                                                 })
 
 
@@ -127,6 +132,9 @@ exibePersonagem (s:xs) nome
                         ++ (unlines (listarConsumiveis (consumiveis s)))
                         ++ "Habilidades:\n"
                         ++ (unlines (listarHabilidades (habilidades s)))
+                        ++ "Imunidade:\n"
+                        ++ (unlines (listarImunidades (imunidades s)))
+                        
     | otherwise = exibePersonagem xs nome
 
 listarHabilidade :: Habilidade -> String
@@ -172,6 +180,7 @@ usaHabilidade habilidade personagem =
         ,equipaveis = equipaveis personagem
         ,consumiveis = consumiveis personagem
         ,habilidades = habilidades personagem
+        ,imunidades = imunidades personagem
     }
 
 isEquipavel :: [Equipavel] -> TipoEquipavel -> Maybe(Equipavel)
@@ -203,6 +212,7 @@ desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis per
                                                         ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
                                                         ,consumiveis = consumiveis personagem
                                                         ,habilidades = habilidades personagem
+                                                        ,imunidades = imunidades personagem
                                                     }
 
 removerEquipavel :: [Equipavel] -> Equipavel -> [Equipavel]
@@ -229,6 +239,7 @@ equiparItem equipavel personagem =
         ,equipaveis = equipaveis personagem ++ [equipavel]
         ,consumiveis = consumiveis personagem
         ,habilidades = habilidades personagem
+        ,imunidades = imunidades personagem
     }
 
 alocaHabilidade :: Habilidade -> Personagem -> Personagem
@@ -300,6 +311,7 @@ guardarConsumivel item personagem =
         ,equipaveis = equipaveis personagem
         ,consumiveis = consumiveis personagem ++ [item]
         ,habilidades = habilidades personagem
+        ,imunidades = imunidades personagem
     }
 
 removeConsumivel :: Consumivel -> Personagem -> [Consumivel]
@@ -337,8 +349,40 @@ usarItemConsumivel consumivel personagem =
         ,equipaveis = equipaveis personagem
         ,consumiveis = removeConsumivel consumivel personagem
         ,habilidades = habilidades personagem
+        ,imunidades = imunidades personagem
     }
 
 cura :: Int -> Int -> Int -> Int
 cura atual maximo alteracao | atual + alteracao >= maximo = maximo
                             | otherwise = atual + alteracao
+listarImunidades :: [TipoDano] -> [String]
+listarImunidades [] = []
+listarImunidades (s:sx) = (show(s) ++ "\n"): listarImunidades xs  
+
+adicionarImunidade :: Personagem -> TipoDano -> Personagem
+adicionarImunidade personagem imunidade = Personagem{alcunha = alcunha personagem
+                                                    ,raca = raca personagem
+                                                    ,classe = classe personagem
+                                                    ,vida = vida personagem
+                                                    ,vidaMaxima = vidaMaxima personagem
+                                                    ,forca = forca personagem
+                                                    ,inteligencia = inteligencia personagem
+                                                    ,sabedoria = sabedoria personagem
+                                                    ,destreza = destreza personagem
+                                                    ,constituicao = constituicao personagem
+                                                    ,carisma = carisma personagem
+                                                    ,dano = dano personagem
+                                                    ,velocidade = velocidade personagem
+                                                    ,ouro = ouro personagem
+                                                    ,xp = xp personagem
+                                                    ,xpUp = xpUp personagem
+                                                    ,nivel = nivel personagem
+                                                    ,equipaveis = equipaveis personagem
+                                                    ,consumiveis = consumiveis personagem
+                                                    ,habilidades = habilidades personagem
+                                                    ,imunidades = imunidades personagem ++ [imunidade] 
+                                                    }   
+
+removerImunidade :: Personagem -> TipoDano -> Personagem
+removerImunidade personagem imunidade = [x | x <- (imunidades personagem), imunidade /= x]            
+

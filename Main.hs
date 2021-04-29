@@ -11,7 +11,7 @@ import Data.Maybe
 main :: IO ()
 main = do
     system "clear"
-    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n9 - Sair\n"
+    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n9 - Sair\n"
     opcao <- getLine
     let action = lookup opcao (menus "main")
     verificaEntradaMenu action
@@ -28,6 +28,7 @@ menus "main" =
         , ("2", iniciarcampanha)
         , ("3", menuPersng)
         , ("4", menuItem)
+        , ("5", menuHabilis)
         , ("9", sairBunitinho)
         ]
 menus "item" =
@@ -38,8 +39,16 @@ menus "persona" =
         [ ("1", listarPersng)
         , ("2", criarPersng)
         , ("3", detalhesPersng)
-        , ("8", excluirPersng)
-        , ("9", (main))]
+        , ("4", excluirPersng)
+        , ("9", main)
+        ]
+menus "habil" = 
+        [ ("1", listarHabil)
+        , ("2", criarHabil)
+        , ("3", detalhesHabil)
+        , ("4", excluirHabil)
+        , ("9", main)
+        ]
 menus x = []
 
 menusItens :: [(String, (String -> IO ()))]
@@ -339,13 +348,13 @@ checkExcluirEquip itens = do
 
 checkExcluirConsmvl :: [Consumivel] -> IO ()
 checkExcluirConsmvl itens = do
-    putStrLn "Qual o Nome dos Consumiveis? (Todos com esse nome serão deletados)"
-    nome <- getLine
-    let nomes = map (Item.nomeConsumivel) itens
-    if nome `elem` (nomes)
+    putStrLn "Qual o ID do Consumivel?"
+    entrada <- getLine
+    let id = read entrada :: Int
+    if id < (length itens) 
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
-            let newItens = ( itens \\ (map (\ a -> itens !! a) (nome `elemIndices` nomes)))
+            let newItens = delete (itens !! id) itens
             hPutStr tempHandle $ unlines (map show newItens)
             hClose tempHandle
             removeFile "data/consmvl.info"
@@ -356,7 +365,7 @@ checkExcluirConsmvl itens = do
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Inicar Conflito entre Personagens\n8 - Excluir Personagem\n9 - Voltar Menu\n"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n8 - Inicar Conflito entre Personagens\n9 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
@@ -476,3 +485,120 @@ deletePersng listaPersng persngMayb = do
             renameFile tempName "data/persngs.bd"
             putStrLn "Personagem excluido com Sucesso\n"
         else putStrLn "Personagem inexistente\n"
+
+
+menuHabilis :: IO ()
+menuHabilis = do
+    system "clear"
+    putStrLn "1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n9 - Voltar Menu\n"
+    opcao <- getLine
+    let action = lookup opcao (menus "habil")
+    verificaEntradaMenu action
+
+
+criarHabil :: IO ()
+criarHabil = do
+    putStrLn "Qual o nome da Habilidade?"
+    nome <- getLine
+    putStrLn "Qual o Buff/Debuff na Vida?"
+    vida <- getLine
+    putStrLn "Qual o Buff/Debuff no Dano?"
+    dano <- getLine
+    putStrLn "Qual o Buff/Debuff na Velocidade?"
+    velocidade <- getLine
+    putStrLn "Qual o Atributo da Habilidade"
+    attr <- getLine
+    putStrLn "Quantos Pontos Necessários para Acerto?"
+    acerto <- getLine
+    putStrLn "Qual o Tipo do Dano?"
+    tipo <- getLine
+    appendFile "data/habil.info" (show (Persona.cadastraHabilidade nome (read vida) (read dano) (read velocidade) attr (read acerto) tipo) ++ "\n")
+    putStrLn "Habilidade Criada"
+    restart menuHabilis
+
+
+listarHabil :: IO ()
+listarHabil = do
+    system "clear"
+    exists <- doesFileExist filePath
+    if exists
+        then do
+            handle <- openFile filePath ReadMode
+            contents <- hGetContents handle
+            print "---> "
+            printHabilidades (Persona.listarHabilidades (transformaListaHabilidades (lines contents)))
+            print " <---"
+            hClose handle
+            restart menuHabilis
+        else do
+            createDirectoryIfMissing True $ takeDirectory filePath
+            writeFile filePath ""
+            restart listarPersng
+
+    where filePath = "data/habil.info"
+
+
+printHabilidades :: [String] -> IO ()
+printHabilidades habilidades = do
+    putStrLn $ unlines (zipWith (\num item -> "Habilidade - " ++ show num ++ "  ---------->\n" ++ item) [0..] (habilidades))
+
+
+detalhesHabil :: IO ()
+detalhesHabil = do
+    system "clear"
+    exists <- doesFileExist filePath
+    if exists
+        then do
+            putStrLn "Qual o ID da Habilidade?"
+            entrada <- getLine
+            handle <- openFile filePath ReadMode
+            contents <- hGetContents handle
+            let habilidades = lines contents
+            let id = read entrada :: Int
+            if id < (length habilidades) then do
+                getDetalhesHabil (habilidades !! id)
+                hClose handle
+                restart menuHabilis
+                else do
+                    putStrLn "Habilidade Inexistente\n"
+        else do
+            createDirectoryIfMissing True $ takeDirectory filePath
+            writeFile filePath ""
+            detalhesHabil
+    where
+        filePath = "data/habil.info"
+
+getDetalhesHabil :: String -> IO ()
+getDetalhesHabil habili = do
+    putStrLn $ Persona.listarHabilidade (read habili :: Habilidade)
+
+
+excluirHabil :: IO ()
+excluirHabil = do
+    let filePath = "data/habil.info"
+    exists <- doesFileExist filePath
+    if exists then do
+        habilis_io <- readFile filePath
+        let habilidades = lines (habilis_io)
+        putStrLn "Qual o ID da Habilidade?"
+        entrada <- getLine
+        let id = read entrada :: Int
+        if id < (length habilidades) 
+            then do
+                (tempName, tempHandle) <- openTempFile "data/" "temp"
+                let newHabilis = delete (habilidades !! id) habilidades
+                hPutStr tempHandle $ unlines (map show newHabilis)
+                hClose tempHandle
+                removeFile filePath
+                renameFile tempName filePath
+                menuHabilis
+            else putStrLn "Habilidade Inexistente\n"
+        else do
+            createDirectoryIfMissing True $ takeDirectory filePath
+            writeFile filePath ""
+            detalhesHabil
+
+
+transformaListaHabilidades :: [String] -> [Habilidade]
+transformaListaHabilidades [] = []
+transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x):(transformaListaHabilidades xs)
