@@ -407,3 +407,9 @@ alteraGold personagem valor = Personagem{nome_personagem = nome_personagem perso
 
 atualizaPersonagem :: [Personagem] -> Personagem -> [Personagem]
 atualizaPersonagem lista personagem = [personagem] ++ [ p | p <- lista, nome_personagem p /= nome_personagem personagem]
+
+
+temConsumivel :: Personagem -> Consumivel -> Bool
+temConsumivel personagem consumivel
+  | consumivel `elem` consumiveis personagem = True
+  | otherwise                                = False
