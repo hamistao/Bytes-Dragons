@@ -70,6 +70,7 @@ menus "persona" =
         , ("4", excluirPersng)
         , ("5", menuItemHabil)
         , ("6", menuOuro)
+        , ("7", botaResistencia)
         , ("9", menuBatalhaInicial)
         , ("0", menu)
         ]
@@ -562,7 +563,8 @@ botaResistencia = do
             putStrLn "Personagem Inexistente"
             restart menuPersng
         else do
-            replacePersonOnFile (Persona.adicionarImunidade (fromJust person) resistencia) (fromJust person)
+            let pessoa = fromJust person
+            replacePersonOnFile (Persona.adicionarImunidade pessoa resistencia) pessoa
             restart menuPersng
 
 
@@ -581,7 +583,9 @@ menuOuro = do
             putStrLn "Personagem Inexistente"
             restart menuPersng
         else do
-            replacePersonOnFile (Persona.alteraGold (fromJust person) valor) (fromJust person)
+            let pessoa = fromJust person
+            let novo = Persona.alteraGold pessoa valor
+            replacePersonOnFile novo pessoa
             restart menuPersng
 
 
@@ -591,7 +595,7 @@ menuItemHabil = do
     system "clear"
     putStrLn "1 - Equipar um Item\n2 - Equipar uma Habilidade\n3 - Desequipar um Item\n4 - Desalocar uma Habilidade"
     tipo <- getLine
-    let action = lookup tipo (menus "menuItemHabil")
+    let action = lookup tipo (menus "itemHabilPerson")
     verificaEntradaMenu action
 
 
