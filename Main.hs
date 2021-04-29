@@ -6,6 +6,8 @@ import System.Process
 import Item as Item
 import Personagem as Persona
 import Habilidade as Habil
+import Raca
+import Classe
 import Data.List
 import Data.Maybe
 
@@ -217,7 +219,7 @@ listarItensNomes tipo = do
 
 
 cadastrarItem :: String -> IO ()
-cadastrarItem 
+cadastrarItem tipo
     | tipo == "data/equip.info" = criarItemEquipavel tipo
     | tipo == "data/consmvl.info" = criarItemConsmvl tipo
     | otherwise = putStrLn "Erro na Abertura de arquivo\n"
@@ -344,11 +346,11 @@ listarPersng = do
 detalhesPersng :: IO ()
 detalhesPersng = do
     system "clear"
-        putStrLn "Qual o Nome do Personagem?"
-        nome <- getLine
-        contents <- readFile "data/persngs.bd"
-        putStrLn (getDetalhesPersng (lines contents) nome)
-        restart menuPersng
+    putStrLn "Qual o Nome do Personagem?"
+    nome <- getLine
+    contents <- readFile "data/persngs.bd"
+    putStrLn (getDetalhesPersng (lines contents) nome)
+    restart menuPersng
             
 getDetalhesPersng :: [String] -> String -> String
 getDetalhesPersng personas nome = 
@@ -368,7 +370,7 @@ criarPersng = do
     raca <- getLine
     putStrLn "Qual a classe do Personagem (Bruxo | Barbaro | Bardo | Clerigo | Druida | Feiticeiro | Guerreiro | Ladino | Mago | Monge | Paladino | Arqueiro) ?"
     classe <- getLine  
-    appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome (read raca :: Persona.Raca) (read classe :: Persona.Classe)) ++ "\n")
+    appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome (read classe :: Classe) (read raca :: Raca)) ++ "\n")
     putStrLn "Personagem Criado"
     restart menuPersng
 
@@ -441,7 +443,7 @@ listarHabil = do
     system "clear"
     contents <- readFile filePath
     print "---> "
-    printHabilidades (Persona.listarHabilidades (transformaListaHabilidades (lines contents)))
+    printHabilidades (listarHabilidades (transformaListaHabilidades (lines contents)))
     print " <---"
     restart menuHabilis
 
@@ -471,7 +473,7 @@ detalhesHabil = do
 
 getDetalhesHabil :: String -> IO ()
 getDetalhesHabil habili = do
-    putStrLn $ Persona.listarHabilidade (read habili :: Habilidade)
+    putStrLn $ listarHabilidade (read habili :: Habilidade)
 
 
 excluirHabil :: IO ()
@@ -526,20 +528,53 @@ menuPersng = do
 
 
 linkarItemPersng :: IO ()
-linkarItemPersng = do
-    existsEquipavel <- doesFileExist "data/equip.info"
-    existsConsmvl <- doesFileExist "data/consmvl.info"
-    existsPerson <- doesFileExist "data/persngs.bd"
-    if existsPerson && existsConsmvl && existsEquipavel
-        then do     
-            system "clear"
-            putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
-            tipo <- getLine
+linkarItemPersng = do   
+    system "clear"
+    putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
+    tipo <- getLine
+    if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"
         else do
-            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
-            writeFile "data/persngs.bd" ""
-            writeFile "data/consmvl.info" ""
-            writeFile "data/equip.info" ""
-            linkarItemPersng
+            putStrLn "Qual o ID do Item?"
+            entrada <- getLine
+            let id = read entrada :: Int
+            itemStr <- getFromTipo tipo
+            if (id >= (length(lines itemStr))) then putStrLn "Id Invalida" 
+                else do
+                    let item = (lines itemStr) !! id
+                    putStrLn "Qual o nome do Personagem?"
+                    nome <- getLine
+                    filePerson <- readFile "data/persngs.bd"
+                    let persngsString = lines filePerson
+                    let person = getPersng (transformaListaPersonagem persngsString) nome
+                    if (isNothing person) then putStrLn "Personagem Inexistente"
+                        else do
+                            if (tipo == "1") then (linkarEquipPerson (fromJust person) (getEquipavelFromString item))
+                                else (linkarConsmvlPerson (fromJust person) (getConsmvlFromString item))
 
 
+getFromTipo :: String -> IO String
+getFromTipo "1" = readFile "data/equip.info"
+getFromTipo _ = readFile "data/consmvl.info"
+
+
+
+linkarEquipPerson :: Personagem -> Equipavel -> IO ()
+linkarEquipPerson persng item = do
+    let person = Persona.equiparItem item persng
+    contents <- readFile "data/persngs.bd"
+    let personagens = transformaListaPersonagem (lines contents)
+    writeFile "data/persngs.bd" (unlines (map show personagens))
+
+
+linkarConsmvlPerson :: Personagem -> Consumivel -> IO ()
+linkarConsmvlPerson persng item = do
+    let person = Persona.guardarConsumivel item persng
+    contents <- readFile "data/persngs.bd"
+    let personagens = transformaListaPersonagem (lines contents)
+    writeFile "data/persngs.bd" (unlines (map show personagens))
+
+replacePerson :: Personagem -> Personagem -> [Personagem] -> [Personagem]
+replacePerson new old [] =  []
+replacePerson new old (x:xs)
+    | old == x = (new:xs)
+    | otherwise = x:(replacePerson new old xs)
