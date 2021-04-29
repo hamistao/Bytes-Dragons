@@ -27,9 +27,9 @@ exibeLoja (s:xs) nome
     |nome == nomeLoja s = "Nome: " ++ nomeLoja s ++ "\n"
                         ++ "Itens a venda:\n"
                         ++ "Equipáveis:\n"
-                        ++ unlines(catalogoEquipavel (equipaveis s))
+                        ++ unlines(catalogoEquipavel (lojaEquipaveis s))
                         ++ "Consumíveis:\n"
-                        ++ unlines(catalogoConsumivel (consumiveis s)
+                        ++ unlines(catalogoConsumivel (lojaConsumiveis s)
     |otherwise exibeLoja xs nome
 
 catalogoEquipavel :: [(Equipavel, Int)] -> String
