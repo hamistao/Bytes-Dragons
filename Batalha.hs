@@ -8,7 +8,7 @@ selecionaAtributoRelacionado Sabedoria personagem = sabedoria personagem
 selecionaAtributoRelacionado Destreza personagem = destreza personagem
 selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
 selecionaAtributoRelacionado Carisma personagem = carisma personagem
-selecionaAtributoRelacionado _ personagem = 0
+
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
 usaHabilidade habilidade personagem =
@@ -36,5 +36,5 @@ usaHabilidade habilidade personagem =
 turnoConsumivel :: Personagem -> Personagem -> Consumivel -> Personagem 
 turnoConsumivel personagemEmissor personagemReceptor consumivel = usarItemConsumivel consumivel personagemReceptor 
 turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Personagem
-turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDados = if (selecionaAtributoRelacionado (atributo_relacionado habilidade) + numeroDados ) >= pontosParaAcerto habilidade then usaHabilidade habilidade personagemReceptor
-                                                                              else personagem2   
+turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDados = if (selecionaAtributoRelacionado ((atributo_relacionado habilidade) personagem) + numeroDados ) >= pontosParaAcerto habilidade then usaHabilidade habilidade personagemReceptor
+                                                                              else personagemReceptor   
