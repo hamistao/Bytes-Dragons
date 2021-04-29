@@ -173,14 +173,11 @@ desequiparItem equipavel personagem = Personagem{ nome_personagem = nome_persona
                                                 ,xp = xp personagem
                                                 ,xpUp = xpUp personagem
                                                 ,nivel = nivel personagem
-                                                ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
+                                                ,equipaveis = [x | x <- equipaveis, tipoEquipavel equipavel /= tipoEquipavel x]
                                                 ,consumiveis = consumiveis personagem
                                                 ,habilidades = [ x | x <- habilidades personagem, x `notElem` (habilidades equipavel)]
                                                 ,imunidades = imunidades personagem
                                             }
-
-removerEquipavel :: [Equipavel] -> Equipavel -> [Equipavel]
-removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipoEquipavel equipavel /= tipoEquipavel x]
 
 alocaHabilidade :: Habilidade -> Personagem -> Personagem
 alocaHabilidade habilidade personagem = 
