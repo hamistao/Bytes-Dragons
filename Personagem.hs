@@ -126,64 +126,61 @@ usaHabilidade habilidade personagem =
         ,imunidades = imunidades personagem
     }
 
+equiparItem :: Equipavel -> Personagem -> Personagem
+equiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis personagem) (tipoEquipavel equipavel))) then
+                                        Personagem{nome_personagem = nome_personagem personagem
+                                        ,raca = raca personagem
+                                        ,classe = classe personagem
+                                        ,vida = vida personagem
+                                        ,vidaMaxima = vidaMaxima personagem + alteracaoVidaMaxima equipavel
+                                        ,forca = forca personagem + alteracaoForca equipavel
+                                        ,inteligencia = inteligencia personagem + alteracaoInteligencia equipavel
+                                        ,sabedoria = sabedoria personagem + alteracaoSabedoria equipavel
+                                        ,destreza = destreza personagem + alteracaoDestreza equipavel
+                                        ,constituicao = constituicao personagem + alteracaoConstituicao equipavel
+                                        ,carisma = carisma personagem + alteracaoCarisma equipavel
+                                        ,velocidade = velocidade personagem + alteracaoVelocidadeEquipavel equipavel
+                                        ,ouro = ouro personagem
+                                        ,xp = xp personagem
+                                        ,xpUp = xpUp personagem
+                                        ,nivel = nivel personagem
+                                        ,equipaveis = equipaveis personagem ++ [equipavel]
+                                        ,consumiveis = consumiveis personagem ++ habilidades equipavel
+                                        ,habilidades = habilidades personagem
+                                        ,imunidades = imunidades personagem
+                                    }
+                                    else equiparItem equipavel (desequiparItem equipavel personagem)
+
 isEquipavel :: [Equipavel] -> TipoEquipavel -> Maybe(Equipavel)
 isEquipavel [] _ = Nothing
 isEquipavel (x:xs) tipo = if(tipoEquipavel x == tipo) then (Just x) 
                           else isEquipavel xs tipo
 
-usarItemEquipavel :: Equipavel -> Personagem -> Personagem
-usarItemEquipavel equipavel personagem = equiparItem equipavel (desequiparItem equipavel personagem)
-
 desequiparItem :: Equipavel -> Personagem -> Personagem
-desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis personagem) (tipoEquipavel equipavel))) then personagem
-                                      else  Personagem{ nome_personagem = nome_personagem personagem
-                                                        ,raca = raca personagem
-                                                        ,classe = classe personagem
-                                                        ,vida = vida personagem
-                                                        ,vidaMaxima = vidaMaxima personagem - alteracaoVidaMaxima equipavel
-                                                        ,forca = forca personagem - alteracaoForca equipavel
-                                                        ,inteligencia = inteligencia personagem - alteracaoInteligencia equipavel
-                                                        ,sabedoria = sabedoria personagem - alteracaoSabedoria equipavel
-                                                        ,destreza = destreza personagem - alteracaoDestreza equipavel
-                                                        ,constituicao = constituicao personagem - alteracaoConstituicao equipavel
-                                                        ,carisma = carisma personagem - alteracaoCarisma equipavel
-                                                        ,velocidade = velocidade personagem - alteracaoVelocidadeEquipavel equipavel
-                                                        ,ouro = ouro personagem
-                                                        ,xp = xp personagem
-                                                        ,xpUp = xpUp personagem
-                                                        ,nivel = nivel personagem
-                                                        ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
-                                                        ,consumiveis = consumiveis personagem
-                                                        ,habilidades = [ x | x <- habilidades personagem, x `notElem` (habilidades equipavel)]
-                                                        ,imunidades = imunidades personagem
-                                                    }
+desequiparItem equipavel personagem = Personagem{ nome_personagem = nome_personagem personagem
+                                                ,raca = raca personagem
+                                                ,classe = classe personagem
+                                                ,vida = vida personagem
+                                                ,vidaMaxima = vidaMaxima personagem - alteracaoVidaMaxima equipavel
+                                                ,forca = forca personagem - alteracaoForca equipavel
+                                                ,inteligencia = inteligencia personagem - alteracaoInteligencia equipavel
+                                                ,sabedoria = sabedoria personagem - alteracaoSabedoria equipavel
+                                                ,destreza = destreza personagem - alteracaoDestreza equipavel
+                                                ,constituicao = constituicao personagem - alteracaoConstituicao equipavel
+                                                ,carisma = carisma personagem - alteracaoCarisma equipavel
+                                                ,velocidade = velocidade personagem - alteracaoVelocidadeEquipavel equipavel
+                                                ,ouro = ouro personagem
+                                                ,xp = xp personagem
+                                                ,xpUp = xpUp personagem
+                                                ,nivel = nivel personagem
+                                                ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
+                                                ,consumiveis = consumiveis personagem
+                                                ,habilidades = [ x | x <- habilidades personagem, x `notElem` (habilidades equipavel)]
+                                                ,imunidades = imunidades personagem
+                                            }
 
 removerEquipavel :: [Equipavel] -> Equipavel -> [Equipavel]
 removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipoEquipavel equipavel /= tipoEquipavel x]
-
-equiparItem :: Equipavel -> Personagem -> Personagem
-equiparItem equipavel personagem = 
-    Personagem{nome_personagem = nome_personagem personagem
-        ,raca = raca personagem
-        ,classe = classe personagem
-        ,vida = vida personagem
-        ,vidaMaxima = vidaMaxima personagem + alteracaoVidaMaxima equipavel
-        ,forca = forca personagem + alteracaoForca equipavel
-        ,inteligencia = inteligencia personagem + alteracaoInteligencia equipavel
-        ,sabedoria = sabedoria personagem + alteracaoSabedoria equipavel
-        ,destreza = destreza personagem + alteracaoDestreza equipavel
-        ,constituicao = constituicao personagem + alteracaoConstituicao equipavel
-        ,carisma = carisma personagem + alteracaoCarisma equipavel
-        ,velocidade = velocidade personagem + alteracaoVelocidadeEquipavel equipavel
-        ,ouro = ouro personagem
-        ,xp = xp personagem
-        ,xpUp = xpUp personagem
-        ,nivel = nivel personagem
-        ,equipaveis = equipaveis personagem ++ [equipavel]
-        ,consumiveis = consumiveis personagem ++ habilidades equipavel
-        ,habilidades = habilidades personagem
-        ,imunidades = imunidades personagem
-    }
 
 alocaHabilidade :: Habilidade -> Personagem -> Personagem
 alocaHabilidade habilidade personagem = 
