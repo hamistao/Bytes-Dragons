@@ -54,7 +54,7 @@ cadastraPersonagem nome_personagem classe raca = (Personagem {
                                                 })
 
 
-cadastraHabilidade :: String -> Int -> Int -> Int -> Atributo -> Int -> String -> Habilidade
+cadastraHabilidade :: String -> Int -> Int -> Int -> Atributo -> Int -> TipoDano -> Habilidade
 cadastraHabilidade nome impacto_vida impacto_dano impacto_velocidade atributo_relacionado pontosParaAcerto tipoDeDano = (Habilidade {
                                                                                                                             nome_habilidade = nome
                                                                                                                             ,impacto_vida = impacto_vida
