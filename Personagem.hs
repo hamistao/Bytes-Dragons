@@ -111,7 +111,7 @@ exibePersonagem (s:xs) nome
                         ++ "Habilidades:\n"
                         ++ (unlines (listarHabilidades (habilidades_personagem s)))
                         ++ "Imunidade:\n"
-                        ++ (unlines (listarImunidades (imunidades personagem)))
+                        ++ (unlines (listarImunidades (imunidades s)))
     | otherwise = exibePersonagem xs nome
 
 
