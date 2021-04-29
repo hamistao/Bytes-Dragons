@@ -362,15 +362,6 @@ checkExcluirConsmvl itens = do
         else putStrLn "Item Inexistente\n"
 
 
-menuPersng :: IO ()
-menuPersng = do
-    system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n8 - Inicar Conflito entre Personagens\n9 - Voltar Menu\n"
-    tipo <- getLine
-    let action = lookup tipo (menus "persona")
-    verificaEntradaMenu action
-
-
 listarPersng :: IO ()
 listarPersng = do
     system "clear"
@@ -412,13 +403,11 @@ getDetalhesPersng :: [String] -> String -> String
 getDetalhesPersng personas nome = 
     (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
-getDetalhesPersng :: [String] -> String -> String
-getDetalhesPersng personas nome = 
-    (Persona.exibePersonagem (transformaListaPersonagem personas) nome)
 
 transformaListaPersonagem :: [String] -> [Personagem]
 transformaListaPersonagem [] = []
 transformaListaPersonagem (x:xs) = ((read :: String -> Personagem) x) : (transformaListaPersonagem xs)
+
 
 criarPersng :: IO ()
 criarPersng = do
@@ -442,7 +431,7 @@ criarPersng = do
     constituicao <- getLine
     putStrLn "Qual a Carisma?"
     carisma <- getLine    
-    appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome classe raca (read vida_maxima) (read forca) (read inteligencia) (read sabedoria) (read destreza) (read constituicao) (read carisma)) ++ "\n")
+    appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome (read raca :: Persona.Raca) (read classe :: Persona.Classe) (read vida_maxima) (read forca) (read inteligencia) (read sabedoria) (read destreza) (read constituicao) (read carisma)) ++ "\n")
     putStrLn "Personagem Criado"
     restart menuPersng
 
@@ -470,8 +459,9 @@ excluirPersng = do
 getPersng :: [Personagem] -> String -> (Maybe (Personagem))
 getPersng [] nome = Nothing
 getPersng (s:xs) nome
-    | nome == (alcunha s) = (Just s)
+    | nome == (nome_personagem s) = (Just s)
     | otherwise = getPersng xs nome
+
 
 deletePersng ::  [String] -> (Maybe (Personagem)) -> IO ()
 deletePersng listaPersng persngMayb = do
@@ -602,3 +592,14 @@ excluirHabil = do
 transformaListaHabilidades :: [String] -> [Habilidade]
 transformaListaHabilidades [] = []
 transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x):(transformaListaHabilidades xs)
+
+
+menuPersng :: IO ()
+menuPersng = do
+    system "clear"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n8 - Inicar Conflito entre Personagens\n9 - Voltar Menu\n"
+    tipo <- getLine
+    let action = lookup tipo (menus "persona")
+    verificaEntradaMenu action
+
+
