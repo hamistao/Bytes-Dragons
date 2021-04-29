@@ -109,6 +109,6 @@ exibirEquipavel equipavel = "Nome: " ++ show(nomeEquipavel equipavel) ++ "\n"
                            ++ "Alteração à constituição: " ++ show(alteracaoConstituicao equipavel) ++ "\n"
                            ++ "Alteração ao carisma: " ++ show(alteracaoCarisma equipavel) ++ "\n"
                            ++ "Alteração à velocidade: " ++ show(alteracaoVelocidadeEquipavel equipavel) ++ "\n"
-                           ++ "Equipavel em: " ++ show(tipoEquipavel equipavel)
+                           ++ "Equipavel em: " ++ show(tipoEquipavel equipavel) ++ "\n"
                            ++ "Habilidades: " ++ unlines (listarHabilidades (habilidades equipavel))
 
