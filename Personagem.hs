@@ -267,6 +267,31 @@ reduzDuracao consumivel =
         , duracao = duracao consumivel - 1
     }
 
+
+desequiparConsumivel :: Consumivel -> Personagem -> Personagem
+desequiparConsumivel consumivel personagem = 
+    Personagem{nome_personagem = nome_personagem personagem
+        ,raca = raca personagem
+        ,classe = classe personagem
+        ,vida = cura (vida personagem) (vidaMaxima personagem) (alteracaoVida consumivel)
+        ,vidaMaxima = vidaMaxima personagem
+        ,forca = forca personagem
+        ,inteligencia = inteligencia personagem
+        ,sabedoria = sabedoria personagem
+        ,destreza = destreza personagem
+        ,constituicao = constituicao personagem
+        ,carisma = carisma personagem
+        ,velocidade = velocidade personagem + alteracaoVelocidadeConsumivel consumivel
+        ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
+        ,equipaveis = equipaveis personagem
+        ,consumiveis = [item | item <- consumiveis personagem, item /= consumivel]
+        ,habilidades_personagem = habilidades_personagem personagem
+        ,imunidades = imunidades personagem
+    }
+
 usarItemConsumivel :: Consumivel -> Personagem -> Personagem
 usarItemConsumivel consumivel personagem =
     Personagem{nome_personagem = nome_personagem personagem
