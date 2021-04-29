@@ -114,15 +114,14 @@ listarHabilidades :: [Habilidade] -> [String]
 listarHabilidades [] = []
 listarHabilidades (s:xs) = ("Nome: " ++ show(nome_habilidade s) ++ "\n"): listarHabilidades xs
 
-selecionaAtributoRelacionado :: String -> Personagem -> Int
-selecionaAtributoRelacionado atributo personagem
-    | atributo == "forca" = forca personagem
-    | atributo == "inteligencia" = inteligencia personagem
-    | atributo == "sabedoria" = sabedoria personagem
-    | atributo == "destreza" = destreza personagem
-    | atributo == "constituicao" = constituicao personagem
-    | atributo == "carisma" = carisma personagem
-    | otherwise = 0
+selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
+selecionaAtributoRelacionado Forca personagem = forca personagem
+selecionaAtributoRelacionado Inteligencia personagem = inteligencia personagem
+selecionaAtributoRelacionado Sabedoria personagem = sabedoria personagem
+selecionaAtributoRelacionado Destreza personagem = destreza personagem
+selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
+selecionaAtributoRelacionado Carisma personagem = carisma personagem
+selecionaAtributoRelacionado _ personagem = 0
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
 usaHabilidade habilidade personagem =
