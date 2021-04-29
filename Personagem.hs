@@ -3,6 +3,8 @@ module Personagem where
 import Item
 import Data.Maybe
 
+data Atributo = Forca | Inteligencia | Sabedoria | Destreza | Constituicao | Carisma deriving(Show, Read, Eq)
+
 data Raca = Raca {
     nome_raca :: String
     ,mod_vidaMaxima :: Int
@@ -31,7 +33,7 @@ data Habilidade = Habilidade {
     impacto_vida :: Int,
     impacto_dano :: Int,
     impacto_velocidade :: Int,
-    atributo_relacionado :: String,
+    atributo_relacionado :: Atributo,
     pontosParaAcerto :: Int,
     tipoDeDano :: String
 } deriving(Show, Eq, Read)
@@ -82,7 +84,7 @@ cadastraPersonagem nome_personagem classe raca = (Personagem {
                                                 })
 
 
-cadastraHabilidade :: String -> Int -> Int -> Int -> String -> Int -> String -> Habilidade
+cadastraHabilidade :: String -> Int -> Int -> Int -> Atributo -> Int -> String -> Habilidade
 cadastraHabilidade nome impacto_vida impacto_dano impacto_velocidade atributo_relacionado pontosParaAcerto tipoDeDano = (Habilidade {
                                                                                                                             nome_habilidade = nome
                                                                                                                             ,impacto_vida = impacto_vida
@@ -180,7 +182,6 @@ isEquipavel (x:xs) tipo = if(tipoEquipavel x == tipo) then (Just x)
 usarItemEquipavel :: Equipavel -> Personagem -> Personagem
 usarItemEquipavel equipavel personagem = equiparItem equipavel (desequiparItem equipavel personagem)
 
-
 desequiparItem :: Equipavel -> Personagem -> Personagem
 desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis personagem) (tipoEquipavel equipavel))) then personagem
                                       else  Personagem{ nome_personagem = nome_personagem personagem
@@ -202,7 +203,10 @@ desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis per
                                                         ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
                                                         ,consumiveis = consumiveis personagem
                                                         ,habilidades = habilidades personagem
-                                                    } 
+                                                    }
+
+removerEquipavel :: [Equipavel] -> Equipavel -> [Equipavel]
+removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipoEquipavel equipavel /= tipoEquipavel x]
 
 equiparItem :: Equipavel -> Personagem -> Personagem
 equiparItem equipavel personagem = 
@@ -228,8 +232,53 @@ equiparItem equipavel personagem =
         ,habilidades = habilidades personagem
     }
 
-removerEquipavel :: [Equipavel] -> Equipavel -> [Equipavel]
-removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipoEquipavel equipavel /= tipoEquipavel x]
+alocaHabilidade :: Habilidade -> Personagem -> Personagem
+alocaHabilidade habilidade personagem = 
+    
+    Personagem{nome_personagem = nome_personagem personagem
+        ,raca = raca personagem
+        ,classe = classe personagem
+        ,vida = vida personagem
+        ,vidaMaxima = vidaMaxima personagem
+        ,forca = forca personagem
+        ,inteligencia = inteligencia personagem
+        ,sabedoria = sabedoria personagem
+        ,destreza = destreza personagem
+        ,constituicao = constituicao personagem
+        ,carisma = carisma personagem
+        ,velocidade = velocidade personagem
+        ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
+        ,equipaveis = equipaveis personagem
+        ,consumiveis = consumiveis personagem
+        ,habilidades = habilidades personagem ++ [habilidade]
+    }
+
+desalocaHabilidade :: Habilidade -> Personagem -> Personagem
+desalocaHabilidade habilidade personagem =
+    
+    Personagem{nome_personagem = nome_personagem personagem
+        ,raca = raca personagem
+        ,classe = classe personagem
+        ,vida = vida personagem
+        ,vidaMaxima = vidaMaxima personagem
+        ,forca = forca personagem
+        ,inteligencia = inteligencia personagem
+        ,sabedoria = sabedoria personagem
+        ,destreza = destreza personagem
+        ,constituicao = constituicao personagem
+        ,carisma = carisma personagem
+        ,velocidade = velocidade personagem
+        ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
+        ,equipaveis = equipaveis personagem
+        ,consumiveis = consumiveis personagem
+        ,habilidades = [hab | hab <- habilidades personagem, hab /= habilidade]
+    }
 
 guardarConsumivel :: Consumivel -> Personagem -> Personagem
 guardarConsumivel item personagem =

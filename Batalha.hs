@@ -1,13 +1,13 @@
 import Personagem
 
-selecionaAtributoRelacionado :: String -> Personagem -> Int
+selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
 selecionaAtributoRelacionado atributo personagem
-    | atributo == "forca" = forca personagem
-    | atributo == "inteligencia" = inteligencia personagem
-    | atributo == "sabedoria" = sabedoria personagem
-    | atributo == "destreza" = destreza personagem
-    | atributo == "constituicao" = constituicao personagem
-    | atributo == "casrisma" = carisma personagem
+    | atributo == Forca = forca personagem
+    | atributo == Inteligencia = inteligencia personagem
+    | atributo == Sabedoria = sabedoria personagem
+    | atributo == Destreza = destreza personagem
+    | atributo == Constituicao = constituicao personagem
+    | atributo == Carisma = carisma personagem
     | otherwise = 0
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
