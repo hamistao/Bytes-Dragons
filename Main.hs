@@ -5,6 +5,7 @@ import System.FilePath.Posix
 import System.Process
 import Item as Item
 import Personagem as Persona
+import Habilidade as Habil
 import Data.List
 import Data.Maybe
 
@@ -416,22 +417,8 @@ criarPersng = do
     putStrLn "Qual a Raça do Personagem?"
     raca <- getLine
     putStrLn "Qual a classe do Personagem?"
-    classe <- getLine
-    putStrLn "Qual a Vida?"
-    vida_maxima <- getLine
-    putStrLn "Qual a Força?"
-    forca <- getLine
-    putStrLn "Qual a Inteligência?"
-    inteligencia <- getLine
-    putStrLn "Qual a Sabedoria?"
-    sabedoria <- getLine
-    putStrLn "Qual a Destreza?"
-    destreza <- getLine
-    putStrLn "Qual a Constituição?"
-    constituicao <- getLine
-    putStrLn "Qual a Carisma?"
-    carisma <- getLine    
-    appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome (read raca :: Persona.Raca) (read classe :: Persona.Classe) (read vida_maxima) (read forca) (read inteligencia) (read sabedoria) (read destreza) (read constituicao) (read carisma)) ++ "\n")
+    classe <- getLine  
+    appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome (read raca :: Persona.Raca) (read classe :: Persona.Classe)) ++ "\n")
     putStrLn "Personagem Criado"
     restart menuPersng
 
@@ -496,13 +483,13 @@ criarHabil = do
     dano <- getLine
     putStrLn "Qual o Buff/Debuff na Velocidade?"
     velocidade <- getLine
-    putStrLn "Qual o Atributo da Habilidade"
+    putStrLn "Qual o Atributo da Habilidade (Forca | Inteligencia | Sabedoria | Destreza | Constituicao | Carisma) ?"
     attr <- getLine
     putStrLn "Quantos Pontos Necessários para Acerto?"
     acerto <- getLine
-    putStrLn "Qual o Tipo do Dano?"
+    putStrLn "Qual o Tipo do Dano (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico) ?"
     tipo <- getLine
-    appendFile "data/habil.info" (show (Persona.cadastraHabilidade nome (read vida) (read dano) (read velocidade) attr (read acerto) tipo) ++ "\n")
+    appendFile "data/habil.info" (show (Persona.cadastraHabilidade nome (read vida) (read dano) (read velocidade) (read attr :: Habil.Atributo) (read acerto) (read tipo :: TipoDano)) ++ "\n")
     putStrLn "Habilidade Criada"
     restart menuHabilis
 
@@ -592,7 +579,6 @@ excluirHabil = do
 transformaListaHabilidades :: [String] -> [Habilidade]
 transformaListaHabilidades [] = []
 transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x):(transformaListaHabilidades xs)
-<<<<<<< HEAD
 
 
 menuPersng :: IO ()
@@ -603,6 +589,3 @@ menuPersng = do
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
 
-
-=======
->>>>>>> bc6678d96a7a006d31130bb7bde8e9ded8de5fa2
