@@ -1,34 +1,30 @@
+module Batalha where
 import Personagem
+import Habilidade
+import Item
+selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
+selecionaAtributoRelacionado Forca personagem = forca personagem
+selecionaAtributoRelacionado Inteligencia personagem = inteligencia personagem
+selecionaAtributoRelacionado Sabedoria personagem = sabedoria personagem
+selecionaAtributoRelacionado Destreza personagem = destreza personagem
+selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
+selecionaAtributoRelacionado Carisma personagem = carisma personagem
 
-selecionaAtributoRelacionado :: String -> Personagem -> Int
-selecionaAtributoRelacionado atributo personagem
-    | atributo == "forca" = forca personagem
-    | atributo == "inteligencia" = inteligencia personagem
-    | atributo == "sabedoria" = sabedoria personagem
-    | atributo == "destreza" = destreza personagem
-    | atributo == "constituicao" = constituicao personagem
-    | atributo == "casrisma" = carisma personagem
-    | otherwise = 0
+    
+turnoConsumivel :: Personagem -> Personagem -> Consumivel -> Personagem 
+turnoConsumivel personagemEmissor personagemReceptor consumivel
+  | temConsumivel personagemEmissor consumivel = usarItemConsumivel consumivel personagemReceptor 
+  | otherwise                                  = personagemReceptor 
 
-usaHabilidade :: Habilidade -> Personagem -> Personagem
-usaHabilidade habilidade personagem =
-    Personagem{nome_personagem = nome_personagem personagem
-        ,raca = raca personagem
-        ,classe = classe personagem
-        ,vida = vida personagem + impacto_vida habilidade
-        ,vidaMaxima = vidaMaxima personagem
-        ,forca = forca personagem
-        ,inteligencia = inteligencia personagem
-        ,sabedoria = sabedoria personagem
-        ,destreza = destreza personagem
-        ,constituicao = constituicao personagem
-        ,carisma = carisma personagem
-        ,velocidade = velocidade personagem + impacto_velocidade habilidade
-        ,ouro = ouro personagem
-        ,xp = xp personagem
-        ,xpUp = xpUp personagem
-        ,nivel = nivel personagem
-        ,equipaveis = equipaveis personagem
-        ,consumiveis = consumiveis personagem
-        ,habilidades = habilidades personagem
-    }
+turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Int-> Personagem
+turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 = if (temImunidade personagemReceptor (tipoDeDano habilidade) && (selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor) + (min numeroDado1 numeroDado2) >= (pontosParaAcerto (habilidade))) then usaHabilidade habilidade personagemReceptor
+                                                                                else if (selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (numeroDado1 + numeroDado2) >= pontosParaAcerto habilidade) then usaHabilidade habilidade personagemReceptor
+                                                                                else personagemReceptor    
+
+                                                                                
+taVivo:: Personagem -> Bool
+taVivo personagem = (vida personagem) > 0
+
+temImunidade :: Personagem -> TipoDano -> Bool
+temImunidade personagem habilidade = habilidade `elem` (imunidades personagem)
+
