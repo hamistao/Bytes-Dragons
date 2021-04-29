@@ -58,9 +58,15 @@ menus "persona" =
         , ("2", criarPersng)
         , ("3", detalhesPersng)
         , ("4", excluirPersng)
-        , ("5", linkarItemPersng)
-        , ("6", linkarHabil)
-        , ("9", main)
+        , ("5", menuItemHabil)
+        , ("0", main)
+        ]
+menus "itemHabilPerson" = 
+        [ ("1", linkarItemPersng)
+        , ("2", linkarHabil)
+        , ("3", desequiparItemPerson)
+        , ("4", desalocarHabil)
+        , ("9", menuPersng)
         ]
 menus "habil" = 
         [ ("1", listarHabil)
@@ -522,10 +528,20 @@ getPersngFromString persng = (read persng :: Personagem)
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Equipar Item a Personagem\n6 - Alocar Habilidade a Personagem\n7 - Desequipar um Item\n8 - Desalocar uma Habilidade\n9 - Inicar Conflito entre Personagens\n0 - Voltar Menu\n"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n9 - Inicar Conflito entre Personagens\n0 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
+
+
+menuItemHabil :: IO ()
+menuItemHabil = do
+    system "clear"
+    putStrLn "1 - Equipar um Item\n2 - Equipar uma Habilidade\n3 - Desequipar um Item\n4 - Desalocar uma Habilidade"
+    tipo <- getLine
+    let action = lookup tipo (menus "menuItemHabil")
+    verificaEntradaMenu action
+
 
 
 
