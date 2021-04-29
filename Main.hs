@@ -11,11 +11,26 @@ import Data.Maybe
 
 main :: IO ()
 main = do
-    system "clear"
-    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n9 - Sair\n"
-    opcao <- getLine
-    let action = lookup opcao (menus "main")
-    verificaEntradaMenu action
+    existsEquipavel <- doesFileExist "data/equip.info"
+    existsConsmvl <- doesFileExist "data/consmvl.info"
+    existsPerson <- doesFileExist "data/persngs.bd"
+    existsHabil <- doesFileExist "data/habil.info"
+    if (not (existsEquipavel && existsHabil && existsConsmvl && existsPerson)) then criarArquivos
+        else do
+            system "clear"
+            putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n9 - Sair\n"
+            opcao <- getLine
+            let action = lookup opcao (menus "main")
+            verificaEntradaMenu action
+
+
+criarArquivos :: IO ()
+criarArquivos = do
+    createDirectoryIfMissing True $ takeDirectory "data/habil.info"
+    writeFile "data/persngs.bd" ""
+    writeFile "data/consmvl.info" ""
+    writeFile "data/equip.info" ""
+    writeFile "data/habil.info" ""
 
 
 verificaEntradaMenu :: Maybe (IO ()) -> IO ()
@@ -161,20 +176,9 @@ menuConsumvl = do
 detalheItem :: String -> IO ()
 detalheItem tipo = do
     system "clear"
-    existsEquip <- doesFileExist "data/equip.info"
-    existsConsmvl <- doesFileExist "data/consmvl.info"
-    if existsEquip && existsConsmvl
-        then do
-            handle <- openFile tipo ReadMode
-            contents <- hGetContents handle
-            getDetalheItem tipo contents
-            hClose handle
-            restart menuItem
-        else do
-            createDirectoryIfMissing True $ takeDirectory tipo
-            writeFile "data/equip.info" ""
-            writeFile "data/consmvl.info" ""
-            detalheItem tipo
+    contents <- readFile tipo
+    getDetalheItem tipo contents
+    restart menuItem
 
 
 getDetalheItem :: String -> String -> IO ()
@@ -205,40 +209,15 @@ checkListaConsmvl itens = do
 listarItensNomes :: String -> IO ()
 listarItensNomes tipo = do
     system "clear"
-    existsEquip <- doesFileExist "data/equip.info"
-    existsConsmvl <- doesFileExist "data/consmvl.info"
-    if existsEquip && existsConsmvl
-        then do
-            handle <- openFile tipo ReadMode
-            contents <- hGetContents handle
-            print "---> "
-            putStrLn $ unlines (zipWith (\num item -> "Item - " ++ show num ++ "  ---------->\n" ++ item) [0..] ((getItens tipo contents)))
-            print " <---"
-            hClose handle
-            restart menuItem
-        else do
-            createDirectoryIfMissing True $ takeDirectory tipo
-            writeFile "data/equip.info" ""
-            writeFile "data/consmvl.info" ""
-            listarItensNomes tipo
+    contents <- readFile tipo
+    print "---> "
+    putStrLn $ unlines (zipWith (\num item -> "Item - " ++ show num ++ "  ---------->\n" ++ item) [0..] ((getItens tipo contents)))
+    print " <---"
+    restart menuItem
 
 
 cadastrarItem :: String -> IO ()
-cadastrarItem tipo = do
-    existsEquip <- doesFileExist "data/equip.info"
-    existsConsmvl <- doesFileExist "data/consmvl.info"
-    if existsEquip && existsConsmvl
-        then do
-            criarItemTipo tipo
-        else do
-            createDirectoryIfMissing True $ takeDirectory tipo
-            writeFile "data/equip.info" ""
-            writeFile "data/consmvl.info" ""
-            cadastrarItem tipo
-
-
-criarItemTipo :: String -> IO ()
-criarItemTipo tipo
+cadastrarItem 
     | tipo == "data/equip.info" = criarItemEquipavel tipo
     | tipo == "data/consmvl.info" = criarItemConsmvl tipo
     | otherwise = putStrLn "Erro na Abertura de arquivo\n"
@@ -308,20 +287,9 @@ transformaListaConsumivel (x:xs) = (read x :: Consumivel) : (transformaListaCons
 excluiItem :: String -> IO ()
 excluiItem tipo = do
     system "clear"
-    existsEquip <- doesFileExist "data/equip.info"
-    existsConsmvl <- doesFileExist "data/consmvl.info"
-    if existsEquip && existsConsmvl
-        then do
-            handle <- openFile tipo ReadMode
-            contents <- hGetContents handle
-            getArquivoExcluir tipo contents
-            hClose handle
-            restart menuItem
-        else do
-            createDirectoryIfMissing True $ takeDirectory tipo
-            writeFile "data/equip.info" ""
-            writeFile "data/consmvl.info" ""
-            detalheItem tipo
+    contents <- readFile tipo
+    getArquivoExcluir tipo contents
+    restart menuItem
 
 
 getArquivoExcluir :: String -> String -> IO ()
@@ -366,39 +334,21 @@ checkExcluirConsmvl itens = do
 listarPersng :: IO ()
 listarPersng = do
     system "clear"
-    exists <- doesFileExist "data/persngs.bd"
-    if exists
-        then do
-            handle <- openFile "data/persngs.bd" ReadMode
-            contents <- hGetContents handle
-            print "---> "
-            putStrLn $ Persona.listarPersonagens (transformaListaPersonagem (lines contents))
-            print " <---"
-            hClose handle
-            restart menuPersng
-        else do
-            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
-            writeFile "data/persngs.bd" ""
-            restart listarPersng
+    contents <- readFile "data/persngs.bd"
+    print "---> "
+    putStrLn $ Persona.listarPersonagens (transformaListaPersonagem (lines contents))
+    print " <---"
+    restart menuPersng
 
 
 detalhesPersng :: IO ()
 detalhesPersng = do
     system "clear"
-    exists <- doesFileExist "data/persngs.bd"
-    if exists
-        then do
-            putStrLn "Qual o Nome do Personagem?"
-            nome <- getLine
-            handle <- openFile "data/persngs.bd" ReadMode
-            contents <- hGetContents handle
-            putStrLn (getDetalhesPersng (lines contents) nome)
-            hClose handle
-            restart menuPersng
-        else do
-            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
-            writeFile "data/persngs.bd" ""
-            detalhesPersng
+        putStrLn "Qual o Nome do Personagem?"
+        nome <- getLine
+        contents <- readFile "data/persngs.bd"
+        putStrLn (getDetalhesPersng (lines contents) nome)
+        restart menuPersng
             
 getDetalhesPersng :: [String] -> String -> String
 getDetalhesPersng personas nome = 
@@ -426,20 +376,12 @@ criarPersng = do
 excluirPersng :: IO ()
 excluirPersng = do
     system "clear"
-    exists <- doesFileExist "data/persngs.bd"
-    if exists
-        then do
-            putStrLn "Qual o Nome do Personagem?"
-            nome <- getLine
-            handle <- openFile "data/persngs.bd" ReadMode
-            contents <- hGetContents handle
-            let persng_possi = getDetalhesPersng (lines contents) nome
-            if (persng_possi == "Personagem inexistente\n") then (putStrLn persng_possi) else (deletePersng (lines contents) (getPersng (transformaListaPersonagem (lines contents)) nome))
-            restart menuPersng
-        else do
-            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
-            writeFile "data/persngs.bd" ""
-            detalhesPersng
+    putStrLn "Qual o Nome do Personagem?"
+    nome <- getLine
+    contents <- readFile "data/persngs.bd"
+    let persng_possi = getDetalhesPersng (lines contents) nome
+    if (persng_possi == "Personagem inexistente\n") then (putStrLn persng_possi) else (deletePersng (lines contents) (getPersng (transformaListaPersonagem (lines contents)) nome))
+    restart menuPersng
 
 
 
@@ -497,20 +439,11 @@ criarHabil = do
 listarHabil :: IO ()
 listarHabil = do
     system "clear"
-    exists <- doesFileExist filePath
-    if exists
-        then do
-            handle <- openFile filePath ReadMode
-            contents <- hGetContents handle
-            print "---> "
-            printHabilidades (Persona.listarHabilidades (transformaListaHabilidades (lines contents)))
-            print " <---"
-            hClose handle
-            restart menuHabilis
-        else do
-            createDirectoryIfMissing True $ takeDirectory filePath
-            writeFile filePath ""
-            restart listarPersng
+    contents <- readFile filePath
+    print "---> "
+    printHabilidades (Persona.listarHabilidades (transformaListaHabilidades (lines contents)))
+    print " <---"
+    restart menuHabilis
 
     where filePath = "data/habil.info"
 
@@ -523,25 +456,16 @@ printHabilidades habilidades = do
 detalhesHabil :: IO ()
 detalhesHabil = do
     system "clear"
-    exists <- doesFileExist filePath
-    if exists
-        then do
-            putStrLn "Qual o ID da Habilidade?"
-            entrada <- getLine
-            handle <- openFile filePath ReadMode
-            contents <- hGetContents handle
-            let habilidades = lines contents
-            let id = read entrada :: Int
-            if id < (length habilidades) then do
-                getDetalhesHabil (habilidades !! id)
-                hClose handle
-                restart menuHabilis
-                else do
-                    putStrLn "Habilidade Inexistente\n"
+    putStrLn "Qual o ID da Habilidade?"
+    entrada <- getLine
+    contents <- readFile filePath
+    let habilidades = lines contents
+    let id = read entrada :: Int
+    if id < (length habilidades) then do
+        getDetalhesHabil (habilidades !! id)
+        restart menuHabilis
         else do
-            createDirectoryIfMissing True $ takeDirectory filePath
-            writeFile filePath ""
-            detalhesHabil
+            putStrLn "Habilidade Inexistente\n"
     where
         filePath = "data/habil.info"
 
@@ -553,27 +477,21 @@ getDetalhesHabil habili = do
 excluirHabil :: IO ()
 excluirHabil = do
     let filePath = "data/habil.info"
-    exists <- doesFileExist filePath
-    if exists then do
-        habilis_io <- readFile filePath
-        let habilidades = lines (habilis_io)
-        putStrLn "Qual o ID da Habilidade?"
-        entrada <- getLine
-        let id = read entrada :: Int
-        if id < (length habilidades) 
-            then do
-                (tempName, tempHandle) <- openTempFile "data/" "temp"
-                let newHabilis = delete (habilidades !! id) habilidades
-                hPutStr tempHandle $ unlines (map show newHabilis)
-                hClose tempHandle
-                removeFile filePath
-                renameFile tempName filePath
-                menuHabilis
-            else putStrLn "Habilidade Inexistente\n"
-        else do
-            createDirectoryIfMissing True $ takeDirectory filePath
-            writeFile filePath ""
-            detalhesHabil
+    habilis_io <- readFile filePath
+    let habilidades = lines (habilis_io)
+    putStrLn "Qual o ID da Habilidade?"
+    entrada <- getLine
+    let id = read entrada :: Int
+    if id < (length habilidades) 
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let newHabilis = delete (habilidades !! id) habilidades
+            hPutStr tempHandle $ unlines (map show newHabilis)
+            hClose tempHandle
+            removeFile filePath
+            renameFile tempName filePath
+            menuHabilis
+        else putStrLn "Habilidade Inexistente\n"
 
 
 transformaListaHabilidades :: [String] -> [Habilidade]
@@ -581,11 +499,47 @@ transformaListaHabilidades [] = []
 transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x):(transformaListaHabilidades xs)
 
 
+getHabilFromString :: String -> Habilidade
+getHabilFromString habilis = (read habilis :: Habilidade)
+
+
+getEquipavelFromString :: String -> Equipavel
+getEquipavelFromString item = (read item :: Equipavel)
+
+
+getConsmvlFromString :: String -> Consumivel
+getConsmvlFromString item = (read item :: Consumivel)
+
+
+getPersngFromString :: String -> Personagem
+getPersngFromString persng = (read persng :: Personagem)
+
+
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n8 - Inicar Conflito entre Personagens\n9 - Voltar Menu\n"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Equipar Item a Personagem\n6 - Alocar Habilidade a Personagem\n8 - Inicar Conflito entre Personagens\n9 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
+
+
+
+linkarItemPersng :: IO ()
+linkarItemPersng = do
+    existsEquipavel <- doesFileExist "data/equip.info"
+    existsConsmvl <- doesFileExist "data/consmvl.info"
+    existsPerson <- doesFileExist "data/persngs.bd"
+    if existsPerson && existsConsmvl && existsEquipavel
+        then do     
+            system "clear"
+            putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
+            tipo <- getLine
+        else do
+            createDirectoryIfMissing True $ takeDirectory "data/persngs.bd"
+            writeFile "data/persngs.bd" ""
+            writeFile "data/consmvl.info" ""
+            writeFile "data/equip.info" ""
+            linkarItemPersng
+
 
