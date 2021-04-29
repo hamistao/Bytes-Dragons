@@ -26,7 +26,7 @@ forca_classe Feiticeiro = 0
 forca_classe Guerreiro = 2
 forca_classe Ladino = 0
 forca_classe Mago = 0
-forca_classe Monge = 
+forca_classe Monge = 1
 forca_classe Paladino = 2
 forca_classe Arqueiro = 0
 
