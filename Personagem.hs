@@ -138,7 +138,7 @@ listarHabilidade habilidade = "---------------------------\n"
                            ++ "Pontos para acerto: " ++ show(pontosParaAcerto habilidade) ++ "%\n"
 
 listarHabilidades :: [Habilidade] -> [String]
-listarHabilidades [] = [""]
+listarHabilidades [] = []
 listarHabilidades (s:xs) = ("Nome: " ++ show(nome_habilidade s) ++ "\n"): listarHabilidades xs
 
 selecionaAtributoRelacionado :: String -> Personagem -> Int
@@ -210,7 +210,6 @@ removerEquipavel equipaveis equipavel = [x | x <- equipaveis, tipoEquipavel equi
 
 equiparItem :: Equipavel -> Personagem -> Personagem
 equiparItem equipavel personagem = 
-    
     Personagem{nome_personagem = nome_personagem personagem
         ,raca = raca personagem
         ,classe = classe personagem
