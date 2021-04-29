@@ -592,6 +592,7 @@ excluirHabil = do
 transformaListaHabilidades :: [String] -> [Habilidade]
 transformaListaHabilidades [] = []
 transformaListaHabilidades (x:xs) = ((read :: String -> Habilidade) x):(transformaListaHabilidades xs)
+<<<<<<< HEAD
 
 
 menuPersng :: IO ()
@@ -603,3 +604,5 @@ menuPersng = do
     verificaEntradaMenu action
 
 
+=======
+>>>>>>> bc6678d96a7a006d31130bb7bde8e9ded8de5fa2

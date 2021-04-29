@@ -1,14 +1,14 @@
 import Personagem
+import Habilidade
 
-selecionaAtributoRelacionado :: String -> Personagem -> Int
-selecionaAtributoRelacionado atributo personagem
-    | atributo == "forca" = forca personagem
-    | atributo == "inteligencia" = inteligencia personagem
-    | atributo == "sabedoria" = sabedoria personagem
-    | atributo == "destreza" = destreza personagem
-    | atributo == "constituicao" = constituicao personagem
-    | atributo == "casrisma" = carisma personagem
-    | otherwise = 0
+selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
+selecionaAtributoRelacionado Forca personagem = forca personagem
+selecionaAtributoRelacionado Inteligencia personagem = inteligencia personagem
+selecionaAtributoRelacionado Sabedoria personagem = sabedoria personagem
+selecionaAtributoRelacionado Destreza personagem = destreza personagem
+selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
+selecionaAtributoRelacionado Carisma personagem = carisma personagem
+
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
 usaHabilidade habilidade personagem =
@@ -32,3 +32,9 @@ usaHabilidade habilidade personagem =
         ,consumiveis = consumiveis personagem
         ,habilidades = habilidades personagem
     }
+    
+turnoConsumivel :: Personagem -> Personagem -> Consumivel -> Personagem 
+turnoConsumivel personagemEmissor personagemReceptor consumivel = usarItemConsumivel consumivel personagemReceptor 
+turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Personagem
+turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDados = if (selecionaAtributoRelacionado ((atributo_relacionado habilidade) personagem) + numeroDados ) >= pontosParaAcerto habilidade then usaHabilidade habilidade personagemReceptor
+                                                                              else personagemReceptor   

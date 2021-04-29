@@ -1,5 +1,7 @@
 module Item where
 
+import Habilidade
+
 data Consumivel = Consumivel {
   nomeConsumivel :: String
   , alteracaoVida :: Int
@@ -19,9 +21,10 @@ data Equipavel = Equipavel {
   , alteracaoCarisma :: Int
   , alteracaoVelocidadeEquipavel :: Int
   , tipoEquipavel :: TipoEquipavel
+  , habilidades :: [Habilidade]
   } deriving (Show, Read, Eq)
 
-data TipoEquipavel = Cabeca | Torso | Pernas | Maos deriving(Show, Read, Eq)
+data TipoEquipavel = Cabeca | Torso | Pernas | Maos | Arma deriving(Show, Read, Eq)
 --'elem'
 
 criaConsumivel :: String -> Int -> Int -> Int -> Int -> Consumivel
@@ -45,7 +48,41 @@ criaEquipavel nomeEquipavel alteracaoVidaMaxima alteracaoForca alteracaoIntelige
                                                                                                , alteracaoCarisma = alteracaoCarisma
                                                                                                , alteracaoVelocidadeEquipavel = alteracaoVelocidadeEquipavel
                                                                                                , tipoEquipavel = tipoEquipavel
+                                                                                               , habilidades = []
                                                                                                })
+
+  
+atribuiHabilidadeEquipavel :: Equipavel -> Habilidade -> Equipavel
+atribuiHabilidadeEquipavel equipavel habilidade = Equipavel {
+  nomeEquipavel = nomeEquipavel equipavel
+  , alteracaoVidaMaxima = alteracaoVidaMaxima equipavel
+  , alteracaoForca = alteracaoForca equipavel
+  , alteracaoInteligencia = alteracaoInteligencia equipavel
+  , alteracaoSabedoria = alteracaoSabedoria equipavel
+  , alteracaoDestreza = alteracaoDestreza equipavel
+  , alteracaoConstituicao = alteracaoConstituicao equipavel
+  , alteracaoCarisma = alteracaoCarisma equipavel
+  , alteracaoVelocidadeEquipavel = alteracaoVelocidadeEquipavel equipavel
+  , tipoEquipavel = tipoEquipavel equipavel
+  , habilidades = habilidade : habilidades equipavel
+  }
+
+
+removeHabilidadeEquipavel :: Equipavel -> Habilidade -> Equipavel
+removeHabilidadeEquipavel equipavel habilidade = Equipavel {
+  nomeEquipavel = nomeEquipavel equipavel
+  , alteracaoVidaMaxima = alteracaoVidaMaxima equipavel
+  , alteracaoForca = alteracaoForca equipavel
+  , alteracaoInteligencia = alteracaoInteligencia equipavel
+  , alteracaoSabedoria = alteracaoSabedoria equipavel
+  , alteracaoDestreza = alteracaoDestreza equipavel
+  , alteracaoConstituicao = alteracaoConstituicao equipavel
+  , alteracaoCarisma = alteracaoCarisma equipavel
+  , alteracaoVelocidadeEquipavel = alteracaoVelocidadeEquipavel equipavel
+  , tipoEquipavel = tipoEquipavel equipavel
+  , habilidades = [ hab | hab <- habilidades equipavel, hab /= habilidade ]
+  }
+
 
 listarConsumiveis :: [Consumivel] -> [String]
 listarConsumiveis [] = []
@@ -72,5 +109,6 @@ exibirEquipavel equipavel = "Nome: " ++ show(nomeEquipavel equipavel) ++ "\n"
                            ++ "Alteração à constituição: " ++ show(alteracaoConstituicao equipavel) ++ "\n"
                            ++ "Alteração ao carisma: " ++ show(alteracaoCarisma equipavel) ++ "\n"
                            ++ "Alteração à velocidade: " ++ show(alteracaoVelocidadeEquipavel equipavel) ++ "\n"
-                           ++ "Equipavel em: " ++ show(tipoEquipavel equipavel)
+                           ++ "Equipavel em: " ++ show(tipoEquipavel equipavel) ++ "\n"
+                           ++ "Habilidades: " ++ unlines (listarHabilidades (habilidades equipavel))
 
