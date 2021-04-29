@@ -1,43 +1,10 @@
 module Personagem where
 -- import System.Random
 import Classe
+import Raca
 import Item
+import Habilidade
 import Data.Maybe
-
-data Atributo = Forca | Inteligencia | Sabedoria | Destreza | Constituicao | Carisma deriving(Show, Read, Eq)
-
-data Raca = Raca {
-    nome_raca :: String
-    ,mod_vidaMaxima :: Int
-    ,mod_forca :: Int
-    ,mod_inteligencia :: Int
-    ,mod_sabedoria :: Int
-    ,mod_destreza :: Int
-    ,mod_constituicao :: Int
-    ,mod_carisma :: Int
-} deriving (Show, Eq, Read)
-
-data Classe = Classe {
-    nome_classe :: String
-    ,vidaMaxima_classe :: Int
-    ,forca_classe :: Int
-    ,inteligencia_classe :: Int
-    ,sabedoria_classe :: Int
-    ,destreza_classe :: Int
-    ,constituicao_classe :: Int
-    ,carisma_classe :: Int
-    ,gold_classe :: Int
-} deriving (Show, Eq, Read)
-
-data Habilidade = Habilidade {
-    nome_habilidade :: String,
-    impacto_vida :: Int,
-    impacto_dano :: Int,
-    impacto_velocidade :: Int,
-    atributo_relacionado :: Atributo,
-    pontosParaAcerto :: Int,
-    tipoDeDano :: TipoDano
-} deriving(Show, Eq, Read)
 
 data Personagem = Personagem {
     nome_personagem :: String
@@ -61,8 +28,6 @@ data Personagem = Personagem {
     ,habilidades :: [Habilidade]
     ,imunidade :: [TipoDano]
 } deriving(Show, Eq, Read)
-
-data TipoDano = Cortante | Magico | Venenoso | Fogo | Gelo | Fisico  deriving (Show, Read, Eq)
 
 cadastraPersonagem :: String -> Classe -> Raca -> Personagem
 cadastraPersonagem nome_personagem classe raca = (Personagem {
@@ -211,7 +176,7 @@ desequiparItem equipavel personagem = if (isNothing (isEquipavel (equipaveis per
                                                         ,nivel = nivel personagem
                                                         ,equipaveis = removerEquipavel (equipaveis personagem) equipavel
                                                         ,consumiveis = consumiveis personagem
-                                                        ,habilidades = habilidades personagem
+                                                        ,habilidades = [ x | x <- habilidades personagem, x `notElem` (habilidades equipavel)]
                                                         ,imunidades = imunidades personagem
                                                     }
 
@@ -237,7 +202,7 @@ equiparItem equipavel personagem =
         ,xpUp = xpUp personagem
         ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem ++ [equipavel]
-        ,consumiveis = consumiveis personagem
+        ,consumiveis = consumiveis personagem ++ habilidades equipavel
         ,habilidades = habilidades personagem
         ,imunidades = imunidades personagem
     }
