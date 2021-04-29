@@ -101,31 +101,28 @@ listarPersonagens (s:xs) = "---------------------------\n"
                            ++ "Classe: " ++ show(classe s) ++ "\n"
                            ++ listarPersonagens xs
 
-exibePersonagem :: [Personagem] -> String -> String
-exibePersonagem [] nome = "Personagem inexistente"
-exibePersonagem (s:xs) nome
-    | nome == (nome_personagem s) = "Nome: " ++ show(nome_personagem s) ++ "\n"
-                        ++ "Raca: " ++ show(raca s) ++ "\n"
-                        ++ "Classe: " ++ show(classe s) ++ "\n"
-                        ++ "Vida: " ++ show(vida s) ++ "/" ++ show(vidaMaxima s) ++ "\n"
-                        ++ "Forca: " ++ show(forca s) ++ "\n"
-                        ++ "Inteligencia: " ++ show(inteligencia s) ++ "\n"
-                        ++ "Sabedoria: " ++ show(sabedoria s) ++ "\n"
-                        ++ "Destreza: " ++ show(destreza s) ++ "\n"
-                        ++ "Constituicao: " ++ show(constituicao s) ++ "\n"
-                        ++ "Carisma: " ++ show(carisma s) ++ "\n"
-                        ++ "Velocidade: " ++ show(velocidade s) ++ "\n"
-                        ++ "Ouro: " ++ show(ouro s) ++ "\n"
-                        ++ "XP: " ++ show(xp s) ++ "/" ++ show(xpUp s) ++ "\n"
-                        ++ "Nível: " ++ show(nivel s) ++ "\n"
+exibePersonagem :: Personagem -> String
+exibePersonagem personagem = "Nome: " ++ show(nome_personagem personagem) ++ "\n"
+                        ++ "Raca: " ++ show(raca personagem) ++ "\n"
+                        ++ "Classe: " ++ show(classe personagem) ++ "\n"
+                        ++ "Vida: " ++ show(vida personagem) ++ "/" ++ show(vidaMaxima personagem) ++ "\n"
+                        ++ "Forca: " ++ show(forca personagem) ++ "\n"
+                        ++ "Inteligencia: " ++ show(inteligencia personagem) ++ "\n"
+                        ++ "Sabedoria: " ++ show(sabedoria personagem) ++ "\n"
+                        ++ "Destreza: " ++ show(destreza personagem) ++ "\n"
+                        ++ "Constituicao: " ++ show(constituicao personagem) ++ "\n"
+                        ++ "Carisma: " ++ show(carisma personagem) ++ "\n"
+                        ++ "Velocidade: " ++ show(velocidade personagem) ++ "\n"
+                        ++ "Ouro: " ++ show(ouro personagem) ++ "\n"
+                        ++ "XP: " ++ show(xp personagem) ++ "/" ++ show(xpUp personagem) ++ "\n"
+                        ++ "Nível: " ++ show(nivel personagem) ++ "\n"
                         ++ "Itens:\n"
                         ++ "Equipaveis:\n"
-                        ++ (unlines (listarEquipaveis (equipaveis s)))
+                        ++ (unlines (listarEquipaveis (equipaveis personagem)))
                         ++ "Consumiveis:\n"
-                        ++ (unlines (listarConsumiveis (consumiveis s)))
+                        ++ (unlines (listarConsumiveis (consumiveis personagem)))
                         ++ "Habilidades:\n"
-                        ++ (unlines (listarHabilidades (habilidades s)))
-    | otherwise = exibePersonagem xs nome
+                        ++ (unlines (listarHabilidades (habilidades personagem)))
 
 listarHabilidade :: Habilidade -> String
 listarHabilidade habilidade = "---------------------------\n"
