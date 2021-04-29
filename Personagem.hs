@@ -4,17 +4,6 @@ import Classe
 import Item
 import Data.Maybe
 
-data Raca = Raca {
-    nome_raca :: String
-    ,mod_vidaMaxima :: Int
-    ,mod_forca :: Int
-    ,mod_inteligencia :: Int
-    ,mod_sabedoria :: Int
-    ,mod_destreza :: Int
-    ,mod_constituicao :: Int
-    ,mod_carisma :: Int
-} deriving (Show, Eq, Read)
-
 data Habilidade = Habilidade {
     nome_habilidade :: String,
     impacto_vida :: Int,
