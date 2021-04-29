@@ -102,16 +102,6 @@ exibePersonagem (s:xs) nome
                         
     | otherwise = exibePersonagem xs nome
 
-
-selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
-selecionaAtributoRelacionado Forca personagem = forca personagem
-selecionaAtributoRelacionado Inteligencia personagem = inteligencia personagem
-selecionaAtributoRelacionado Sabedoria personagem = sabedoria personagem
-selecionaAtributoRelacionado Destreza personagem = destreza personagem
-selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
-selecionaAtributoRelacionado Carisma personagem = carisma personagem
-selecionaAtributoRelacionado _ personagem = 0
-
 usaHabilidade :: Habilidade -> Personagem -> Personagem
 usaHabilidade habilidade personagem =
     Personagem{nome_personagem = nome_personagem personagem
