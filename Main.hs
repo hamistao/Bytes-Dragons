@@ -561,7 +561,9 @@ menuOuro = do
             putStrLn "Personagem Inexistente"
             restart menuPersng
         else do
-            replacePersonOnFile (fromJust person) (Persona.alteraGold (fromJust person) valor)
+            let pessoa = fromJust person
+            let novo = Persona.alteraGold pessoa valor
+            replacePersonOnFile novo pessoa
             restart menuPersng
 
 
@@ -571,7 +573,7 @@ menuItemHabil = do
     system "clear"
     putStrLn "1 - Equipar um Item\n2 - Equipar uma Habilidade\n3 - Desequipar um Item\n4 - Desalocar uma Habilidade"
     tipo <- getLine
-    let action = lookup tipo (menus "menuItemHabil")
+    let action = lookup tipo (menus "itemHabilPerson")
     verificaEntradaMenu action
 
 
