@@ -58,6 +58,8 @@ menus "persona" =
         , ("2", criarPersng)
         , ("3", detalhesPersng)
         , ("4", excluirPersng)
+        , ("5", linkarItemPersng)
+        , ("6", linkarHabil)
         , ("9", main)
         ]
 menus "habil" = 
@@ -580,3 +582,29 @@ replacePersonOnFile new old = do
     contents <- readFile "data/persngs.bd"
     let personagens = transformaListaPersonagem (lines contents)
     writeFile "data/persngs.bd" (unlines (map show (replacePerson new old personagens)))
+
+
+linkarHabil :: IO ()
+linkarHabil = do
+    system "clear"
+    putStrLn "Qual o ID da Habilidade?"
+        entrada <- getLine
+        let id = read entrada :: Int
+        contents <- readFile "data/habil.info"
+        if (id >= (length(lines contents))) then putStrLn "Id Invalida" 
+            else do
+                let habilidade = (lines contents) !! id
+                putStrLn "Qual o nome do Personagem?"
+                nome <- getLine
+                filePerson <- readFile "data/persngs.bd"
+                let persngsString = lines filePerson
+                let person = getPersng (transformaListaPersonagem persngsString) nome
+                if (isNothing person) then putStrLn "Personagem Inexistente"
+                    else do
+                        linkarHabilPerson (fromJust person) (getHabilFromString habilidade)
+
+
+linkarHabilPerson :: Personagem -> Habilidade -> IO ()
+linkarHabilPerson old_person habilis = do
+    let new_person = Persona.alocaHabilidade habilis old_person
+    replacePersonOnFile new_person old_person
