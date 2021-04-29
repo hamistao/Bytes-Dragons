@@ -403,3 +403,7 @@ alteraGold personagem valor = Personagem{nome_personagem = nome_personagem perso
                                         ,habilidades_personagem = habilidades_personagem personagem
                                         ,imunidades = imunidades personagem
                                         }
+
+
+atualizaPersonagem :: [Personagem] -> Personagem -> [Personagem]
+atualizaPersonagem lista personagem = [personagem] ++ [ p | p <- lista, nome_personagem p /= nome_personagem personagem]
