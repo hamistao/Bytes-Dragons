@@ -311,6 +311,7 @@ excluiItem tipo = do
     system "clear"
     contents <- readFile tipo
     getArquivoExcluir tipo contents
+    putStrLn "Item Excluido"
     restart menuItem
 
 
@@ -540,10 +541,29 @@ getPersngFromString persng = (read persng :: Personagem)
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Alterar ouro de Personagem\n9 - Inicar Batalha entre Personagens\n0 - Voltar Menu\n"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Alterar ouro de Personagem\n7 - Especificar Resistencias\n9 - Inicar Batalha entre Personagens\n0 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
+
+
+botaResistencia :: IO ()
+botaResistencia = do
+    putStrLn "Qual A Resistencia? (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico)"
+    entrada <- getLine
+    let resistencia = read entrada :: TipoDano
+    putStrLn "Qual o nome do Personagem?"
+    nome <- getLine
+    filePerson <- readFile "data/persngs.bd"
+    let persngsString = lines filePerson
+    let person = getPersng (transformaListaPersonagem persngsString) nome
+    if (isNothing person)
+        then do
+            putStrLn "Personagem Inexistente"
+            restart menuPersng
+        else do
+            replacePersonOnFile (Persona.adicionarImunidade (fromJust person) resistencia) (fromJust person)
+            restart menuPersng
 
 
 menuOuro :: IO ()
@@ -561,7 +581,7 @@ menuOuro = do
             putStrLn "Personagem Inexistente"
             restart menuPersng
         else do
-            replacePersonOnFile (fromJust person) (Persona.alteraGold (fromJust person) valor)
+            replacePersonOnFile (Persona.alteraGold (fromJust person) valor) (fromJust person)
             restart menuPersng
 
 
@@ -629,12 +649,19 @@ replacePerson new old (x:xs)
 
 replacePersonOnFile :: Personagem -> Personagem -> IO ()
 replacePersonOnFile new old = do
-    contents <- readFile "data/persngs.bd"
+    --contents <- readFile "data/persngs.bd"
+    handle <- openFile "data/persngs.bd" ReadMode
+    contents <- hGetContents handle  
+
     let personagens = transformaListaPersonagem (lines contents)
     let personagens_finais = (unlines (map show (replacePerson new old personagens)))
+
     (tempName, tempHandle) <- openTempFile "data/" "temp"
     hPutStr tempHandle personagens_finais
     hClose tempHandle
+    hClose handle
+
+
     removeFile "data/persngs.bd"
     renameFile tempName "data/persngs.bd"
 
