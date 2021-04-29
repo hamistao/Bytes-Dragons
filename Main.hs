@@ -522,7 +522,7 @@ getPersngFromString persng = (read persng :: Personagem)
 menuPersng :: IO ()
 menuPersng = do
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Equipar Item a Personagem\n6 - Alocar Habilidade a Personagem\n8 - Inicar Conflito entre Personagens\n9 - Voltar Menu\n"
+    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Equipar Item a Personagem\n6 - Alocar Habilidade a Personagem\n7 - Desequipar um Item\n8 - Desalocar uma Habilidade\n9 - Inicar Conflito entre Personagens\n0 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "persona")
     verificaEntradaMenu action
@@ -559,16 +559,17 @@ getFromTipo "1" = readFile "data/equip.info"
 getFromTipo _ = readFile "data/consmvl.info"
 
 
-
 linkarEquipPerson :: Personagem -> Equipavel -> IO ()
 linkarEquipPerson persng item = do
     let new_person = Persona.equiparItem item persng
     replacePersonOnFile new_person persng
 
+
 linkarConsmvlPerson :: Personagem -> Consumivel -> IO ()
 linkarConsmvlPerson persng item = do
     let new_person = Persona.guardarConsumivel item persng
     replacePersonOnFile new_person persng
+
 
 replacePerson :: Personagem -> Personagem -> [Personagem] -> [Personagem]
 replacePerson new old [] =  []
@@ -588,23 +589,86 @@ linkarHabil :: IO ()
 linkarHabil = do
     system "clear"
     putStrLn "Qual o ID da Habilidade?"
-        entrada <- getLine
-        let id = read entrada :: Int
-        contents <- readFile "data/habil.info"
-        if (id >= (length(lines contents))) then putStrLn "Id Invalida" 
-            else do
-                let habilidade = (lines contents) !! id
-                putStrLn "Qual o nome do Personagem?"
-                nome <- getLine
-                filePerson <- readFile "data/persngs.bd"
-                let persngsString = lines filePerson
-                let person = getPersng (transformaListaPersonagem persngsString) nome
-                if (isNothing person) then putStrLn "Personagem Inexistente"
-                    else do
-                        linkarHabilPerson (fromJust person) (getHabilFromString habilidade)
+    entrada <- getLine
+    let id = read entrada :: Int
+    contents <- readFile "data/habil.info"
+    if (id >= (length(lines contents))) then putStrLn "Id Invalida" 
+        else do
+            let habilidade = (lines contents) !! id
+            putStrLn "Qual o nome do Personagem?"
+            nome <- getLine
+            filePerson <- readFile "data/persngs.bd"
+            let persngsString = lines filePerson
+            let person = getPersng (transformaListaPersonagem persngsString) nome
+            if (isNothing person) then putStrLn "Personagem Inexistente"
+                else do
+                    linkarHabilPerson (fromJust person) (getHabilFromString habilidade)
 
 
 linkarHabilPerson :: Personagem -> Habilidade -> IO ()
 linkarHabilPerson old_person habilis = do
     let new_person = Persona.alocaHabilidade habilis old_person
     replacePersonOnFile new_person old_person
+
+
+desalocarHabil :: IO ()
+desalocarHabil = do
+    system "clear"
+    putStrLn "Qual o ID da Habilidade?"
+    entrada <- getLine
+    let id = read entrada :: Int
+    contents <- readFile "data/habil.info"
+    if (id >= (length(lines contents))) then putStrLn "Id Invalida" 
+        else do
+            let habilidade = (lines contents) !! id
+            putStrLn "Qual o nome do Personagem?"
+            nome <- getLine
+            filePerson <- readFile "data/persngs.bd"
+            let persngsString = lines filePerson
+            let person = getPersng (transformaListaPersonagem persngsString) nome
+            if (isNothing person) then putStrLn "Personagem Inexistente"
+                else do
+                    desalocarHabilPerson (fromJust person) (getHabilFromString habilidade)
+
+
+desalocarHabilPerson :: Personagem -> Habilidade -> IO ()
+desalocarHabilPerson old_person habilis = do
+    let new_person = Persona.desalocaHabilidade habilis old_person
+    replacePersonOnFile new_person old_person
+
+
+desequiparItemPerson :: IO ()
+desequiparItemPerson = do
+    system "clear"
+    putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
+    tipo <- getLine
+    if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"
+        else do
+            putStrLn "Qual o ID do Item?"
+            entrada <- getLine
+            let id = read entrada :: Int
+            itemStr <- getFromTipo tipo
+            if (id >= (length(lines itemStr))) then putStrLn "Id Invalida" 
+                else do
+                    let item = (lines itemStr) !! id
+                    putStrLn "Qual o nome do Personagem?"
+                    nome <- getLine
+                    filePerson <- readFile "data/persngs.bd"
+                    let persngsString = lines filePerson
+                    let person = getPersng (transformaListaPersonagem persngsString) nome
+                    if (isNothing person) then putStrLn "Personagem Inexistente"
+                        else do
+                            if (tipo == "1") then (desequiparEquipPerson (fromJust person) (getEquipavelFromString item))
+                                else (desequiparConsmvlPerson (fromJust person) (getConsmvlFromString item))
+
+
+desequiparEquipPerson :: Personagem -> Equipavel -> IO ()
+desequiparEquipPerson persng item = do
+    let new_person = Persona.desequiparItem item persng
+    replacePersonOnFile new_person persng
+
+
+desequiparConsmvlPerson :: Personagem -> Consumivel -> IO ()
+desequiparConsmvlPerson persng item = do
+    let new_person = Persona.desequiparConsumivel item persng
+    replacePersonOnFile new_person persng
