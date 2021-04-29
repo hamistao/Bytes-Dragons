@@ -1,5 +1,6 @@
 module Personagem where
 -- import System.Random
+import Classe
 import Item
 import Data.Maybe
 
@@ -12,18 +13,6 @@ data Raca = Raca {
     ,mod_destreza :: Int
     ,mod_constituicao :: Int
     ,mod_carisma :: Int
-} deriving (Show, Eq, Read)
-
-data Classe = Classe {
-    nome_classe :: String
-    ,vidaMaxima_classe :: Int
-    ,forca_classe :: Int
-    ,inteligencia_classe :: Int
-    ,sabedoria_classe :: Int
-    ,destreza_classe :: Int
-    ,constituicao_classe :: Int
-    ,carisma_classe :: Int
-    ,gold_classe :: Int
 } deriving (Show, Eq, Read)
 
 data Habilidade = Habilidade {
@@ -71,8 +60,8 @@ cadastraPersonagem nome_personagem classe raca = (Personagem {
                                                             ,destreza = destreza_classe classe+ mod_destreza raca
                                                             ,constituicao = constituicao_classe classe + mod_constituicao raca
                                                             ,carisma = carisma_classe classe + mod_carisma raca
-                                                            ,velocidade = destreza_classe classe+ mod_destreza raca - (constituicao_classe classe + mod_constituicao raca)
-                                                            ,ouro = gold_classe classe
+                                                            ,velocidade = destreza_classe classe + mod_destreza raca - (constituicao_classe classe + mod_constituicao raca)
+                                                            ,ouro = 0
                                                             ,xp = 0
                                                             ,xpUp = 1000
                                                             ,nivel = 1
