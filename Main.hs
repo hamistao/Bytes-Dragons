@@ -264,7 +264,7 @@ criarItemEquipavel path = do
     carisma <- getLine
     putStrLn "Qual a Alteração de Velocidade?"
     velocd <- getLine
-    putStrLn "Onde será Equipável (Torso, Cabeca, Pernas, Maos)"
+    putStrLn "Onde será Equipável (Cabeca | Torso | Pernas | Maos | Arma) ?"
     tipo <- getLine
     appendFile path (show (Item.criaEquipavel nome (read vida_maxima) (read forca) (read inteligencia) (read sabedoria) (read destreza) (read constituicao) (read carisma) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
     putStrLn "Item Criado"
@@ -414,9 +414,9 @@ criarPersng :: IO ()
 criarPersng = do
     putStrLn "Qual o nome do Personagem?"
     nome <- getLine
-    putStrLn "Qual a Raça do Personagem?"
+    putStrLn "Qual a Raça do Personagem (Hobbit | Anao | Elfo | Gnomo | Humano | Ogro) ?"
     raca <- getLine
-    putStrLn "Qual a classe do Personagem?"
+    putStrLn "Qual a classe do Personagem (Bruxo | Barbaro | Bardo | Clerigo | Druida | Feiticeiro | Guerreiro | Ladino | Mago | Monge | Paladino | Arqueiro) ?"
     classe <- getLine  
     appendFile "data/persngs.bd" (show (Persona.cadastraPersonagem nome (read raca :: Persona.Raca) (read classe :: Persona.Classe)) ++ "\n")
     putStrLn "Personagem Criado"
