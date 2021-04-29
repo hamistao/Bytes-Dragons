@@ -86,6 +86,7 @@ menus "habil" =
         , ("2", criarHabil)
         , ("3", detalhesHabil)
         , ("4", excluirHabil)
+        , ("5", encantaItem)
         , ("9", menu)
         ]
 menus x = []
@@ -433,10 +434,85 @@ deletePersng listaPersng persngMayb = do
 menuHabilis :: IO ()
 menuHabilis = do
     system "clear"
-    putStrLn "1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n9 - Voltar Menu\n"
+    putStrLn "1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n5 - Encatar um Item\n6 - Desencanta um Item\n9 - Voltar Menu\n"
     opcao <- getLine
     let action = lookup opcao (menus "habil")
     verificaEntradaMenu action
+
+
+
+desencantaItem :: IO ()
+desencantaItem = do
+    system "clear"
+    putStrLn "Qual o ID da Habilidade?"
+    entrada <- getLine
+    contents <- readFile filePath
+    let habilidades = lines contents
+    let id = read entrada :: Int
+    if id < (length habilidades) then do
+        putStrLn "Qual o ID do Equipavel?"
+        entrad <- getLine
+        let id_item = read entrad :: Int
+        desencantaIdComHabilidade id_item (read (habilidades !! id) :: Habilidade)
+        restart menuHabilis
+        else do
+            putStrLn "Habilidade Inexistente\n"
+    where
+        filePath = "data/habil.info"
+
+
+desencantaIdComHabilidade :: Int -> Habilidade -> IO ()
+desencantaIdComHabilidade id habilidade = do
+    file <- readFile "data/equip.info"
+    let itens = transformaListaEquipavel (lines file)
+    if id < (length itens) 
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let old_item = itens !! id
+            let newItens = (delete (old_item) itens)
+            hPutStr tempHandle $ unlines (map show ((Item.removeHabilidadeEquipavel old_item habilidade):newItens))
+            hClose tempHandle
+            removeFile "data/equip.info"
+            renameFile tempName "data/equip.info"
+        else putStrLn "Item Inexistente\n"
+
+
+
+encantaItem :: IO ()
+encantaItem = do
+    system "clear"
+    putStrLn "Qual o ID da Habilidade?"
+    entrada <- getLine
+    contents <- readFile filePath
+    let habilidades = lines contents
+    let id = read entrada :: Int
+    if id < (length habilidades) then do
+        putStrLn "Qual o ID do Equipavel?"
+        entrad <- getLine
+        let id_item = read entrad :: Int
+        encantaIdComHabilidade id_item (read (habilidades !! id) :: Habilidade)
+        restart menuHabilis
+        else do
+            putStrLn "Habilidade Inexistente\n"
+    where
+        filePath = "data/habil.info"
+
+
+encantaIdComHabilidade :: Int -> Habilidade -> IO ()
+encantaIdComHabilidade id habilidade = do
+    file <- readFile "data/equip.info"
+    let itens = transformaListaEquipavel (lines file)
+    if id < (length itens) 
+        then do
+            (tempName, tempHandle) <- openTempFile "data/" "temp"
+            let old_item = itens !! id
+            let newItens = (delete (old_item) itens)
+            hPutStr tempHandle $ unlines (map show ((Item.atribuiHabilidadeEquipavel old_item habilidade):newItens))
+            hClose tempHandle
+            removeFile "data/equip.info"
+            renameFile tempName "data/equip.info"
+        else putStrLn "Item Inexistente\n"
+
 
 
 criarHabil :: IO ()
