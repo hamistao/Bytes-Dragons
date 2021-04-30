@@ -52,6 +52,7 @@ desencantaItem = do
         entrad <- getLine
         let id_item = read entrad :: Int
         desencantaIdComHabilidade id_item (read (habilidades !! id) :: Habilidade)
+        putStr "Item desencantado com sucesso"
         restart menuHabilis
         else do
             putStrLn "Habilidade Inexistente\n"
@@ -89,6 +90,7 @@ encantaItem = do
         entrad <- getLine
         let id_item = read entrad :: Int
         encantaIdComHabilidade id_item (read (habilidades !! id) :: Habilidade)
+        putStr "Item encantado com sucesso"
         restart menuHabilis
         else do
             putStrLn "Habilidade Inexistente\n"
@@ -109,7 +111,6 @@ encantaIdComHabilidade id habilidade = do
             hClose tempHandle
             removeFile "data/equip.info"
             renameFile tempName "data/equip.info"
-            putStr "Item encantado com sucesso"
         else putStrLn "Item Inexistente\n"
 
 
