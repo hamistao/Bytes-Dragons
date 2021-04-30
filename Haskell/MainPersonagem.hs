@@ -390,8 +390,8 @@ batalhaHabilis personagens = do
                         let habilidade = getHabilFromString (habilidades !! id)
                         random_gen <- newStdGen
                         let dados = take 3 (randomRs (1,20) random_gen)
-                        putStrLn "Os Dados tirados Foram:"
-                        putStrLn ((show (head dados)) ++ " - " ++ (show (dados !! 1)))
+                        putStrLn "\nOs Dados tirados Foram:"
+                        putStrLn $ "Para acerto: " ++ (show (head dados)) ++ " e " ++ (show (dados !! 1)) ++ ", Para esquiva: " ++ show(dados !! 2)
                         putStrLn $ "A habilidade usada foi " ++ show(Habil.nome_habilidade habilidade)
                         putStrLn $ "Esta habilidade requer tirar " ++ show(Habil.pontosParaAcerto habilidade) ++ " pontos para acertar."
                         if tipoDeDano habilidade `elem` Persona.imunidades (last envolvidos) then
@@ -399,6 +399,10 @@ batalhaHabilis personagens = do
                         else
                           putStrLn "O receptor nao tem resistencia ao tipo da habilidade. O dado de maior numero sera usado."
                         putStrLn $ "O emissor tem " ++ show(Batalha.selecionaAtributoRelacionado (Habil.atributo_relacionado habilidade) (last envolvidos)) ++ " pontos do atributo relacionado a habilidade. Estes serao somados ao numero do dado para o acerto.\n"
+                        if Batalha.acertou (head envolvidos) (last envolvidos) habilidade (dados !! 0) (dados !! 1) (dados !! 2) then
+                          putStrLn("Acertou!")
+                        else
+                          putStrLn("Errou!")
                         let newPerson = Batalha.turnoHabilidade (head envolvidos) (last envolvidos) habilidade (dados !! 0) (dados !! 1) (dados !! 2)
                         putStrLn "O receptor agora esta assim:"
                         putStrLn $ Persona.exibePersonagemString newPerson
