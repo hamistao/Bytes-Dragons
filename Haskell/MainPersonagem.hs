@@ -2,6 +2,7 @@ module MainPersonagem where
 import Personagem as Persona
 import Classe
 import Raca
+import Level
 import System.IO
 import System.Process
 import System.FilePath.Posix
@@ -450,8 +451,13 @@ encerramento personagens = do
     zumbis <- getMultipleLines
     putStrLn "Quais Personagens voce gostaria de apagar do sistema?"
     apagar <- getMultipleLines
+    putStrLn "\nQuais Personagens voce gostaria que ganhassem XP?"
+    ganhamXP <- getMultipleLines
+    putStrLn "Quanto de XP ganharao?"
+    quantidadeXP <- getLine
     let pos_regeneracao = regenera personagens zumbis
-    let personagens_finais = [ p | p <- pos_regeneracao, p `notElem` (getPersonagens apagar pos_regeneracao) ]
+    let pos_xp = aumentaXPPersonagens pos_regeneracao ganhamXP (read quantidadeXP)
+    let personagens_finais = [ p | p <- pos_xp, p `notElem` (getPersonagens apagar pos_xp) ]
     -- (getPersonagens zumbis personagens)
     -- let personagens_finais = [p | p <- regenerados, p `notElem` (getPersonagens apagar regenerados)]
     writeFile "data/persngs.bd" (unlines(map show personagens_finais))
@@ -462,3 +468,10 @@ regenera [] lista = []
 regenera (p:ps) lista
   | Persona.nome_personagem p `elem` lista          = Persona.regeneraPersonagem p : regenera ps lista
   | otherwise                                       = p : regenera ps lista
+
+
+aumentaXPPersonagens :: [Personagem] -> [String] -> Int -> [Personagem]
+aumentaXPPersonagens [] lista xp = []
+aumentaXPPersonagens (p:ps) lista xp
+  | Persona.nome_personagem p `elem` lista         = Level.aumentaXP p xp : aumentaXPPersonagens ps lista xp
+  | otherwise                                      = p : aumentaXPPersonagens ps lista xp

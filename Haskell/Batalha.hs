@@ -2,6 +2,8 @@ module Batalha where
 import Personagem
 import Habilidade
 import Item
+
+  
 selecionaAtributoRelacionado :: Atributo -> Personagem -> Int
 selecionaAtributoRelacionado Forca personagem = forca personagem
 selecionaAtributoRelacionado Inteligencia personagem = inteligencia personagem
@@ -42,5 +44,5 @@ taVivo :: Personagem -> Bool
 taVivo personagem = (vida personagem) > 0
 
 temImunidade :: Personagem -> TipoDano -> Bool
-temImunidade personagem habilidade = habilidade `elem` (imunidades personagem)
+temImunidade personagem tipoDeDano = tipoDeDano `elem` (imunidades personagem)
 
