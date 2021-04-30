@@ -40,20 +40,20 @@ menu = do
             , ("9", sairBunitinho)
             ]
     putStrLn           "                  ______________"
-            ++ "\n" ++ "            ,===:'.,            `-._"
-            ++ "\n" ++ "                 `:.`---.__         `-._"
-            ++ "\n" ++ "                   `:.     `--.         `."
-            ++ "\n" ++ "                     \.        `.         `."
-            ++ "\n" ++ "             (,,(,    \.         `.   ____,-`.,"
-            ++ "\n" ++ "          (,'     `/   \.   ,--.___`.'"
-            ++ "\n" ++ "       ( ,'   ,--.  `,  \.;'         `"
-            ++ "\n" ++ "      {,O {      \.  :   \;"
-            ++ "\n" ++ "        \. ,,'    /  /    //"
-            ++ "\n" ++ "         |;;    /  ,' ,-//.    ,---.      ,"
-            ++ "\n" ++ "        \;'   /  ,' /  _  \.  /  _  \.   ,'/"
-            ++ "\n" ++ "             \.   `'  / \.  `'  / \.  `.' /"
-            ++ "\n" ++ "                `.___,'   `.__,'   `.__,'  VZ "
-            ++ "\n" ++ "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n6 - Loja,\n9 - Sair\n"
+    putStrLn           "            ,===:'.,            `-._"
+    putStrLn           "                 `:.`---.__         `-._"
+    putStrLn           "                   `:.     `--.         `."
+    putStrLn           "                     \\.        `.         `."
+    putStrLn           "             (,,(,    \\.         `.   ____,-`.,"
+    putStrLn           "          (,'     `/   \\.   ,--.___`.'"
+    putStrLn           "       ( ,'   ,--.  `,  \\.;'         `"
+    putStrLn           "      {,O {      \\.  :   \\;"
+    putStrLn           "        \\. ,,'    /  /    //"
+    putStrLn           "         |;;    /  ,' ,-//.    ,---.      ,"
+    putStrLn           "        \\;'   /  ,' /  _  \\.  /  _  \\.   ,'/"
+    putStrLn           "             \\.   `'  / \\.  `'  / \\.  `.' /"
+    putStrLn           "                `.___,'   `.__,'   `.__,'  VZ "
+    putStrLn           "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n6 - Loja,\n9 - Sair\n"
     opcao <- getLine
     let action = lookup opcao (menu)
     verificaEntradaMenu action
@@ -123,7 +123,7 @@ iniciarcampanha = do
         then do
             content <- getMultipleLines
             writeFile filePath (unlines content)
-            restart menu
+            menu
         else do
             createDirectoryIfMissing True $ takeDirectory filePath
             writeFile filePath ""

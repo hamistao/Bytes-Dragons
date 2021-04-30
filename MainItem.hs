@@ -13,15 +13,15 @@ menuItem = do
             , ("2", menuConsumvl)
             ]
     putStrLn           "                          ( (("
-            ++ "\n" ++ "                           ) ))"
-            ++ "\n" ++ "  .::.                    / /("
-            ++ "\n" ++ " 'M .-;-.-.-.-.-.-.-.-.-/| ((::::::::::::::::::::::::::::::::::::::::::::::.._"
-            ++ "\n" ++ "(J ( ( ( ( ( ( ( ( ( ( ( |  ))   -====================================-      _.>"
-            ++ "\n" ++ " `P `-;-`-`-`-`-`-`-`-`-\| ((::::::::::::::::::::::::::::::::::::::::::::::''"
-            ++ "\n" ++ "  `::'                    \.\("
-            ++ "\n" ++ "                           ) ))"
-            ++ "\n" ++ "                          (_(("
-            ++ "\n" ++ "1 - Item Equipavel\nOu\n2 - Item Consumível\n"
+    putStrLn           "                           ) ))"
+    putStrLn           "  .::.                    / /("
+    putStrLn           " 'M .-;-.-.-.-.-.-.-.-.-/| ((::::::::::::::::::::::::::::::::::::::::::::::.._"
+    putStrLn           "(J ( ( ( ( ( ( ( ( ( ( ( |  ))   -====================================-      _.>"
+    putStrLn           " `P `-;-`-`-`-`-`-`-`-`-\\| ((::::::::::::::::::::::::::::::::::::::::::::::''"
+    putStrLn           "  `::'                    \\.\\("
+    putStrLn           "                           ) ))"
+    putStrLn           "                          (_(("
+    putStrLn           "1 - Item Equipavel\nOu\n2 - Item Consumível\n"
     tipo <- getLine
     let action = lookup tipo (menuI)
     verificaEntradaMenu action
@@ -30,7 +30,16 @@ menuItem = do
 menuEquip :: IO ()
 menuEquip = do
     system "clear"
-    putStrLn "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
+    putStrLn           "                          ( (("
+    putStrLn           "                           ) ))"
+    putStrLn           "  .::.                    / /("
+    putStrLn           " 'M .-;-.-.-.-.-.-.-.-.-/| ((::::::::::::::::::::::::::::::::::::::::::::::.._"
+    putStrLn           "(J ( ( ( ( ( ( ( ( ( ( ( |  ))   -====================================-      _.>"
+    putStrLn           " `P `-;-`-`-`-`-`-`-`-`-\\| ((::::::::::::::::::::::::::::::::::::::::::::::''"
+    putStrLn           "  `::'                    \\.\\("
+    putStrLn           "                           ) ))"
+    putStrLn           "                          (_(("
+    putStrLn           "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
     opcao <- getLine
     let action = lookup opcao (menusItens)
     (verificaEntradaMenuComplex action) ("data/equip.info" )
@@ -39,7 +48,16 @@ menuEquip = do
 menuConsumvl :: IO ()
 menuConsumvl = do
     system "clear"
-    putStrLn "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
+    putStrLn           "                          ( (("
+    putStrLn           "                           ) ))"
+    putStrLn           "  .::.                    / /("
+    putStrLn           " 'M .-;-.-.-.-.-.-.-.-.-/| ((::::::::::::::::::::::::::::::::::::::::::::::.._"
+    putStrLn           "(J ( ( ( ( ( ( ( ( ( ( ( |  ))   -====================================-      _.>"
+    putStrLn           " `P `-;-`-`-`-`-`-`-`-`-\\| ((::::::::::::::::::::::::::::::::::::::::::::::''"
+    putStrLn           "  `::'                    \\.\\("
+    putStrLn           "                           ) ))"
+    putStrLn           "                          (_(("
+    putStrLn           "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
     opcao <- getLine
     let action = lookup opcao (menusItens)
     (verificaEntradaMenuComplex action) "data/consmvl.info" 

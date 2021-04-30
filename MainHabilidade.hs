@@ -22,17 +22,17 @@ menuHabilis = do
             , ("9", print "")
             ]
     putStrLn            "           ("
-             ++ "\n" ++ "            )"
-             ++ "\n" ++ "           (  ("
-             ++ "\n" ++ "               )"
-             ++ "\n" ++ "         (    (  ,,"
-             ++ "\n" ++ "          ) /\.(("
-             ++ "\n" ++ "        (  // | (`'"
-             ++ "\n" ++ "      _ -.;_/\.\--._"
-             ++ "\n" ++ "     (_;-// | \.\-'.\."
-             ++ "\n" ++ "     ( `.__ _  ___,')"
-             ++ "\n" ++ "jrei  `'(_ )_)(_)_)"
-             ++ "\n" ++ "1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n5 - Encatar um Item\n6 - Desencanta um Item\n9 - Voltar Menu\n"
+    putStrLn            "            )"
+    putStrLn            "           (  ("
+    putStrLn            "               )"
+    putStrLn            "         (    (  ,,"
+    putStrLn            "          ) /\\.(("
+    putStrLn            "        (  // | (`'"
+    putStrLn            "      _ -.;_/\\.\\--._"
+    putStrLn            "     (_;-// | \\.\\-'.\\."
+    putStrLn            "     ( `.__ _  ___,')"
+    putStrLn            "jrei  `'(_ )_)(_)_)"
+    putStrLn            "1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n5 - Encatar um Item\n6 - Desencanta um Item\n9 - Voltar Menu\n"
     opcao <- getLine
     let action = lookup opcao (menuH)
     verificaEntradaMenu action
