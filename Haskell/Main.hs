@@ -30,7 +30,7 @@ main = do
 
 menu :: IO ()
 menu = do
-    system "clear"
+    system "cls"
     let menu = [ ("1", lerCampanha)
             , ("2", iniciarcampanha)
             , ("3", selPersg)
@@ -101,7 +101,7 @@ lerCampanha = do
         then do
             handle <- openFile filePath ReadMode
             contents <- hGetContents handle
-            system "clear"
+            system "cls"
             print "---> "
             putStrLn $ contents
             print " <---"
@@ -116,7 +116,7 @@ lerCampanha = do
 
 iniciarcampanha :: IO ()
 iniciarcampanha = do
-    system "clear"
+    system "cls"
 
     exists <- doesFileExist filePath
     if exists
@@ -135,5 +135,5 @@ iniciarcampanha = do
 sairBunitinho :: IO ()
 sairBunitinho = do
     putStrLn "Encerrando o programa..."
-    system "clear"
+    system "cls"
     putStrLn "Programa encerrado"

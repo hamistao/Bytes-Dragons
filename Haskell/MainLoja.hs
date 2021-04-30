@@ -14,7 +14,7 @@ import Util
 
 menuLoja :: IO ()
 menuLoja = do
-    system "clear"
+    system "cls"
     let menuL = [ ("1", listarLojas)
                 , ("2", criarLoja)
                 , ("3", adicionaItemLoja)
@@ -39,7 +39,7 @@ menuLoja = do
 
 listarLojas :: IO ()
 listarLojas = do
-    system "clear"
+    system "cls"
     contents <- readFile "data/loja.bd"
     print "---> "
     putStrLn $ Loja.listaLojas (transformaListaLoja (lines contents))
@@ -60,7 +60,7 @@ criarLoja = do
 
 adicionaItemLoja :: IO ()
 adicionaItemLoja = do   
-    system "clear"
+    system "cls"
     putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
     tipo <- getLine
     if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"
@@ -134,7 +134,7 @@ replaceLoja new old (x:xs)
 
 detalhesLoja :: IO ()
 detalhesLoja = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o Nome da Loja?"
     nome <- getLine
     contents <- readFile "data/loja.bd"
@@ -143,7 +143,7 @@ detalhesLoja = do
 
 excluiLoja :: IO ()
 excluiLoja = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o Nome da Loja?"
     nome <- getLine
     contents <- readFile "data/loja.bd"
@@ -172,7 +172,7 @@ deleteLoja listaLoja lojaMayb = do
 
 menuNegociaLoja :: IO ()
 menuNegociaLoja = do
-    system "clear"
+    system "cls"
     let menuNL = [ 
             ("1", comprarItem),
             ("2", venderItem)
@@ -185,7 +185,7 @@ menuNegociaLoja = do
 
 comprarItem :: IO ()
 comprarItem = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o nome da Loja?"
     nome <- getLine
     fileLoja <- readFile "data/loja.bd"
@@ -241,7 +241,7 @@ comprarConsumivel persng item preco loja
 
 venderItem :: IO ()
 venderItem = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
     tipo <- getLine
     if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"

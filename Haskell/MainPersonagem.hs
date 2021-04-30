@@ -26,7 +26,7 @@ menuPersng = do
             , ("7", menuBatalhaInicial)
             , ("0", print"")
             ]
-    system "clear"
+    system "cls"
     putStrLn           "  ,   A           {}"
     putStrLn           " / \\, | ,        .--."
     putStrLn           "|    =|= >      /.--.\\ "
@@ -54,7 +54,7 @@ menuPersng = do
 
 listarPersng :: IO ()
 listarPersng = do
-    system "clear"
+    system "cls"
     contents <- readFile "data/persngs.bd"
     print "---> "
     putStrLn $ Persona.listarPersonagens (transformaListaPersonagem (lines contents))
@@ -64,7 +64,7 @@ listarPersng = do
 
 detalhesPersng :: IO ()
 detalhesPersng = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o Nome do Personagem?"
     nome <- getLine
     contents <- readFile "data/persngs.bd"
@@ -91,7 +91,7 @@ criarPersng = do
 
 excluirPersng :: IO ()
 excluirPersng = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o Nome do Personagem?"
     nome <- getLine
     contents <- readFile "data/persngs.bd"
@@ -115,7 +115,7 @@ deletePersng listaPersng persngMayb = do
 
 menuItemHabil :: IO ()
 menuItemHabil = do
-    system "clear"
+    system "cls"
     let menuIHP = [ ("1", linkarItemPersng)
             , ("2", linkarHabil)
             , ("3", desequiparItemPerson)
@@ -130,7 +130,7 @@ menuItemHabil = do
     
 linkarItemPersng :: IO ()
 linkarItemPersng = do   
-    system "clear"
+    system "cls"
     putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
     tipo <- getLine
     if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"
@@ -158,7 +158,7 @@ linkarItemPersng = do
 
 linkarHabil :: IO ()
 linkarHabil = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o ID da Habilidade?"
     entrada <- getLine
     let id = read entrada :: Int
@@ -200,7 +200,7 @@ botaResistencia = do
 
 menuBatalhaInicial :: IO ()
 menuBatalhaInicial = do
-    system "clear"
+    system "cls"
     putStrLn "Quais são os Personagem que irão participar da Batalha? (Nomes)"
     nomes <- getMultipleLines
     personagensString <- readFile "data/persngs.bd"
@@ -211,7 +211,7 @@ menuBatalhaInicial = do
     escolha <- getLine
     if escolha == "R" then menuBatalhaInicial
         else do
-            system "clear"
+            system "cls"
             menuBatalha personagens
 
 
@@ -240,7 +240,7 @@ desalocarHabilPerson old_person habilis = do
 
 desalocarHabil :: IO ()
 desalocarHabil = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o ID da Habilidade?"
     entrada <- getLine
     let id = read entrada :: Int
@@ -261,7 +261,7 @@ desalocarHabil = do
 
 desequiparItemPerson :: IO ()
 desequiparItemPerson = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
     tipo <- getLine
     if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"
@@ -364,7 +364,7 @@ batalhaConsmvl personagens = do
 
 limparChat :: [Personagem] -> IO ()
 limparChat personagens = do
-    system "clear"
+    system "cls"
     menuBatalha personagens
 
 

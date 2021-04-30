@@ -8,7 +8,7 @@ import Item
 
 menuItem :: IO ()
 menuItem = do
-    system "clear"
+    system "cls"
     let menuI =[ ("1", menuEquip)
             , ("2", menuConsumvl)
             ]
@@ -29,7 +29,7 @@ menuItem = do
 
 menuEquip :: IO ()
 menuEquip = do
-    system "clear"
+    system "cls"
     putStrLn           "                          ( (("
     putStrLn           "                           ) ))"
     putStrLn           "  .::.                    / /("
@@ -47,7 +47,7 @@ menuEquip = do
 
 menuConsumvl :: IO ()
 menuConsumvl = do
-    system "clear"
+    system "cls"
     putStrLn           "                          ( (("
     putStrLn           "                           ) ))"
     putStrLn           "  .::.                    / /("
@@ -67,7 +67,7 @@ menuConsumvl = do
 
 detalheItem :: String -> IO ()
 detalheItem tipo = do
-    system "clear"
+    system "cls"
     contents <- readFile tipo
     getDetalheItem tipo contents
     restart menuItem
@@ -100,7 +100,7 @@ checkListaConsmvl itens = do
 
 listarItensNomes :: String -> IO ()
 listarItensNomes tipo = do
-    system "clear"
+    system "cls"
     contents <- readFile tipo
     print "---> "
     putStrLn $ unlines (zipWith (\num item -> "Item - " ++ show num ++ "  ---------->\n" ++ item) [0..] ((getItens tipo contents)))
@@ -176,7 +176,7 @@ menusItens =
 
 excluiItem :: String -> IO ()
 excluiItem tipo = do
-    system "clear"
+    system "cls"
     contents <- readFile tipo
     getArquivoExcluir tipo contents
     putStrLn "Item Excluido"

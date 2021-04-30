@@ -13,7 +13,7 @@ import Util
 
 menuHabilis :: IO ()
 menuHabilis = do
-    system "clear"
+    system "cls"
     let menuH = [ ("1", listarHabil)
             , ("2", criarHabil)
             , ("3", detalhesHabil)
@@ -41,7 +41,7 @@ menuHabilis = do
 
 desencantaItem :: IO ()
 desencantaItem = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o ID da Habilidade?"
     entrada <- getLine
     contents <- readFile filePath
@@ -78,7 +78,7 @@ desencantaIdComHabilidade id habilidade = do
 
 encantaItem :: IO ()
 encantaItem = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o ID da Habilidade?"
     entrada <- getLine
     contents <- readFile filePath
@@ -135,7 +135,7 @@ criarHabil = do
 
 listarHabil :: IO ()
 listarHabil = do
-    system "clear"
+    system "cls"
     contents <- readFile filePath
     print "---> "
     printHabilidades (listarHabilidades (transformaListaHabilidades (lines contents)))
@@ -152,7 +152,7 @@ printHabilidades habilidades = do
 
 detalhesHabil :: IO ()
 detalhesHabil = do
-    system "clear"
+    system "cls"
     putStrLn "Qual o ID da Habilidade?"
     entrada <- getLine
     contents <- readFile filePath
