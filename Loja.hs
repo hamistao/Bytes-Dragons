@@ -9,10 +9,10 @@ data Loja = Loja {
     lojaConsumiveis :: [(Consumivel, Int)]
 }
 
-cadastraLoja :: String -> [(Equipavel, Int)] -> [(Consumivel, Int)] -> Loja
+cadastraLoja :: String -> Loja
 cadastraLoja nome equipaveis consumiveis = Loja{nomeLoja = nome
-                                                ,lojaEquipaveis = equipaveis
-                                                ,lojaConsumiveis = consumiveis
+                                                ,lojaEquipaveis = []
+                                                ,lojaConsumiveis = []
                                             }
 
 listaLojas :: [Loja] -> String
@@ -59,6 +59,18 @@ exibeConsumivelLoja (s:xs) nome
     |nome == nomeConsumivel (fst(s)) = (exibirConsumivel s) ++ "\n"
                                     ++ "Preço: " ++ (show(snd(s)))
     |otherwise = exibeConsumivelLoja xs nome
+
+adicionaEquipavel :: Equipavel -> Loja -> Int -> Loja
+adicionaEquipavel equipavel loja preco = Loja{nomeLoja = nomeLoja loja
+                                            ,lojaEquipaveis = lojaEquipaveis loja ++ (equipavel, preco)
+                                            ,lojaConsumiveis = lojaConsumiveis loja
+                                        }
+
+adicionaEquipavel :: Consumimvel -> Loja -> Int -> Loja
+adicionaEquipavel consumivel loja preco = Loja{nomeLoja = nomeLoja loja
+                                            ,lojaEquipaveis = lojaEquipaveis loja
+                                            ,lojaConsumiveis = lojaConsumiveis loja ++ (consumivel, preco)
+                                        }
 
 compraEquipavel :: Personagem -> Equipavel -> Int -> Loja -> (Personagem, Loja)
 compraEquipavel personagem equipavel preco loja = (Personagem{nome_personagem = nome_personagem personagemEquipado
