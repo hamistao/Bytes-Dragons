@@ -53,7 +53,7 @@ menu = do
     putStrLn           "        \\;'   /  ,' /  _  \\   /  _  \\    ,'/"
     putStrLn           "             \\    `'  / \\   `'  / \\   `.' /"
     putStrLn           "                `.___,'   `.__,'   `.__,'  VZ "
-    putStrLn           "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n6 - Loja,\n9 - Sair\n"
+    putStrLn           "1 - Ler Campanha\n2 - Definir Lore da campanha\n3 - Menu de Personagem\n4 - Menu de Item\n5 - Menu de Habilidades\n6 - Loja\n9 - Sair\n"
     opcao <- getLine
     let action = lookup opcao (menu)
     verificaEntradaMenu action
