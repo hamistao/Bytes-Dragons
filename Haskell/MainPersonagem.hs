@@ -201,7 +201,7 @@ botaResistencia = do
 menuBatalhaInicial :: IO ()
 menuBatalhaInicial = do
     system "cls"
-    putStrLn "Quais são os Personagem que irão participar da Batalha? (Nomes)"
+    putStrLn "Quais sao os Personagem que irao participar da Batalha? (Nomes)"
     nomes <- getMultipleLines
     personagensString <- readFile "data/persngs.bd"
     let personagens = getPersonagens nomes (transformaListaPersonagem (lines personagensString))
