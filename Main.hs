@@ -13,6 +13,7 @@ import Raca
 import Classe
 import Data.List
 import Data.Maybe
+import Data.Tuple
 
 main :: IO ()
 main = do
@@ -102,8 +103,8 @@ menus "loja" =
         , ("9", menu)
         ]
 menus "negociaLoja" =
-        [ --("1", comprarItem),
-          ("2", venderItem)
+        [ ("1", comprarItem)
+        , ("2", venderItem)
         , ("9", menuLoja)
         ]
 menus x = []
@@ -1153,11 +1154,62 @@ menuNegociaLoja = do
     let action = lookup tipo (menus "negociaLoja")
     verificaEntradaMenu action
 
---comprarItem :: IO ()
+comprarItem :: IO ()
+comprarItem = do
+    sytem "clear"
+    putStrLn "Qual o Nome da Loja?"
+    nome <- getLine
+    contents <- readFile "data/loja.bd"
+    let loja = getDetalhesLoja (lines contents) nome
+    if (loja == "Loja inexistente\n") then (putStrLn loja)
+        else do
+            putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
+            tipo <- getLine
+            if (tipo /= "1" && tipo /= "2") then putStrLn "Entrada Invalida"
+                else do
+                    putStrLn "Qual o ID do Item?"
+                    entrada <- getLine
+                    let id = read entrada :: Int
+                    itemStr <- getFromTipo tipo
+                    if (id >= (length(lines itemStr))) then putStrLn "Id Invalida"
+                        else do
+                            let item = (lines itemStr) !! id
+                            if(tipo == 1) then
+                                let preco = Loja.getPrecoEquipavel (lojaEquipaveis loja) item
+                                if(isNothing(Loja.getPrecoEquipavel (lojaEquipaveis loja) item)) then putStrLn "Esse Item não existe nessa loja"
+                            else
+                                let preco = Loja.getPrecoConsumivel (lojaEquipaveis loja) item
+                                if(isNothing(Loja.getPrecoConsumivel (lojaConsumiveis loja) item)) then putStrLn "Esse Item não existe nessa loja"
+                            putStrLn "Qual o nome do Personagem?"
+                            nome <- getLine
+                            filePerson <- readFile "data/persngs.bd"
+                            let persngsString = lines filePerson
+                            let person = getPersng (transformaListaPersonagem persngsString) nome
+                            if (isNothing person) then putStrLn "Personagem Inexistente"
+                                else do
+                                    if(tipo == 1) then 
+                                        if(ouro person < preco then putStrLn "Dinheiro insuficiente"
+                                    else
+                                        if(ouro person < preco then putStrLn "Dinheiro insuficiente"
+                                    putStrLn "Item comprado com sucesso"
+                                    if (tipo == "1") then (venderEquip (fromJust person) (getEquipavelFromString item) preco)
+                                        else (venderConsmvl (fromJust person) (getConsmvlFromString item) preco)
+    restart menuNegociaLoja
 
---comprarEquipavel :: Int
 
---comprarConsumivel :: Int
+
+comprarEquipavel :: Personagem -> Equipavel -> Int -> Loja -> IO ()
+venderEquip persng item preco loja = do
+    let new_data = Loja.compraEquipavel persng item preco loja
+    replacePersonOnFile fst(new_data) persng
+    replaceLojaOnFile snd(new_data) loja
+
+comprarConsumivel :: Personagem -> Consumivel -> Int -> Loja -> IO ()
+venderConsmvl persng item preco loja = do
+    let new_data = Loja.compraConsumivel persng item preco loja
+    replacePersonOnFile fst(new_data) persng
+    replaceLojaOnFile snd(new_data) loja
+
 
 venderItem :: IO ()
 venderItem = do
