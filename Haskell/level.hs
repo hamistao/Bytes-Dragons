@@ -45,7 +45,7 @@ upa personagem = Personagem {
   , velocidade = velocidade personagem
   , ouro = ouro personagem
   , xp = 0
-  , xpUp = xpUp personagem
+  , xpUp = xpUp personagem + 500
   , nivel = nivel personagem + 1
   , equipaveis = equipaveis personagem
   , consumiveis = consumiveis personagem
@@ -54,45 +54,20 @@ upa personagem = Personagem {
   }
 
 
-mudaXPUp :: Personagem -> Int -> Personagem
-mudaXPUp personagem novoXPUp = Personagem {
+melhoraAtributosUpar :: Personagem -> Personagem
+melhoraAtributosUpar personagem = Personagem {
   nome_personagem = nome_personagem personagem
   , raca = raca personagem
   , classe = classe personagem
   , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = novoXPUp
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaVidaMaxima :: Personagem -> Int -> Personagem
-aumentaVidaMaxima personagem aumento = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem + aumento
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
+  , vidaMaxima = vidaMaxima personagem + 20
+  , forca = forca personagem + 1
+  , inteligencia = inteligencia personagem + 1
+  , sabedoria = sabedoria personagem + 1
+  , destreza = destreza personagem + 1
+  , constituicao = constituicao personagem + 1
+  , carisma = carisma personagem + 1
+  , velocidade = velocidade personagem + 1
   , ouro = ouro personagem
   , xp = xp personagem
   , xpUp = xpUp personagem
@@ -101,212 +76,4 @@ aumentaVidaMaxima personagem aumento = Personagem {
   , consumiveis = consumiveis personagem
   , habilidades_personagem = habilidades_personagem personagem
   , imunidades = imunidades personagem
-  }
-
-
-aumentaVelocidade :: Personagem -> Int -> Personagem
-aumentaVelocidade personagem aumento = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem + aumento
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaDano :: Personagem -> Int -> Personagem
-aumentaDano personagem aumento = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaPontosAtributo :: Atributo -> Int -> Personagem -> Personagem
-aumentaPontosAtributo Forca pontos personagem = aumentaForca personagem pontos
-aumentaPontosAtributo Inteligencia pontos personagem = aumentaInteligencia personagem pontos
-aumentaPontosAtributo Sabedoria pontos personagem = aumentaSabedoria personagem pontos
-aumentaPontosAtributo Destreza pontos personagem = aumentaDestreza personagem pontos
-aumentaPontosAtributo Constituicao pontos personagem = aumentaConstituicao personagem pontos
-aumentaPontosAtributo Carisma pontos personagem = aumentaCarisma personagem pontos
-
-aumentaForca :: Personagem -> Int -> Personagem
-aumentaForca personagem pontos = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem + pontos
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaInteligencia :: Personagem -> Int -> Personagem
-aumentaInteligencia personagem pontos = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem + pontos
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaSabedoria :: Personagem -> Int -> Personagem
-aumentaSabedoria personagem pontos = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem + pontos
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaDestreza :: Personagem -> Int -> Personagem
-aumentaDestreza personagem pontos = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem + pontos
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaConstituicao :: Personagem -> Int -> Personagem
-aumentaConstituicao personagem pontos = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem + pontos
-  , carisma = carisma personagem
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
-
-
-aumentaCarisma :: Personagem -> Int -> Personagem
-aumentaCarisma personagem pontos = Personagem {
-  nome_personagem = nome_personagem personagem
-  , raca = raca personagem
-  , classe = classe personagem
-  , vida = vida personagem
-  , vidaMaxima = vidaMaxima personagem
-  , forca = forca personagem
-  , inteligencia = inteligencia personagem
-  , sabedoria = sabedoria personagem
-  , destreza = destreza personagem
-  , constituicao = constituicao personagem
-  , carisma = carisma personagem + pontos
-  , velocidade = velocidade personagem
-  , ouro = ouro personagem
-  , xp = xp personagem
-  , xpUp = xpUp personagem
-  , nivel = nivel personagem
-  , equipaveis = equipaveis personagem
-  , consumiveis = consumiveis personagem
-  , habilidades_personagem = habilidades_personagem personagem
-  , imunidades = imunidades personagem
-  }
+}
