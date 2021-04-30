@@ -28,7 +28,7 @@ menuLoja = do
     putStrLn           "/______________/"
     putStrLn           "| |  _[___]_   |"
     putStrLn           "| |__(ㆆ_ㆆ)___|"
-    putStrLn           "| /    /|\\.    |"
+    putStrLn           "| /    /|\\     |"
     putStrLn           "|/_____________|"
     putStrLn           "| |            |"
     putStrLn           "|              |"
