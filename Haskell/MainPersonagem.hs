@@ -25,7 +25,7 @@ menuPersng = do
             , ("5", menuItemHabil)
             , ("6", botaResistencia)
             , ("7", menuBatalhaInicial)
-            , ("0", print"")
+            , ("9", print"")
             ]
     system "cls"
     putStrLn           "  ,   A           {}"
@@ -34,8 +34,8 @@ menuPersng = do
     putStrLn           " \\ /` | `       |====|"
     putStrLn           "  `   |         |`::`| " 
     putStrLn           "      |     .-;`\\..../`;_.-^-._"
-    putStrLn           "     /\\.\\/ /  |...::..|`   :   `|"
-    putStrLn           "     |:'\\.|   /'''::''|   .:.   |"
+    putStrLn           "     /\\ \\/ /  |...::..|`   :   `|"
+    putStrLn           "     |:'\\ |   /'''::''|   .:.   |"
     putStrLn           "      \\ /\\;-,/\\.  ::  |..:::::..|"
     putStrLn           "      |\\ <` >  >._::_.| ':::::' |"
     putStrLn           "      | `\"\"`  /   ^^  |   ':'   |"
@@ -48,7 +48,7 @@ menuPersng = do
     putStrLn           "      |        |  ||  |"
     putStrLn           "      |       _\\.:||:./_"
     putStrLn           "      | jgs  /____/\\____\\"
-    putStrLn           "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Especificar Resistencias\n7 - Inicar Batalha entre Personagens\n0 - Voltar Menu\n"
+    putStrLn           "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Especificar Resistencias\n7 - Inicar Batalha entre Personagens\n9 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menuP)
     verificaEntradaMenu action
