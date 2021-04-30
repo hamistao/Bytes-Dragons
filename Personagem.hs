@@ -54,11 +54,10 @@ cadastraPersonagem nome_personagem classe raca = (Personagem {
                                                 })
 
 
-cadastraHabilidade :: String -> Int -> Int -> Int -> Atributo -> Int -> TipoDano -> Habilidade
-cadastraHabilidade nome impacto_vida impacto_dano impacto_velocidade atributo_relacionado pontosParaAcerto tipoDeDano = (Habilidade {
+cadastraHabilidade :: String -> Int -> Int -> Atributo -> Int -> TipoDano -> Habilidade
+cadastraHabilidade nome impacto_vida impacto_velocidade atributo_relacionado pontosParaAcerto tipoDeDano = (Habilidade {
                                                                                                                             nome_habilidade = nome
                                                                                                                             ,impacto_vida = impacto_vida
-                                                                                                                            ,impacto_dano = impacto_dano
                                                                                                                             ,impacto_velocidade = impacto_velocidade
                                                                                                                             ,atributo_relacionado = atributo_relacionado
                                                                                                                             ,pontosParaAcerto = pontosParaAcerto
@@ -302,7 +301,6 @@ reduzDuracao :: Consumivel -> Consumivel
 reduzDuracao consumivel =
     Consumivel {nomeConsumivel = nomeConsumivel consumivel
         , alteracaoVida = alteracaoVida consumivel
-        , alteracaoDano = alteracaoDano consumivel
         , alteracaoVelocidadeConsumivel = alteracaoVelocidadeConsumivel consumivel
         , duracao = duracao consumivel - 1
     }
@@ -332,8 +330,8 @@ desequiparConsumivel consumivel personagem =
         ,imunidades = imunidades personagem
     }
 
-usarItemConsumivel :: Consumivel -> Personagem -> Personagem
-usarItemConsumivel consumivel personagem =
+aplicarItemConsumivel ::Consumivel -> Personagem -> Personagem
+aplicarItemConsumivel consumivel personagem =  
     Personagem{nome_personagem = nome_personagem personagem
         ,raca = raca personagem
         ,classe = classe personagem
@@ -346,6 +344,31 @@ usarItemConsumivel consumivel personagem =
         ,constituicao = constituicao personagem
         ,carisma = carisma personagem
         ,velocidade = velocidade personagem + alteracaoVelocidadeConsumivel consumivel
+        ,ouro = ouro personagem
+        ,xp = xp personagem
+        ,xpUp = xpUp personagem
+        ,nivel = nivel personagem
+        ,equipaveis = equipaveis personagem
+        ,consumiveis = consumivel personagem
+        ,habilidades_personagem = habilidades_personagem personagem
+        ,imunidades = imunidades personagem
+    }
+
+
+usarItemConsumivel :: Consumivel -> Personagem -> Personagem
+usarItemConsumivel consumivel personagem =
+    Personagem{nome_personagem = nome_personagem personagem
+        ,raca = raca personagem
+        ,classe = classe personagem
+        ,vida = vida personagem
+        ,vidaMaxima = vidaMaxima personagem
+        ,forca = forca personagem
+        ,inteligencia = inteligencia personagem
+        ,sabedoria = sabedoria personagem
+        ,destreza = destreza personagem
+        ,constituicao = constituicao personagem
+        ,carisma = carisma personagem
+        ,velocidade = velocidade personagem
         ,ouro = ouro personagem
         ,xp = xp personagem
         ,xpUp = xpUp personagem
@@ -435,9 +458,10 @@ alteraGold personagem valor = Personagem{nome_personagem = nome_personagem perso
                                         }
 
 
-atualizaPersonagem :: [Personagem] -> Personagem -> [Personagem]
-atualizaPersonagem lista personagem = [personagem] ++ [ p | p <- lista, nome_personagem p /= nome_personagem personagem]
-
+atualizaPersonagem :: [Personagem] -> [Personagem] -> [Personagem]
+atualizaPersonagem lista novaLista = if(nome_personagem head(novaLista) == nome_personagem last (novaLista)) then [novaLista] ++ [ p | p <- lista, nome_personagem p /= nome_personagem (head (novaLista)) && nome_personagem p /= nome_personagem (last (novaLista))] 
+                                     else [head(novaLista)] ++[ p | p <- lista, nome_personagem p /= nome_personagem (head (novaLista))] 
+       
 
 temConsumivel :: Personagem -> Consumivel -> Bool
 temConsumivel personagem consumivel
