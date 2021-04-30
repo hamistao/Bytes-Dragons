@@ -39,7 +39,7 @@ menuEquip = do
     putStrLn           "  `::'                    \\ \\("
     putStrLn           "                           ) ))"
     putStrLn           "                          (_(("
-    putStrLn           "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
+    putStrLn           "1 - Listar Itens\n2 - Cadastrar Item\n3 - Excluir Item\n4 - Detalhes de Item\n9 - Retorna Menu\n"
     opcao <- getLine
     let action = lookup opcao (menusItens)
     (verificaEntradaMenuComplex action) ("data/equip.info" )
@@ -57,7 +57,7 @@ menuConsumvl = do
     putStrLn           "  `::'                    \\ \\("
     putStrLn           "                           ) ))"
     putStrLn           "                          (_(("
-    putStrLn           "1 - Listar Itens,\n2 - Cadastrar Item,\n3 - Excluir Item\n4 - Detalhes de Item,\n9 - Retorna Menu\n"
+    putStrLn           "1 - Listar Itens\n2 - Cadastrar Item\n3 - Excluir Item\n4 - Detalhes de Item\n9 - Retorna Menu\n"
     opcao <- getLine
     let action = lookup opcao (menusItens)
     (verificaEntradaMenuComplex action) "data/consmvl.info" 
