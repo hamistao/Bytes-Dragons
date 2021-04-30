@@ -12,13 +12,15 @@ import Data.List
 import Data.Maybe
 import Util
 
+
 main :: IO ()
 main = do
     existsEquipavel <- doesFileExist "data/equip.info"
     existsConsmvl <- doesFileExist "data/consmvl.info"
     existsPerson <- doesFileExist "data/persngs.bd"
     existsHabil <- doesFileExist "data/habil.info"
-    if (existsEquipavel && existsHabil && existsConsmvl && existsPerson)
+    existsLoja <- doesFileExist "data/loja.bd"
+    if (existsEquipavel && existsHabil && existsConsmvl && existsPerson && existsLoja)
         then do
             menu
         else do
@@ -73,7 +75,6 @@ criarArquivos = do
     writeFile "data/equip.info" ""
     writeFile "data/habil.info" ""
     writeFile "data/loja.bd" ""
-
 
 voltaMain :: String -> IO ()
 voltaMain _ = menu
