@@ -22,14 +22,17 @@ turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 nume
   else personagemReceptor
 
 
-acertou :: Personagem -> Personagem -> Habilidade -> Int -> Int -> Bool
-acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 =
+acertou :: Personagem -> Personagem -> Habilidade -> Int -> Int -> Int -> Bool
+acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 numeroDado3 =
   if temImunidade personagemReceptor (tipoDeDano habilidade) &&
      selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (min numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
   then True
 
   else if not (temImunidade personagemReceptor (tipoDeDano habilidade)) &&
           selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (max numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
+  then True
+
+  else if(((velocidade personagem) - numeroDado1 > 0) && (velocidade personagem) - numeroDado1 > numeroDado3) 
   then True
 
   else False
