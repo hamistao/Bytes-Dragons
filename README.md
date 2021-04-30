@@ -9,8 +9,8 @@ Projeto em Haskell pra a disciplina de Paradigmas de linguagem de programação 
 # Objetivos primários:
 Na plataforma o usuário poderá:
 Cadastrar fichas de personagem que contém pontos, itens e status do personagem. 
-Cadastrar informações sobre a campanha, tais como inimigos, localizações, e a própria história.
-Cadastrar no sistema os inimigos (nome, vida, dano, experiência dada quando derrotado) e os tesouros que poderão ser encontrados na dungeon
+Cadastrar informações sobre a campanha, tais como inimigos e a própria história.
+Cadastrar no sistema os personagens (nome, vida, atributos) e os itens que poderão ser encontrados na dungeon
 Usar  o sistema para gerar números aleatórios para simular a rolagem de dados
 Usar o sistema para calcular automaticamente o dano causado pelos ataques, levando em conta os tipos de dano e as resistências deles, assim como o avanço dos personagens.
 Atualizar e checar os dados de acordo com o progresso das sessões.
