@@ -8,18 +8,19 @@ Projeto em Haskell pra a disciplina de Paradigmas de linguagem de programação 
 
 # Objetivos primários:
 Na plataforma o usuário poderá:
-Cadastrar fichas de personagem que contém pontos, itens e status do personagem. 
-Cadastrar informações sobre a campanha, tais como inimigos e a própria história.
-Cadastrar no sistema os personagens (nome, vida, atributos) e os itens que poderão ser encontrados na dungeon
-Usar  o sistema para gerar números aleatórios para simular a rolagem de dados
-Usar o sistema para calcular automaticamente o dano causado pelos ataques, levando em conta os tipos de dano e as resistências deles, assim como o avanço dos personagens.
-Atualizar e checar os dados de acordo com o progresso das sessões.
+Cadastrar fichas de personagem que contém pontos, itens e status do personagem; 
+Cadastrar informações sobre a campanha, tais como inimigos e a própria história;
+Cadastrar no sistema os personagens (nome, vida, atributos) e os itens que poderão usados por ele;
+Usar  o sistema para gerar números aleatórios para simular a rolagem de dados;
+Usar o sistema para calcular automaticamente o dano causado pelos ataques, levando em conta os tipos de dano e as resistências deles, assim como o avanço dos personagens;
+Atualizar e checar os dados de acordo com o progresso das sessões;
 Salvar todo o progresso entre as sessões.
 
 # Objetivo secundários:
 Se possível, e o decorrer do projeto ocorrer sem problemas, poderá ser adicionado ao projeto mais funcionalidades como:
 Criação de salas.
 Criação de um bot que auxiliará no uso da ferramenta.
+Acesso ao Bytes-Dragons via arquivo executável.
 
 
 # Exemplos de uso:
