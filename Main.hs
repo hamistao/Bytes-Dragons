@@ -299,13 +299,11 @@ criarItemConsmvl path = do
     nome <- getLine
     putStrLn "Qual a Alteração de Vida?"
     vida <- getLine
-    putStrLn "Qual a Alteração de Dano?"
-    dano <- getLine
     putStrLn "Qual a Alteração de Velocidade?"
     velocidade <- getLine
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
-    appendFile path (show (Item.criaConsumivel nome (read vida) (read dano) (read velocidade) (read durac)) ++ "\n")
+    appendFile path (show (Item.criaConsumivel nome (read vida) (read velocidade) (read durac)) ++ "\n")
     putStrLn "Item Criado"
     restart menuConsumvl
 
@@ -540,8 +538,6 @@ criarHabil = do
     nome <- getLine
     putStrLn "Qual o Buff/Debuff na Vida?"
     vida <- getLine
-    putStrLn "Qual o Buff/Debuff no Dano?"
-    dano <- getLine
     putStrLn "Qual o Buff/Debuff na Velocidade?"
     velocidade <- getLine
     putStrLn "Qual o Atributo da Habilidade (Forca | Inteligencia | Sabedoria | Destreza | Constituicao | Carisma) ?"
@@ -550,7 +546,7 @@ criarHabil = do
     acerto <- getLine
     putStrLn "Qual o Tipo do Dano (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico) ?"
     tipo <- getLine
-    appendFile "data/habil.info" (show (Persona.cadastraHabilidade nome (read vida) (read dano) (read velocidade) (read attr :: Habil.Atributo) (read acerto) (read tipo :: TipoDano)) ++ "\n")
+    appendFile "data/habil.info" (show (Persona.cadastraHabilidade nome (read vida) (read velocidade) (read attr :: Habil.Atributo) (read acerto) (read tipo :: TipoDano)) ++ "\n")
     putStrLn "Habilidade Criada"
     restart menuHabilis
 
@@ -924,12 +920,14 @@ batalhaConsmvl personagens = do
                 if id < length itens
                     then do
                         let envolvidos = getPersonagens [nome, nome2] personagens 
-                        let newPerson = Batalha.turnoConsumivel (head envolvidos) (last envolvidos) (getConsmvlFromString (itens !! id))
-                        putStrLn "O Personagem agora esta assim:"
-                        putStrLn $ Persona.exibePersonagemString newPerson
+                        let newPersons = Batalha.turnoConsumivel (head envolvidos) (last envolvidos) (getConsmvlFromString (itens !! id))
+                         
+                        putStrLn "Os Personagens agora estao assim:"
+                        putStrLn $ Persona.exibePersonagemString head(newPersons)
+                        putStrLn $ Persona.exibePersonagemString last(newPersons)
                         putStrLn "\nEnter para voltar a batalha"
 
-                        restartBatalha menuBatalha (Persona.atualizaPersonagem personagens newPerson)
+                        restartBatalha menuBatalha (Persona.atualizaPersonagem personagens newPersons)
                     else do
                         putStrLn "ID Invalido"
                         restartBatalha menuBatalha personagens
