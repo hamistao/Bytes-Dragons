@@ -101,6 +101,11 @@ compraEquipavel personagem equipavel preco loja =
         })
     where personagemEquipado = equiparItem equipavel personagem
 
+getPrecoEquipavel :: [(Equipavel, Int)] -> Equipavel -> Maybe(Int)
+temEquipavel [] equipavel = Nothing
+temEquipavel (s:xs) equipavel = if(nomeEquipavel equipavel == nomeEquipavel fst(s)) then snd(s)
+                                    else temEquipavel xs equipavel
+
 compraConsumivel :: Personagem -> Consumivel -> Int -> Loja -> (Personagem, Loja)
 compraConsumivel personagem consumivel preco loja = (Personagem{nome_personagem = nome_personagem personagem
                                                             ,raca = raca personagem
@@ -127,6 +132,12 @@ compraConsumivel personagem consumivel preco loja = (Personagem{nome_personagem 
                                                         ,lojaEquipaveis = lojaEquipaveis loja
                                                         ,lojaConsumiveis = [x | x <- lojaConsumiveis loja, consumivel /= fst(x)]
                                                     })
+
+getPrecoConsumivel :: [Consumivel, Int] -> Consumivel -> Maybe(Consumivel)
+getPrecoConsumivel [] consumivel = Nothing
+getPrecoConsumivel (s:xs) consumivel = if(nomeConsumivel consumivel == nomeConsumivel fst(s)) then snd(s)
+                                    else temConsumivel xs consumivel
+
 
 vendeEquipavel :: Personagem -> Equipavel -> Int -> Personagem
 vendeEquipavel personagem equipavel preco = 
