@@ -23,7 +23,16 @@ menuLoja = do
                 , ("6", menuNegociaLoja)
                 , ("9", print "")
                 ]
-    putStrLn "1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um item na Loja\n4 - Detalhes de Loja\n5 - Excluir Loja\n6 - Negociar com a Loja\n9 - Voltar Menu\n"
+    putStrLn           "  _______________"
+            ++ "\n" ++ " /     Loja     /"
+            ++ "\n" ++ "/______________/"
+            ++ "\n" ++ "| |  _[___]_   |"
+            ++ "\n" ++ "| |__(ㆆ_ㆆ)___|"
+            ++ "\n" ++ "| /    /|\.    |"
+            ++ "\n" ++ "|/_____________|"
+            ++ "\n" ++ "| |            |"
+            ++ "\n" ++ "|              |"
+            ++ "\n" ++ "1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um item na Loja\n4 - Detalhes de Loja\n5 - Excluir Loja\n6 - Negociar com a Loja\n9 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menuL)
     verificaEntradaMenu action

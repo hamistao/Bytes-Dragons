@@ -12,7 +12,16 @@ menuItem = do
     let menuI =[ ("1", menuEquip)
             , ("2", menuConsumvl)
             ]
-    putStrLn "1 - Item Equipavel\nOu\n2 - Item Consumível\n"
+    putStrLn           "                          ( (("
+            ++ "\n" ++ "                           ) ))"
+            ++ "\n" ++ "  .::.                    / /("
+            ++ "\n" ++ " 'M .-;-.-.-.-.-.-.-.-.-/| ((::::::::::::::::::::::::::::::::::::::::::::::.._"
+            ++ "\n" ++ "(J ( ( ( ( ( ( ( ( ( ( ( |  ))   -====================================-      _.>"
+            ++ "\n" ++ " `P `-;-`-`-`-`-`-`-`-`-\| ((::::::::::::::::::::::::::::::::::::::::::::::''"
+            ++ "\n" ++ "  `::'                    \.\("
+            ++ "\n" ++ "                           ) ))"
+            ++ "\n" ++ "                          (_(("
+            ++ "\n" ++ "1 - Item Equipavel\nOu\n2 - Item Consumível\n"
     tipo <- getLine
     let action = lookup tipo (menuI)
     verificaEntradaMenu action

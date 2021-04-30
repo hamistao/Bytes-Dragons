@@ -37,7 +37,21 @@ menu = do
             , ("6", selLoja)
             , ("9", sairBunitinho)
             ]
-    putStrLn "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n6 - Loja,\n9 - Sair\n"
+    putStrLn           "                  ______________"
+            ++ "\n" ++ "            ,===:'.,            `-._"
+            ++ "\n" ++ "                 `:.`---.__         `-._"
+            ++ "\n" ++ "                   `:.     `--.         `."
+            ++ "\n" ++ "                     \.        `.         `."
+            ++ "\n" ++ "             (,,(,    \.         `.   ____,-`.,"
+            ++ "\n" ++ "          (,'     `/   \.   ,--.___`.'"
+            ++ "\n" ++ "       ( ,'   ,--.  `,  \.;'         `"
+            ++ "\n" ++ "      {,O {      \.  :   \;"
+            ++ "\n" ++ "        \. ,,'    /  /    //"
+            ++ "\n" ++ "         |;;    /  ,' ,-//.    ,---.      ,"
+            ++ "\n" ++ "        \;'   /  ,' /  _  \.  /  _  \.   ,'/"
+            ++ "\n" ++ "             \.   `'  / \.  `'  / \.  `.' /"
+            ++ "\n" ++ "                `.___,'   `.__,'   `.__,'  VZ "
+            ++ "\n" ++ "1 - Ler Campanha,\n2 - Definir Lore da campanha,\n3 - Menu de Personagem\n4 - Menu de Item,\n5 - Menu de Habilidades\n6 - Loja,\n9 - Sair\n"
     opcao <- getLine
     let action = lookup opcao (menu)
     verificaEntradaMenu action

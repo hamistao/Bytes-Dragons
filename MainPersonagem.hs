@@ -27,7 +27,27 @@ menuPersng = do
             , ("0", print"")
             ]
     system "clear"
-    putStrLn "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Alterar ouro de Personagem\n7 - Especificar Resistencias\n9 - Inicar Batalha entre Personagens\n0 - Voltar Menu\n"
+    putStrLn           "  ,   A           {}"
+            ++ "\n" ++ " / \, | ,        .--."
+            ++ "\n" ++ "|    =|= >      /.--.\."
+            ++ "\n" ++ " \./` | `       |====|"
+            ++ "\n" ++ "  `   |         |`::`| " 
+            ++ "\n" ++ "      |     .-;`\..../`;_.-^-._"
+            ++ "\n" ++ "     /\.\/ /  |...::..|`   :   `|"
+            ++ "\n" ++ "     |:'\.|   /'''::''|   .:.   |"
+            ++ "\n" ++ "      \./\;-,/\.  ::  |..:::::..|"
+            ++ "\n" ++ "      |\.<` >  >._::_.| ':::::' |"
+            ++ "\n" ++ "      | `""`  /   ^^  |   ':'   |"
+            ++ "\n" ++ "      |       |       \.   :    /"
+            ++ "\n" ++ "      |       |        \.  :   /" 
+            ++ "\n" ++ "      |       |___/\___|`-.:.-`"
+            ++ "\n" ++ "      |        \_ || _/    `"
+            ++ "\n" ++ "      |        <_ >< _>"
+            ++ "\n" ++ "      |        |  ||  |"
+            ++ "\n" ++ "      |        |  ||  |"
+            ++ "\n" ++ "      |       _\.:||:./_"
+            ++ "\n" ++ "      | jgs  /____/\____\."
+            ++ "\n" ++ "1 - Listar Personagens\n2 - Criar Personagem\n3 - Detalhes de Personagem\n4 - Excluir Personagem\n5 - Menu de Relacao Item/Habilidade com Personagem\n6 - Alterar ouro de Personagem\n7 - Especificar Resistencias\n9 - Inicar Batalha entre Personagens\n0 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menuP)
     verificaEntradaMenu action
