@@ -16,9 +16,9 @@ turnoConsumivel personagemEmissor personagemReceptor consumivel
   | temConsumivel personagemEmissor consumivel = [usarItemConsumivel consumivel personagemEmissor, aplicarItemConsumivel consumivel personagemReceptor] 
   | otherwise                                  = [personagemEmissor, personagemReceptor]
 
-turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Int-> Personagem
-turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 =
-  if acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 then usaHabilidade habilidade personagemReceptor
+turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Int -> Int -> Personagem
+turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 num3 =
+  if acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 num3 then usaHabilidade habilidade personagemReceptor
   else personagemReceptor
 
 
@@ -32,7 +32,7 @@ acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 
           selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (max numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
   then True
 
-  else if(((velocidade personagem) - numeroDado1 > 0) && (velocidade personagem) - numeroDado1 > numeroDado3) 
+  else if(((velocidade personagemReceptor) - numeroDado1 > 0) && (velocidade personagemReceptor) - numeroDado1 > numeroDado3) 
   then True
 
   else False
