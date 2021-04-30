@@ -110,7 +110,7 @@ exibePersonagem (s:xs) nome
                         ++ (unlines (listarConsumiveis (consumiveis s)))
                         ++ "Habilidades:\n"
                         ++ (unlines (listarHabilidades (habilidades_personagem s)))
-                        ++ "Imunidade:\n"
+                        ++ "Resistências:\n"
                         ++ (unlines (listarImunidades (imunidades s)))
     | otherwise = exibePersonagem xs nome
 
@@ -137,7 +137,7 @@ exibePersonagemString personagem = "Nome: " ++ show(nome_personagem personagem) 
                         ++ (unlines (listarConsumiveis (consumiveis personagem)))
                         ++ "Habilidades:\n"
                         ++ (unlines (listarHabilidades (habilidades_personagem personagem)))
-                        ++ "Imunidade:\n"
+                        ++ "Resistências:\n"
                         ++ (unlines (listarImunidades (imunidades personagem)))
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
@@ -291,10 +291,12 @@ guardarConsumivel item personagem =
         ,imunidades = imunidades personagem
     }
 
+
 removeConsumivel :: Consumivel -> Personagem -> [Consumivel]
 removeConsumivel consumivel personagem
     | (duracao consumivel) - 1 /= 0 = [item | item <- consumiveis personagem, item /= consumivel] ++ [reduzDuracao consumivel]
     | otherwise = [item | item <- consumiveis personagem, item /= consumivel]
+
 
 reduzDuracao :: Consumivel -> Consumivel
 reduzDuracao consumivel =
@@ -448,6 +450,29 @@ alteraVida personagem valor = Personagem{nome_personagem = nome_personagem perso
                                         ,raca = raca personagem
                                         ,classe = classe personagem
                                         ,vida = vida personagem + valor
+                                        ,vidaMaxima = vidaMaxima personagem
+                                        ,forca = forca personagem
+                                        ,inteligencia = inteligencia personagem
+                                        ,sabedoria = sabedoria personagem
+                                        ,destreza = destreza personagem
+                                        ,constituicao = constituicao personagem
+                                        ,carisma = carisma personagem
+                                        ,velocidade = velocidade personagem
+                                        ,ouro = ouro personagem
+                                        ,xp = xp personagem
+                                        ,xpUp = xpUp personagem
+                                        ,nivel = nivel personagem
+                                        ,equipaveis = equipaveis personagem
+                                        ,consumiveis = consumiveis personagem
+                                        ,habilidades_personagem = habilidades_personagem personagem
+                                        ,imunidades = imunidades personagem
+                                        }
+
+regeneraPersonagem :: Personagem -> Personagem
+regeneraPersonagem personagem = Personagem{nome_personagem = nome_personagem personagem
+                                        ,raca = raca personagem
+                                        ,classe = classe personagem
+                                        ,vida = vidaMaxima personagem
                                         ,vidaMaxima = vidaMaxima personagem
                                         ,forca = forca personagem
                                         ,inteligencia = inteligencia personagem

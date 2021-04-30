@@ -17,12 +17,25 @@ turnoConsumivel personagemEmissor personagemReceptor consumivel
   | otherwise                                  = personagemReceptor 
 
 turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Int-> Personagem
-turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 = if (temImunidade personagemReceptor (tipoDeDano habilidade) && (selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor) + (min numeroDado1 numeroDado2) >= (pontosParaAcerto (habilidade))) then usaHabilidade habilidade personagemReceptor
-                                                                                else if (selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (numeroDado1 + numeroDado2) >= pontosParaAcerto habilidade) then usaHabilidade habilidade personagemReceptor
-                                                                                else personagemReceptor    
+turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 =
+  if acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 then usaHabilidade habilidade personagemReceptor
+  else personagemReceptor
+
+
+acertou :: Personagem -> Personagem -> Habilidade -> Int -> Int -> Bool
+acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 =
+  if temImunidade personagemReceptor (tipoDeDano habilidade) &&
+     selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (min numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
+  then True
+
+  else if not (temImunidade personagemReceptor (tipoDeDano habilidade)) &&
+          selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (max numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
+  then True
+
+  else False
 
                                                                                 
-taVivo:: Personagem -> Bool
+taVivo :: Personagem -> Bool
 taVivo personagem = (vida personagem) > 0
 
 temImunidade :: Personagem -> TipoDano -> Bool

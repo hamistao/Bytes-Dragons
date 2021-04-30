@@ -864,7 +864,7 @@ getPersonagens (x:xs) personagens
 
 menuBatalha :: [Personagem] -> IO ()
 menuBatalha personagens = do
-    putStrLn "Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Comsumivel\n3 - Checar Personagens\n9 - Limpar as mensagens anteriores\n0 -Encerrar a Batalha\n"
+    putStrLn "Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Comsumivel\n3 - Checar Personagens\n9 - Limpar as mensagens anteriores\n0 - Encerrar a Batalha\n"
     opcao <- getLine
     let action = lookup opcao [("1", batalhaHabilis), ("2", batalhaConsmvl), ("3", checarPersons),("9", limparChat), ("0", encerramento)]
     verificaEntradaBatalha action personagens
@@ -954,12 +954,20 @@ batalhaHabilis personagens = do
                 if id < length habilidades
                     then do
                         let envolvidos = getPersonagens [nome, nome2] personagens
+                        let habilidade = getHabilFromString (habilidades !! id)
                         random_gen <- newStdGen
                         let dados = take 2 (randomRs (1,20) random_gen)
-                        putStrLn "Os Dados tirados Foram:\n"
+                        putStrLn "Os Dados tirados Foram:"
                         putStrLn ((show (head dados)) ++ " - " ++ (show (last dados)))
-                        let newPerson = Batalha.turnoHabilidade (head envolvidos) (last envolvidos) (getHabilFromString (habilidades !! id)) (head dados) (last dados)
-                        putStrLn "O Personagem agora esta assim:"
+                        putStrLn $ "A habilidade usada foi " ++ show(Habil.nome_habilidade habilidade)
+                        putStrLn $ "Esta habilidade requer tirar " ++ show(Habil.pontosParaAcerto habilidade) ++ " pontos para acertar."
+                        if tipoDeDano habilidade `elem` Persona.imunidades (last envolvidos) then
+                          putStrLn "O receptor tem resistência ao tipo da habilidade. O dado de menor número será usado."
+                        else
+                          putStrLn "O receptor não tem resistência ao tipo da habilidade. O dado de maior número será usado."
+                        putStrLn $ "O emissor tem " ++ show(Batalha.selecionaAtributoRelacionado (Habil.atributo_relacionado habilidade) (last envolvidos)) ++ " pontos do atributo relacionado à habilidade. Estes serão somados ao número do dado para o acerto.\n"
+                        let newPerson = Batalha.turnoHabilidade (head envolvidos) (last envolvidos) habilidade (head dados) (last dados)
+                        putStrLn "O receptor agora esta assim:"
                         putStrLn $ Persona.exibePersonagemString newPerson
                         putStrLn "\nEnter para voltar a batalha"
 
@@ -979,23 +987,27 @@ batalhaHabilis personagens = do
 encerramento :: [Personagem] -> IO ()
 encerramento personagens = do
     putStrLn "Batalha Encerrada"
-    let mortos = [p | p <- personagens, Batalha.taVivo p]
+    let mortos = [p | p <- personagens, not (Batalha.taVivo p)]
     putStrLn "Os Personagens que morreram foram:\n"
     putStrLn $ Persona.listarPersonagens mortos
-    let vivos = [p | p <- personagens, not (Batalha.taVivo p)]
+    let vivos = [p | p <- personagens, Batalha.taVivo p]
     putStrLn "\nOs Personagens que sobreviveram foram:\n"
     putStrLn $ Persona.listarPersonagens vivos
     putStrLn "\n\nQuais Personagens voce gostaria de resetar a vida para o maximo?"
     zumbis <- getMultipleLines
-    putStrLn "Quais Personagens voce gostaria de resetar completamente?"
+    putStrLn "Quais Personagens voce gostaria de apagar do sistema?"
     apagar <- getMultipleLines
-    let regenerados = regenera personagens (getPersonagens zumbis personagens)
-    let personagens_finais = [p | p <- regenerados, (p `notElem` (getPersonagens apagar regenerados))]
+    let pos_regeneracao = regenera personagens zumbis
+    let personagens_finais = [ p | p <- pos_regeneracao, p `notElem` (getPersonagens apagar pos_regeneracao) ]
+    -- (getPersonagens zumbis personagens)
+    -- let personagens_finais = [p | p <- regenerados, p `notElem` (getPersonagens apagar regenerados)]
     writeFile "data/persngs.bd" (unlines(map show personagens_finais))
     putStrLn "\n\nAlteracoes Salvas\nRetornando ao Menu\n"
     menu
 
-regenera :: [Personagem] -> [Personagem] -> [Personagem]
-regenera personagens []  = personagens
-regenera personagens (p:ps) = regenera (Persona.atualizaPersonagem personagens p) ps
+regenera :: [Personagem] -> [String] -> [Personagem]
+regenera [] lista = []
+regenera (p:ps) lista
+  | Persona.nome_personagem p `elem` lista          = Persona.regeneraPersonagem p : regenera ps lista
+  | otherwise                                       = p : regenera ps lista
 
