@@ -3,7 +3,6 @@ module Habilidade where
 data Habilidade = Habilidade {
     nome_habilidade :: String,
     impacto_vida :: Int,
-    impacto_dano :: Int,
     impacto_velocidade :: Int,
     atributo_relacionado :: Atributo,
     pontosParaAcerto :: Int,
@@ -20,7 +19,6 @@ listarHabilidade habilidade = "---------------------------\n"
                            ++ "Tipo da habilidade: " ++ show(tipoDeDano habilidade) ++ "\n"
                            ++ "Atributo relacionado: " ++ show(atributo_relacionado habilidade) ++ "\n"
                            ++ "Modifica a vida do alvo em " ++ show(impacto_vida habilidade) ++ "\n"
-                           ++ "Modifica o dano do alvo em " ++ show(impacto_dano habilidade) ++ "\n"
                            ++ "Modifica a velocidade do alvo em " ++ show(impacto_velocidade habilidade) ++ "\n"
                            ++ "Pontos para acerto: " ++ show(pontosParaAcerto habilidade) ++ "\n"
 
