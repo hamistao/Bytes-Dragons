@@ -125,7 +125,7 @@ criarHabil = do
     velocidade <- getLine
     putStrLn "Qual o Atributo da Habilidade (Forca | Inteligencia | Sabedoria | Destreza | Constituicao | Carisma) ?"
     attr <- getLine
-    putStrLn "Quantos Pontos Necessários para Acerto?"
+    putStrLn "Quantos Pontos Necessarios para Acerto?"
     acerto <- getLine
     putStrLn "Qual o Tipo do Dano (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico) ?"
     tipo <- getLine

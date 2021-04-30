@@ -206,8 +206,8 @@ comprarItem = do
                     if (id >= (length(lines itemStr))) then putStrLn "Id Invalida"
                         else do
                             let item = (lines itemStr) !! id
-                            if (tipo == "1" && isNothing(Loja.getPrecoEquipavel (lojaEquipaveis (fromJust loja)) (getEquipavelFromString item))) then putStrLn "Esse Item não existe nessa loja"
-                            else if(tipo == "2" && isNothing(Loja.getPrecoConsumivel (lojaConsumiveis (fromJust loja)) (getConsmvlFromString item))) then putStrLn "Esse Item não existe nessa loja"
+                            if (tipo == "1" && isNothing(Loja.getPrecoEquipavel (lojaEquipaveis (fromJust loja)) (getEquipavelFromString item))) then putStrLn "Esse Item nao existe nessa loja"
+                            else if(tipo == "2" && isNothing(Loja.getPrecoConsumivel (lojaConsumiveis (fromJust loja)) (getConsmvlFromString item))) then putStrLn "Esse Item nao existe nessa loja"
                             else do
                                 putStrLn "Qual o nome do Personagem?"
                                 nome <- getLine
@@ -223,7 +223,7 @@ comprarItem = do
 
 comprarEquipavel :: Personagem -> Equipavel -> Int -> Loja -> IO ()
 comprarEquipavel persng item preco loja
-    | (ouro persng < (fromJust (Loja.getPrecoEquipavel (lojaEquipaveis loja) item))) = putStrLn "Dinheiro insuficiente" 
+    | (ouro persng < (fromJust (Loja.getPrecoEquipavel (lojaEquipaveis loja) item))) = putStrLn "Ouro insuficiente" 
     | otherwise = do
         let new_data = Loja.compraEquipavel persng item preco loja
         replacePersonOnFile (fst(new_data)) persng
@@ -232,7 +232,7 @@ comprarEquipavel persng item preco loja
 
 comprarConsumivel :: Personagem -> Consumivel -> Int -> Loja -> IO ()
 comprarConsumivel persng item preco loja
-    | (ouro persng < (fromJust (Loja.getPrecoConsumivel (lojaConsumiveis loja) item))) = putStrLn "Dinheiro insuficiente"
+    | (ouro persng < (fromJust (Loja.getPrecoConsumivel (lojaConsumiveis loja) item))) = putStrLn "Ouro insuficiente"
     | otherwise = do
         let new_data = Loja.compraConsumivel persng item preco loja
         replacePersonOnFile (fst(new_data)) persng

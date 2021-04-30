@@ -101,7 +101,7 @@ exibePersonagem (s:xs) nome
                         ++ "Velocidade: " ++ show(velocidade s) ++ "\n"
                         ++ "Ouro: " ++ show(ouro s) ++ "\n"
                         ++ "XP: " ++ show(xp s) ++ "/" ++ show(xpUp s) ++ "\n"
-                        ++ "Nível: " ++ show(nivel s) ++ "\n"
+                        ++ "Nivel: " ++ show(nivel s) ++ "\n"
                         ++ "Itens:\n"
                         ++ "Equipaveis:\n"
                         ++ (unlines (listarEquipaveis (equipaveis s)))
@@ -109,7 +109,7 @@ exibePersonagem (s:xs) nome
                         ++ (unlines (listarConsumiveis (consumiveis s)))
                         ++ "Habilidades:\n"
                         ++ (unlines (listarHabilidades (habilidades_personagem s)))
-                        ++ "Resistências:\n"
+                        ++ "Resistencias:\n"
                         ++ (unlines (listarImunidades (imunidades s)))
     | otherwise = exibePersonagem xs nome
 
@@ -136,7 +136,7 @@ exibePersonagemString personagem = "Nome: " ++ show(nome_personagem personagem) 
                         ++ (unlines (listarConsumiveis (consumiveis personagem)))
                         ++ "Habilidades:\n"
                         ++ (unlines (listarHabilidades (habilidades_personagem personagem)))
-                        ++ "Resistências:\n"
+                        ++ "Resistencias:\n"
                         ++ (unlines (listarImunidades (imunidades personagem)))
 
 usaHabilidade :: Habilidade -> Personagem -> Personagem
@@ -490,6 +490,7 @@ alteraVida personagem valor = Personagem{nome_personagem = nome_personagem perso
                                         ,habilidades_personagem = habilidades_personagem personagem
                                         ,imunidades = imunidades personagem
                                         }
+
 
 regeneraPersonagem :: Personagem -> Personagem
 regeneraPersonagem personagem = Personagem{nome_personagem = nome_personagem personagem

@@ -80,7 +80,7 @@ criarPersng :: IO ()
 criarPersng = do
     putStrLn "Qual o nome do Personagem?"
     nome <- getLine
-    putStrLn "Qual a Raça do Personagem (Hobbit | Anao | Elfo | Gnomo | Humano | Ogro) ?"
+    putStrLn "Qual a Raca do Personagem (Hobbit | Anao | Elfo | Gnomo | Humano | Ogro) ?"
     raca <- getLine
     putStrLn "Qual a classe do Personagem (Bruxo | Barbaro | Bardo | Clerigo | Druida | Feiticeiro | Guerreiro | Ladino | Mago | Monge | Paladino | Arqueiro) ?"
     classe <- getLine  
@@ -395,10 +395,10 @@ batalhaHabilis personagens = do
                         putStrLn $ "A habilidade usada foi " ++ show(Habil.nome_habilidade habilidade)
                         putStrLn $ "Esta habilidade requer tirar " ++ show(Habil.pontosParaAcerto habilidade) ++ " pontos para acertar."
                         if tipoDeDano habilidade `elem` Persona.imunidades (last envolvidos) then
-                          putStrLn "O receptor tem resistência ao tipo da habilidade. O dado de menor número será usado."
+                          putStrLn "O receptor tem resistencia ao tipo da habilidade. O dado de menor numero sera usado."
                         else
-                          putStrLn "O receptor não tem resistência ao tipo da habilidade. O dado de maior número será usado."
-                        putStrLn $ "O emissor tem " ++ show(Batalha.selecionaAtributoRelacionado (Habil.atributo_relacionado habilidade) (last envolvidos)) ++ " pontos do atributo relacionado à habilidade. Estes serão somados ao número do dado para o acerto.\n"
+                          putStrLn "O receptor nao tem resistencia ao tipo da habilidade. O dado de maior numero sera usado."
+                        putStrLn $ "O emissor tem " ++ show(Batalha.selecionaAtributoRelacionado (Habil.atributo_relacionado habilidade) (last envolvidos)) ++ " pontos do atributo relacionado a habilidade. Estes serao somados ao numero do dado para o acerto.\n"
                         let newPerson = Batalha.turnoHabilidade (head envolvidos) (last envolvidos) habilidade (head dados) (last dados)
                         putStrLn "O receptor agora esta assim:"
                         putStrLn $ Persona.exibePersonagemString newPerson

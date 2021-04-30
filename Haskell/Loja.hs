@@ -26,12 +26,11 @@ exibeLoja [] _ = "Loja inexistente"
 exibeLoja (s:xs) nome
     |nome == nomeLoja s = "Nome: " ++ nomeLoja s ++ "\n"
                         ++ "Itens a venda:\n"
-                        ++ "Equipáveis:\n"
+                        ++ "Equipaveis:\n"
                         ++ catalogoEquipavel (lojaEquipaveis s)
-                        ++ "Consumíveis:\n"
+                        ++ "Consumiveis:\n"
                         ++ catalogoConsumivel (lojaConsumiveis s)
     | otherwise = exibeLoja xs nome
-
 catalogoEquipavel :: [(Equipavel, Int)] -> String
 catalogoEquipavel [] = ""
 catalogoEquipavel (s:xs) = "Nome: " ++ nomeEquipavel (fst(s)) ++ "\n"
@@ -47,17 +46,17 @@ catalogoConsumivel (s:xs) = "Nome: " ++ nomeConsumivel (fst(s)) ++ "\n"
                         ++ catalogoConsumivel xs
 
 exibeEquipavelLoja :: [(Equipavel, Int)] -> String -> String
-exibeEquipavelLoja [] _ = "não vende esse item nessa loja"
+exibeEquipavelLoja [] _ = "nao vende esse item nessa loja"
 exibeEquipavelLoja (s:xs) nome
     |nome == nomeEquipavel (fst(s)) = (exibirEquipavel (fst(s))) ++ "\n"
-                                    ++ "Preço: " ++ (show(snd(s)))
+                                    ++ "Preco: " ++ (show(snd(s)))
     |otherwise = exibeEquipavelLoja xs nome
 
 exibeConsumivelLoja :: [(Consumivel, Int)] -> String -> String
 exibeConsumivelLoja [] _ = "não vende esse item nessa loja"
 exibeConsumivelLoja (s:xs) nome
     |nome == nomeConsumivel (fst(s)) = (exibirConsumivel (fst(s))) ++ "\n"
-                                    ++ "Preço: " ++ (show(snd(s)))
+                                    ++ "Preco: " ++ (show(snd(s)))
     |otherwise = exibeConsumivelLoja xs nome
 
 adicionaEquipavel :: Equipavel -> Loja -> Int -> Loja

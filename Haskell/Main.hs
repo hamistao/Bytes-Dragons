@@ -108,7 +108,7 @@ lerCampanha = do
             hClose handle
             restart menu
         else do
-            putStrLn "Campanha não criada ainda\nNecessário iniciar uma Campanha\nEnter parar voltar ao Menu"
+            putStrLn "Campanha nao criada ainda\nNecessario iniciar uma Campanha\nEnter parar voltar ao Menu"
             restart menu
     
     where filePath = "data/campanha.lore"

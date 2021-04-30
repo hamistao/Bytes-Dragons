@@ -88,9 +88,9 @@ listarConsumiveis (s:xs) = (show(nomeConsumivel s) ++ "\n") : listarConsumiveis 
 
 exibirConsumivel :: Consumivel -> String
 exibirConsumivel consumivel = "Nome: " ++ show(nomeConsumivel consumivel) ++ "\n"
-                              ++ "Alteração à vida: " ++ show(alteracaoVida consumivel) ++ "\n"
-                              ++ "Alteração à velocidade: " ++ show(alteracaoVelocidadeConsumivel consumivel) ++ "\n"
-                              ++ "Duração: " ++ show(duracao consumivel)
+                              ++ "Alteracao a vida: " ++ show(alteracaoVida consumivel) ++ "\n"
+                              ++ "Alteracao a velocidade: " ++ show(alteracaoVelocidadeConsumivel consumivel) ++ "\n"
+                              ++ "Duracao: " ++ show(duracao consumivel)
 
 listarEquipaveis :: [Equipavel] -> [String]
 listarEquipaveis [] = []
@@ -98,14 +98,14 @@ listarEquipaveis (s:xs) =  (show(nomeEquipavel s) ++ "\n") : listarEquipaveis xs
                           
 exibirEquipavel :: Equipavel -> String
 exibirEquipavel equipavel = "Nome: " ++ show(nomeEquipavel equipavel) ++ "\n"
-                           ++ "Alteração à vida máxima: " ++ show(alteracaoVidaMaxima equipavel) ++ "\n"
-                           ++ "Alteração à força: " ++ show(alteracaoForca equipavel) ++ "\n"
-                           ++ "Alteração à inteligência: " ++ show(alteracaoInteligencia equipavel) ++ "\n"
-                           ++ "Alteração à sabedoria: " ++ show(alteracaoSabedoria equipavel) ++ "\n"
-                           ++ "Alteração à destreza: " ++ show(alteracaoDestreza equipavel) ++ "\n"
-                           ++ "Alteração à constituição: " ++ show(alteracaoConstituicao equipavel) ++ "\n"
-                           ++ "Alteração ao carisma: " ++ show(alteracaoCarisma equipavel) ++ "\n"
-                           ++ "Alteração à velocidade: " ++ show(alteracaoVelocidadeEquipavel equipavel) ++ "\n"
+                           ++ "Alteracao a vida maxima: " ++ show(alteracaoVidaMaxima equipavel) ++ "\n"
+                           ++ "Alteracao a forca: " ++ show(alteracaoForca equipavel) ++ "\n"
+                           ++ "Alteracao a inteligencia: " ++ show(alteracaoInteligencia equipavel) ++ "\n"
+                           ++ "Alteracao a sabedoria: " ++ show(alteracaoSabedoria equipavel) ++ "\n"
+                           ++ "Alteracao a destreza: " ++ show(alteracaoDestreza equipavel) ++ "\n"
+                           ++ "Alteracao a constituicão: " ++ show(alteracaoConstituicao equipavel) ++ "\n"
+                           ++ "Alteracao ao carisma: " ++ show(alteracaoCarisma equipavel) ++ "\n"
+                           ++ "Alteracao a velocidade: " ++ show(alteracaoVelocidadeEquipavel equipavel) ++ "\n"
                            ++ "Equipavel em: " ++ show(tipoEquipavel equipavel) ++ "\n"
                            ++ "Habilidades: " ++ unlines (listarHabilidades (habilidades equipavel))
 

@@ -21,7 +21,7 @@ menuItem = do
     putStrLn           "  `::'                    \\ \\("
     putStrLn           "                           ) ))"
     putStrLn           "                          (_(("
-    putStrLn           "1 - Item Equipavel\nOu\n2 - Item Consumível\n"
+    putStrLn           "1 - Item Equipavel\nOu\n2 - Item Consumivel\n"
     tipo <- getLine
     let action = lookup tipo (menuI)
     verificaEntradaMenu action
@@ -86,7 +86,7 @@ checkListaEquip itens = do
     entrada <- getLine
     let id = read entrada :: Int
     if id < (length itens) then putStrLn (Item.exibirEquipavel( itens !! id))
-        else putStrLn "ID inválido"
+        else putStrLn "ID invalido"
 
 
 checkListaConsmvl :: [Consumivel] -> IO ()
@@ -95,7 +95,7 @@ checkListaConsmvl itens = do
     entrada <- getLine
     let id = read entrada :: Int
     if id < (length itens) then putStrLn (Item.exibirConsumivel (itens !! id))
-        else putStrLn "ID inválido\n"
+        else putStrLn "ID invalido\n"
 
 
 listarItensNomes :: String -> IO ()
@@ -117,25 +117,25 @@ cadastrarItem tipo
 
 criarItemEquipavel :: String -> IO ()
 criarItemEquipavel path = do
-    putStrLn "Qual o nome do Equipável?"
+    putStrLn "Qual o nome do Equipavel?"
     nome <- getLine
-    putStrLn "Qual a Alteração de Vida Máxima?"
+    putStrLn "Qual a Alteracao de Vida Maxima?"
     vida_maxima <- getLine
-    putStrLn "Qual a Alteração de Força?"
+    putStrLn "Qual a Alteracao de Forca?"
     forca <- getLine
-    putStrLn "Qual a Alteração de Inteligência?"
+    putStrLn "Qual a Alteracao de Inteligencia?"
     inteligencia <- getLine
-    putStrLn "Qual a Alteração de Sabedoria?"
+    putStrLn "Qual a Alteracao de Sabedoria?"
     sabedoria <- getLine
-    putStrLn "Qual a Alteração de Destreza?"
+    putStrLn "Qual a Alteracao de Destreza?"
     destreza <- getLine
-    putStrLn "Qual a Alteração de Constituição?"
+    putStrLn "Qual a Alteracao de Constituicao?"
     constituicao <- getLine
-    putStrLn "Qual a Alteração de Carisma?"
+    putStrLn "Qual a Alteracao de Carisma?"
     carisma <- getLine
-    putStrLn "Qual a Alteração de Velocidade?"
+    putStrLn "Qual a Alteracao de Velocidade?"
     velocd <- getLine
-    putStrLn "Onde será Equipável (Cabeca | Torso | Pernas | Maos | Arma) ?"
+    putStrLn "Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?"
     tipo <- getLine
     appendFile path (show (Item.criaEquipavel nome (read vida_maxima) (read forca) (read inteligencia) (read sabedoria) (read destreza) (read constituicao) (read carisma) (read velocd) (read tipo :: Item.TipoEquipavel)) ++ "\n")
     putStrLn "Item Criado"
@@ -146,9 +146,9 @@ criarItemConsmvl :: String -> IO ()
 criarItemConsmvl path = do
     putStrLn "Qual o nome do Consumivel?"
     nome <- getLine
-    putStrLn "Qual a Alteração de Vida?"
+    putStrLn "Qual a Alteracao de Vida?"
     vida <- getLine
-    putStrLn "Qual a Alteração de Velocidade?"
+    putStrLn "Qual a Alteracao de Velocidade?"
     velocidade <- getLine
     putStrLn "Qual a Durabilidade?"
     durac <- getLine
