@@ -7,7 +7,7 @@ data Loja = Loja {
     nomeLoja :: String,
     lojaEquipaveis :: [(Equipavel, Int)],
     lojaConsumiveis :: [(Consumivel, Int)]
-}
+} deriving (Show, Read, Eq)
 
 cadastraLoja :: String -> Loja
 cadastraLoja nome = Loja{nomeLoja = nome

@@ -93,18 +93,17 @@ menus "habil" =
         , ("9", menu)
         ]
 menus "loja" =
-        [ ("1", listarLoja)
+        [ ("1", listarLojas)
         , ("2", criarLoja)
         , ("3", adicionaItemLoja)
-        , ("4", adicionaItemLoja)
-        , ("5", detalhesLoja)
-        , ("6", excluiLoja)
-        , ("7", menuNegociaLoja)
+        , ("4", detalhesLoja)
+        , ("5", excluiLoja)
+        , ("6", menuNegociaLoja)
         , ("9", menu)
         ]
-menu "negociaLoja" =
-        [ ("1", comprarItem)
-        , ("2", venderItem)
+menus "negociaLoja" =
+        [ --("1", comprarItem),
+          ("2", venderItem)
         , ("9", menuLoja)
         ]
 menus x = []
@@ -920,19 +919,20 @@ batalhaConsmvl personagens = do
                 if id < length itens
                     then do
                         let envolvidos = getPersonagens [nome, nome2] personagens 
-                        let newPersons = Batalha.turnoConsumivel (head envolvidos) (last envolvidos) (getConsmvlFromString (itens !! id))
-                        if(nome_personagem head(newPerson) /= nome_personagem snd(newPerson))
+                        let (s : xs) = Batalha.turnoConsumivel (head envolvidos) (last envolvidos) (getConsmvlFromString (itens !! id))
+                        let (c : xc) = xs 
+                        if(nome_personagem s /= nome_personagem c)
                             then do
                                 putStrLn "Os Personagens agora estao assim:"
-                                putStrLn $ Persona.exibePersonagemString head(newPersons)
-                                putStrLn $ Persona.exibePersonagemString last(newPersons)
+                                putStrLn $ Persona.exibePersonagemString s
+                                putStrLn $ Persona.exibePersonagemString c
                                 putStrLn "\nEnter para voltar a batalha"
-                                restartBatalha menuBatalha ((Persona.atualizaPersonagem (Persona.atualizaPersonagem personagens head(newPersons)) snd(newPersons)))
+                                restartBatalha menuBatalha ((Persona.atualizaPersonagem (Persona.atualizaPersonagem personagens s) c))
                             else do
                                 putStrLn "O Personagem agora esta assim:"
-                                putStrLn $ Persona.exibePersonagemString head(newPersons)
+                                putStrLn $ Persona.exibePersonagemString s
                                 putStrLn "\nEnter para voltar a batalha"
-                                restartBatalha menuBatalha (Persona.atualizaPersonagem personagens head(newPersons))
+                                restartBatalha menuBatalha (Persona.atualizaPersonagem personagens s)
                     else do
                         putStrLn "ID Invalido"
                         restartBatalha menuBatalha personagens
@@ -993,7 +993,7 @@ batalhaHabilis personagens = do
                         putStrLn $ Persona.exibePersonagemString newPerson
                         putStrLn "\nEnter para voltar a batalha"
 
-                        restartBatalha menuBatalha (Persona.atualizaPersonagem personagens ([newPerson] ++ [newPerson]))
+                        restartBatalha menuBatalha (Persona.atualizaPersonagem personagens newPerson)
                     else do
                         putStrLn "ID Invalido"
                         restartBatalha menuBatalha personagens
@@ -1007,7 +1007,7 @@ batalhaHabilis personagens = do
 menuLoja :: IO ()
 menuLoja = do
     system "clear"
-    putStrLn "1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um equipavel na Loja\n4 - Aciona um Consumivel na Loja\n5 - Detalhes de Loja\n6 - Excluir Loja\n7 - Negociar com a Loja\n9 - Voltar Menu\n"
+    putStrLn "1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um item na Loja\n4 - Detalhes de Loja\n5 - Excluir Loja\n6 - Negociar com a Loja\n9 - Voltar Menu\n"
     tipo <- getLine
     let action = lookup tipo (menus "loja")
     verificaEntradaMenu action
@@ -1054,7 +1054,7 @@ adicionaItemLoja = do
                             let item = (lines itemStr) !! id
                             putStrLn "Qual o nome da Loja?"
                             nome <- getLine
-                            fileLoja <- readFile "data/Loja.bd"
+                            fileLoja <- readFile "data/loja.bd"
                             let lojaString = lines fileLoja
                             let loja = getLoja (transformaListaLoja lojaString) nome
                             if (isNothing loja)
@@ -1085,7 +1085,7 @@ adicionarConsmvlLoja loja item preco = do
 
 replaceLojaOnFile :: Loja -> Loja -> IO ()
 replaceLojaOnFile new old = do
-    --contents <- readFile "data/lojas.bd"
+    --contents <- readFile "data/loja.bd"
     handle <- openFile "data/loja.bd" ReadMode
     contents <- hGetContents handle
 
@@ -1098,8 +1098,8 @@ replaceLojaOnFile new old = do
     hClose handle
 
 
-    removeFile "data/lojas.bd"
-    renameFile tempName "data/lojas.bd"
+    removeFile "data/loja.bd"
+    renameFile tempName "data/loja.bd"
 
 replaceLoja :: Loja -> Loja -> [Loja] -> [Loja]
 replaceLoja new old [] = []
@@ -1124,7 +1124,7 @@ excluiLoja = do
     contents <- readFile "data/loja.bd"
     let loja_possi = getDetalhesLoja (lines contents) nome
     if (loja_possi == "Loja inexistente\n") then (putStrLn loja_possi)
-    else putStr "Loja excluida com sucesso"
+    else do
         (deleteLoja (lines contents) (getLoja (transformaListaLoja (lines contents)) nome))
     restart menuLoja
             
@@ -1136,9 +1136,9 @@ deleteLoja ::  [String] -> (Maybe (Loja)) -> IO ()
 deleteLoja listaLoja lojaMayb = do
     if (not (isNothing lojaMayb))
         then do
-            let persng = fromJust (lojaMayb)
+            let loja = fromJust (lojaMayb)
             (tempName, tempHandle) <- openTempFile "data/" "temp"
-            hPutStr tempHandle $ unlines ((listaLoja \\ [(show loja)]))
+            hPutStr tempHandle $ unlines ((listaLoja \\ [(show(loja))]))
             hClose tempHandle
             removeFile "data/loja.bd"
             renameFile tempName "data/loja.bd"
@@ -1153,11 +1153,11 @@ menuNegociaLoja = do
     let action = lookup tipo (menus "negociaLoja")
     verificaEntradaMenu action
 
-comprarItem :: IO ()
+--comprarItem :: IO ()
 
-comprarEquipavel :: Int
+--comprarEquipavel :: Int
 
-comprarConsumivel :: Int
+--comprarConsumivel :: Int
 
 venderItem :: IO ()
 venderItem = do
@@ -1185,14 +1185,14 @@ venderItem = do
                             let person = getPersng (transformaListaPersonagem persngsString) nome
                             if (isNothing person) then putStrLn "Personagem Inexistente"
                                 else do
-                                    "Item vendido com sucesso"
+                                    putStrLn "Item vendido com sucesso"
                                     if (tipo == "1") then (venderEquip (fromJust person) (getEquipavelFromString item) preco)
                                         else (venderConsmvl (fromJust person) (getConsmvlFromString item) preco)
     restart menuNegociaLoja
 
 
 venderEquip :: Personagem -> Equipavel -> Int -> IO ()
-venderEquip persng item = do
+venderEquip persng item preco = do
     let new_person = Loja.vendeEquipavel persng item preco
     replacePersonOnFile new_person persng
 

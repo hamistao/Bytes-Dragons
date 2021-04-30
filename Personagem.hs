@@ -349,7 +349,7 @@ aplicarItemConsumivel consumivel personagem =
         ,xpUp = xpUp personagem
         ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem
-        ,consumiveis = consumivel personagem
+        ,consumiveis = consumiveis personagem
         ,habilidades_personagem = habilidades_personagem personagem
         ,imunidades = imunidades personagem
     }
