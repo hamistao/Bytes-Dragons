@@ -458,9 +458,8 @@ alteraGold personagem valor = Personagem{nome_personagem = nome_personagem perso
                                         }
 
 
-atualizaPersonagem :: [Personagem] -> [Personagem] -> [Personagem]
-atualizaPersonagem lista novaLista = if(nome_personagem head(novaLista) == nome_personagem last (novaLista)) then [novaLista] ++ [ p | p <- lista, nome_personagem p /= nome_personagem (head (novaLista)) && nome_personagem p /= nome_personagem (last (novaLista))] 
-                                     else [head(novaLista)] ++[ p | p <- lista, nome_personagem p /= nome_personagem (head (novaLista))] 
+atualizaPersonagem :: [Personagem] -> Personagem -> [Personagem]
+atualizaPersonagem lista personagem = [personagem] ++ [ x | x <- lista, nome_personagem x /= nome_personagem personagem]
        
 
 temConsumivel :: Personagem -> Consumivel -> Bool
