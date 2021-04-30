@@ -11,10 +11,10 @@ selecionaAtributoRelacionado Constituicao personagem = constituicao personagem
 selecionaAtributoRelacionado Carisma personagem = carisma personagem
 
     
-turnoConsumivel :: Personagem -> Personagem -> Consumivel -> Personagem 
+turnoConsumivel :: Personagem -> Personagem -> Consumivel -> [Personagem] 
 turnoConsumivel personagemEmissor personagemReceptor consumivel
-  | temConsumivel personagemEmissor consumivel = usarItemConsumivel consumivel personagemReceptor 
-  | otherwise                                  = personagemReceptor 
+  | temConsumivel personagemEmissor consumivel = [usarItemConsumivel consumivel personagemEmissor, aplicarItemConsumivel consumivel personagemReceptor] 
+  | otherwise                                  = [personagemEmissor, personagemReceptor]
 
 turnoHabilidade :: Personagem -> Personagem -> Habilidade -> Int -> Int-> Personagem
 turnoHabilidade personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 =
