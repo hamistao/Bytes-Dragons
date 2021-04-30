@@ -5,7 +5,6 @@ import Habilidade
 data Consumivel = Consumivel {
   nomeConsumivel :: String
   , alteracaoVida :: Int
-  , alteracaoDano :: Int
   , alteracaoVelocidadeConsumivel :: Int
   , duracao :: Int
   } deriving (Show, Eq, Read)
@@ -27,11 +26,10 @@ data Equipavel = Equipavel {
 data TipoEquipavel = Cabeca | Torso | Pernas | Maos | Arma deriving(Show, Read, Eq)
 --'elem'
 
-criaConsumivel :: String -> Int -> Int -> Int -> Int -> Consumivel
-criaConsumivel nomeConsumivel alteracaoVida alteracaoDano alteracaoVelocidadeConsumivel duracao = (Consumivel {
+criaConsumivel :: String -> Int -> Int -> Int -> Consumivel
+criaConsumivel nomeConsumivel alteracaoVida alteracaoVelocidadeConsumivel duracao = (Consumivel {
                                                                                                nomeConsumivel = nomeConsumivel
                                                                                                , alteracaoVida = alteracaoVida
-                                                                                               , alteracaoDano = alteracaoDano
                                                                                                , alteracaoVelocidadeConsumivel = alteracaoVelocidadeConsumivel 
                                                                                                , duracao = duracao
                                                                                                })
@@ -91,7 +89,6 @@ listarConsumiveis (s:xs) = (show(nomeConsumivel s) ++ "\n") : listarConsumiveis 
 exibirConsumivel :: Consumivel -> String
 exibirConsumivel consumivel = "Nome: " ++ show(nomeConsumivel consumivel) ++ "\n"
                               ++ "Alteração à vida: " ++ show(alteracaoVida consumivel) ++ "\n"
-                              ++ "Alteração ao dano: " ++ show(alteracaoDano consumivel) ++ "\n"
                               ++ "Alteração à velocidade: " ++ show(alteracaoVelocidadeConsumivel consumivel) ++ "\n"
                               ++ "Duração: " ++ show(duracao consumivel)
 
