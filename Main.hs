@@ -102,9 +102,10 @@ menus "loja" =
         , ("7", menuNegociaLoja)
         , ("9", menu)
         ]
-menu "negociaLoja" =
-        [ ("1", comprarItem)
-        , ("2", venderItem)
+menus "negociaLoja" =
+        [ 
+        --("1", comprarItem),
+        ("2", venderItem)
         , ("9", menuLoja)
         ]
 menus x = []
@@ -1025,11 +1026,11 @@ criarLoja :: IO ()
 criarLoja = do
     putStrLn "Qual o nome da Loja?"
     nome <- getLine 
-    appendFile "data/loja.bd" (show (Loja.cadastraLoja nome )) ++ "\n")
+    appendFile "data/loja.bd" (show (Loja.cadastraLoja nome) ++ "\n")
     putStrLn "Loja Criada"
     restart menuLoja
 
-adicionaItemlLoja :: IO ()
+adicionaItemLoja :: IO ()
 adicionaItemLoja = do   
     system "clear"
     putStrLn "Qual o Tipo de Item Desejado?\n1 - Equipavel\nOu\n2 - Consumivel"
@@ -1044,7 +1045,7 @@ adicionaItemLoja = do
                 else do
                     putStrLn "Qual o preco do Item?"
                     precoStr <- getLine
-                    let preco <- read precoStr :: Int
+                    let preco = read precoStr :: Int
                     if(preco <= 0) then putStrLn "Preco Invalido"
                         else do
                             let item = (lines itemStr) !! id
@@ -1099,8 +1100,8 @@ replaceLojaOnFile new old = do
 replaceLoja :: Loja -> Loja -> [Loja] -> [Loja]
 replaceLoja new old [] = []
 replaceLoja new old (x:xs)
-| old == x = (new:xs)
-| otherwise = x:(replaceLoja new old xs)
+    | old == x = (new:xs)
+    | otherwise = x:(replaceLoja new old xs)
 
 detalhesLoja :: IO ()
 detalhesLoja = do
@@ -1112,7 +1113,7 @@ detalhesLoja = do
     restart menuLoja
 
 excluiLoja :: IO ()
-excluirLoja = do
+excluiLoja = do
     system "clear"
     putStrLn "Qual o Nome da Loja?"
     nome <- getLine
@@ -1146,11 +1147,11 @@ menuNegociaLoja = do
     let action = lookup tipo (menus "negociaLoja")
     verificaEntradaMenu action
 
-comprarItem :: IO ()
+--comprarItem :: IO ()
 
-comprarEquipavel :: 
+--comprarEquipavel :: 
 
-comprarConsumivel :: 
+--comprarConsumivel :: 
 
 venderItem :: IO ()
 venderItem = do
@@ -1167,7 +1168,7 @@ venderItem = do
                 else do
                     putStrLn "Qual o preco do Item?"
                     precoStr <- getLine
-                    let preco <- read precoStr :: Int
+                    let preco = read precoStr :: Int
                     if(preco <= 0) then putStrLn "Preco Invalido"
                         else do
                             let item = (lines itemStr) !! id
