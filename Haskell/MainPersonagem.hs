@@ -418,7 +418,7 @@ batalhaHabilis personagens = do
                         let envolvidos = getPersonagens [nome, nome2] personagens
                         let habilidade = getHabilFromString (habilidades !! id)
                         random_gen <- newStdGen
-                        let dados = take 3 (randomRs (1,20) random_gen)
+                        let dados = (take (randomRs (1,20) random_gen)) ++ (take 1(randomRs (1,100) random_gen))
                         putStrLn "\nOs Dados tirados Foram:"
                         putStrLn $ "Para acerto: " ++ (show (head dados)) ++ " e " ++ (show (dados !! 1)) ++ ", Para esquiva: " ++ show(dados !! 2)
                         putStrLn $ "A habilidade usada foi " ++ show(Habil.nome_habilidade habilidade)
