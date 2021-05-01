@@ -29,16 +29,16 @@ acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 
   if (temImunidade personagemReceptor (tipoDeDano habilidade) &&
      selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (min numeroDado1 numeroDado2) >= pontosParaAcerto habilidade)
       then if(((velocidade personagemReceptor) - (min numeroDado1 numeroDado2) > 0))
-        then if((velocidade personagemReceptor) - (min numeroDado1 numeroDado2) < numeroDado3) then False
-        else True
-      else False
+        then if((velocidade personagemReceptor) - (min numeroDado1 numeroDado2) < numeroDado3) then True
+        else False
+      else True
 
   else if not (temImunidade personagemReceptor (tipoDeDano habilidade)) &&
           selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (max numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
           then if(((velocidade personagemReceptor) - (max numeroDado1 numeroDado2) > 0)) 
-            then if((velocidade personagemReceptor) - (max numeroDado1 numeroDado2) < numeroDado3) then False
-            else True
-          else False
+            then if((velocidade personagemReceptor) - (max numeroDado1 numeroDado2) < numeroDado3) then True
+            else False
+          else True
   
   else False
 
