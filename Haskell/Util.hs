@@ -1,4 +1,6 @@
 module Util where
+import Data.Typeable
+import qualified Data.ByteString as S
 import Personagem
 import System.IO
 import System.Process
@@ -25,7 +27,7 @@ replacePersonOnFile new old = do
     handle <- openFile "data/persngs.bd" ReadMode
     contents <- hGetContents handle
 
-    let personagens = transformaListaPersonagem (lines contents)
+    let personagens = transformaListaPersonagem (lines(contents))
     let personagens_finais = (unlines (map show (replacePerson new old personagens)))
 
     (tempName, tempHandle) <- openTempFile "data/" "temp"
@@ -33,21 +35,22 @@ replacePersonOnFile new old = do
     hClose tempHandle
     hClose handle
 
-
-    removeFile "data/persngs.bd"
-    renameFile tempName "data/persngs.bd"
+    fechou <- hIsClosed handle
+    if fechou then do
+        removeFile "data/persngs.bd"
+        renameFile tempName "data/persngs.bd"
+    else do
+        removeFile tempName
+        putStrLn "Possível erro ao completar acao"
 
 
 replacePerson :: Personagem -> Personagem -> [Personagem] -> [Personagem]
-replacePerson new old [] =  []
-replacePerson new old (x:xs)
-    | old == x = (new:xs)
-    | otherwise = x:(replacePerson new old xs)
+replacePerson new old lista = new:[p | p <- lista, p/=old]
 
 
 transformaListaPersonagem :: [String] -> [Personagem]
 transformaListaPersonagem [] = []
-transformaListaPersonagem (x:xs) = ((read :: String -> Personagem) x) : (transformaListaPersonagem xs)
+transformaListaPersonagem (x:xs) = ((read x :: Personagem)) : (transformaListaPersonagem xs)
 
 
 transformaListaEquipavel :: [String] -> [Equipavel]

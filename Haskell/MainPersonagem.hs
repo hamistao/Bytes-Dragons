@@ -56,10 +56,12 @@ menuPersng = do
 listarPersng :: IO ()
 listarPersng = do
     system "cls"
-    contents <- readFile "data/persngs.bd"
+    handle <- openFile "data/persngs.bd" ReadMode
+    contents <- hGetContents handle
     print "---> "
     putStrLn $ Persona.listarPersonagens (transformaListaPersonagem (lines contents))
     print " <---"
+    hClose handle
     restart menuPersng
 
 
@@ -68,8 +70,10 @@ detalhesPersng = do
     system "cls"
     putStrLn "Qual o Nome do Personagem?"
     nome <- getLine
-    contents <- readFile "data/persngs.bd"
+    handle <- openFile "data/persngs.bd" ReadMode
+    contents <- hGetContents handle
     putStrLn (getDetalhesPersng (lines contents) nome)
+    hClose handle
     restart menuPersng
             
 getDetalhesPersng :: [String] -> String -> String
@@ -95,9 +99,13 @@ excluirPersng = do
     system "cls"
     putStrLn "Qual o Nome do Personagem?"
     nome <- getLine
-    contents <- readFile "data/persngs.bd"
+    handle <- openFile "data/persngs.bd" ReadMode
+    contents <- hGetContents handle
     let persng_possi = getDetalhesPersng (lines contents) nome
-    if (persng_possi == "Personagem inexistente\n") then (putStrLn persng_possi) else (deletePersng (lines contents) (getPersng (transformaListaPersonagem (lines contents)) nome))
+    if (persng_possi == "Personagem inexistente\n") then (putStrLn persng_possi)
+    else do
+        hClose handle
+        (deletePersng (lines contents) (getPersng (transformaListaPersonagem (lines contents)) nome))
     restart menuPersng
 
 
@@ -145,15 +153,19 @@ linkarItemPersng = do
                     let item = (lines itemStr) !! id
                     putStrLn "Qual o nome do Personagem?"
                     nome <- getLine
-                    filePerson <- readFile "data/persngs.bd"
+                    handle <- openFile "data/persngs.bd" ReadMode
+                    filePerson <- hGetContents handle
                     let persngsString = lines filePerson
                     let person = getPersng (transformaListaPersonagem persngsString) nome
                     if (isNothing person)
                         then do
                             putStrLn "Personagem Inexistente"
                         else do
+                            hClose handle
+                            putStrLn ("Personagem Selecionado:\n" ++ (Persona.listarPersonagens [(fromJust person)]) )
                             if (tipo == "1") then (linkarEquipPerson (fromJust person) (getEquipavelFromString item))
                                 else (linkarConsmvlPerson (fromJust person) (getConsmvlFromString item))
+    putStrLn "Item Equipado Com Sucesso"
     restart menuPersng
 
 
@@ -169,12 +181,16 @@ linkarHabil = do
             let habilidade = (lines contents) !! id
             putStrLn "Qual o nome do Personagem?"
             nome <- getLine
-            filePerson <- readFile "data/persngs.bd"
+            handle <- openFile "data/persngs.bd" ReadMode
+            filePerson <- hGetContents handle
             let persngsString = lines filePerson
             let person = getPersng (transformaListaPersonagem persngsString) nome
             if (isNothing person) then putStrLn "Personagem Inexistente"
                 else do
+                    hClose handle
+                    putStrLn ("Personagem Selecionado:\n" ++ (Persona.listarPersonagens [(fromJust person)]) )
                     linkarHabilPerson (fromJust person) (getHabilFromString habilidade)
+    putStrLn "Habilidade Colocada com Sucesso"
     restart menuPersng
 
 
@@ -186,7 +202,8 @@ botaResistencia = do
     let resistencia = read entrada :: TipoDano
     putStrLn "Qual o nome do Personagem?"
     nome <- getLine
-    filePerson <- readFile "data/persngs.bd"
+    handle <- openFile "data/persngs.bd" ReadMode
+    filePerson <- hGetContents handle
     let persngsString = lines filePerson
     let person = getPersng (transformaListaPersonagem persngsString) nome
     if (isNothing person)
@@ -194,6 +211,7 @@ botaResistencia = do
             putStrLn "Personagem Inexistente"
             restart menuPersng
         else do
+            hClose handle
             let pessoa = fromJust person
             replacePersonOnFile (Persona.adicionarImunidade pessoa resistencia) pessoa
             restart menuPersng
@@ -204,7 +222,8 @@ menuBatalhaInicial = do
     system "cls"
     putStrLn "Quais sao os Personagem que irao participar da Batalha? (Nomes)"
     nomes <- getMultipleLines
-    personagensString <- readFile "data/persngs.bd"
+    handle <- openFile "data/persngs.bd" ReadMode
+    personagensString <- hGetContents handle
     let personagens = getPersonagens nomes (transformaListaPersonagem (lines personagensString))
     putStrLn "Os personagens escolhidos foram:"
     putStrLn (Persona.listarPersonagens personagens)
@@ -213,6 +232,7 @@ menuBatalhaInicial = do
     if escolha == "R" then menuBatalhaInicial
         else do
             system "cls"
+            hClose handle
             menuBatalha personagens
 
 
@@ -251,12 +271,16 @@ desalocarHabil = do
             let habilidade = (lines contents) !! id
             putStrLn "Qual o nome do Personagem?"
             nome <- getLine
-            filePerson <- readFile "data/persngs.bd"
+            handle <- openFile "data/persngs.bd" ReadMode
+            filePerson <- hGetContents handle
             let persngsString = lines filePerson
             let person = getPersng (transformaListaPersonagem persngsString) nome
             if (isNothing person) then putStrLn "Personagem Inexistente"
                 else do
+                    hClose handle
+                    putStrLn ("Personagem Selecionado:\n" ++ (Persona.listarPersonagens [(fromJust person)]) )
                     desalocarHabilPerson (fromJust person) (getHabilFromString habilidade)
+    putStrLn "Habilidade Retirada"
     restart menuPersng
 
 
@@ -276,13 +300,17 @@ desequiparItemPerson = do
                     let item = (lines itemStr) !! id
                     putStrLn "Qual o nome do Personagem?"
                     nome <- getLine
-                    filePerson <- readFile "data/persngs.bd"
+                    handle <- openFile "data/persngs.bd" ReadMode
+                    filePerson <- hGetContents handle
                     let persngsString = lines filePerson
                     let person = getPersng (transformaListaPersonagem persngsString) nome
                     if (isNothing person) then putStrLn "Personagem Inexistente"
                         else do
+                            hClose handle
+                            putStrLn ("Personagem Selecionado:\n" ++ (Persona.listarPersonagens [(fromJust person)]) )
                             if (tipo == "1") then (desequiparEquipPerson (fromJust person) (getEquipavelFromString item))
                                 else (desequiparConsmvlPerson (fromJust person) (getConsmvlFromString item))
+    putStrLn "Item desequipado"
     restart menuPersng
 
 
@@ -455,9 +483,14 @@ encerramento personagens = do
     ganhamXP <- getMultipleLines
     putStrLn "Quanto de XP ganharao?"
     quantidadeXP <- getLine
+    putStrLn "\nQuais Personagens voce gostaria que ganhassem Ouro?"
+    ganhamOuro <- getMultipleLines
+    putStrLn "Quanto de Ouro ganharao?"
+    quantidadeOuro <- getLine
     let pos_regeneracao = regenera personagens zumbis
     let pos_xp = aumentaXPPersonagens pos_regeneracao ganhamXP (read quantidadeXP)
-    let personagens_finais = [ p | p <- pos_xp, p `notElem` (getPersonagens apagar pos_xp) ]
+    let pos_gold = aumentaOuroPersonagens pos_xp ganhamOuro (read quantidadeOuro)
+    let personagens_finais = [ p | p <- pos_gold, p `notElem` (getPersonagens apagar pos_gold)]
     -- (getPersonagens zumbis personagens)
     -- let personagens_finais = [p | p <- regenerados, p `notElem` (getPersonagens apagar regenerados)]
     writeFile "data/persngs.bd" (unlines(map show personagens_finais))
@@ -475,3 +508,12 @@ aumentaXPPersonagens [] lista xp = []
 aumentaXPPersonagens (p:ps) lista xp
   | Persona.nome_personagem p `elem` lista         = Level.aumentaXP p xp : aumentaXPPersonagens ps lista xp
   | otherwise                                      = p : aumentaXPPersonagens ps lista xp
+
+
+aumentaOuroPersonagens :: [Personagem] -> [String] -> Int -> [Personagem]
+aumentaOuroPersonagens [] nomes gold = []
+aumentaOuroPersonagens (p:ps) nomes gold
+  | Persona.nome_personagem p `elem` nomes         = Persona.alteraGold p gold : aumentaOuroPersonagens ps nomes gold
+  | otherwise                                      = p : aumentaOuroPersonagens ps nomes gold
+
+

@@ -211,11 +211,13 @@ comprarItem = do
                             else do
                                 putStrLn "Qual o nome do Personagem?"
                                 nome <- getLine
-                                filePerson <- readFile "data/persngs.bd"
+                                handle <- openFile "data/persngs.bd" ReadMode
+                                filePerson <- hGetContents handle
                                 let persngsString = lines filePerson
                                 let person = getPersng (transformaListaPersonagem persngsString) nome
                                 if (isNothing person) then putStrLn "Personagem Inexistente"
                                     else do
+                                        hClose handle
                                         if (tipo == "1") then (comprarEquipavel (fromJust person) (getEquipavelFromString item) (fromJust (Loja.getPrecoEquipavel (lojaEquipaveis (fromJust loja)) (getEquipavelFromString item))) (fromJust loja))
                                             else (comprarConsumivel (fromJust person) (getConsmvlFromString item) (fromJust (Loja.getPrecoConsumivel (lojaConsumiveis (fromJust loja)) (getConsmvlFromString item))) (fromJust loja))
     restart menuNegociaLoja
@@ -260,11 +262,13 @@ venderItem = do
                             let item = (lines itemStr) !! id
                             putStrLn "Qual o nome do Personagem?"
                             nome <- getLine
-                            filePerson <- readFile "data/persngs.bd"
+                            handle <- openFile "data/persngs.bd" ReadMode
+                            filePerson <- hGetContents handle
                             let persngsString = lines filePerson
                             let person = getPersng (transformaListaPersonagem persngsString) nome
                             if (isNothing person) then putStrLn "Personagem Inexistente"
                                 else do
+                                    hClose handle
                                     putStrLn "Item vendido com sucesso"
                                     if (tipo == "1") then (venderEquip (fromJust person) (getEquipavelFromString item) preco)
                                         else (venderConsmvl (fromJust person) (getConsmvlFromString item) preco)
