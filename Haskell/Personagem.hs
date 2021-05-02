@@ -293,8 +293,8 @@ guardarConsumivel item personagem =
 
 removeConsumivel :: Consumivel -> Personagem -> [Consumivel]
 removeConsumivel consumivel personagem
-    | (duracao consumivel) - 1 /= 0 = [item | item <- consumiveis personagem, item /= consumivel] ++ [reduzDuracao consumivel]
-    | otherwise = [item | item <- consumiveis personagem, item /= consumivel]
+    | (duracao consumivel) - 1 /= 0 = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel] ++ [reduzDuracao consumivel]
+    | otherwise = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
 
 
 reduzDuracao :: Consumivel -> Consumivel
