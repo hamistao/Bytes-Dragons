@@ -1,2 +1,3 @@
 Habilidade {nome_habilidade = "Fogo", impacto_vida = -10, impacto_velocidade = 2, atributo_relacionado = Inteligencia, pontosParaAcerto = 10, tipoDeDano = Fogo}
 Habilidade {nome_habilidade = "Macaco", impacto_vida = 10, impacto_velocidade = 10, atributo_relacionado = Destreza, pontosParaAcerto = 5, tipoDeDano = Fisico}
+Habilidade {nome_habilidade = "Soco", impacto_vida = -10, impacto_velocidade = 0, atributo_relacionado = Forca, pontosParaAcerto = 12, tipoDeDano = Fisico}

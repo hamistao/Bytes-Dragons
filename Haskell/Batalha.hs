@@ -28,21 +28,25 @@ acertou :: Personagem -> Personagem -> Habilidade -> Int -> Int -> Int -> Bool
 acertou personagemEmissor personagemReceptor habilidade numeroDado1 numeroDado2 numeroDado3 =
   if (temImunidade personagemReceptor (tipoDeDano habilidade) &&
      selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (min numeroDado1 numeroDado2) >= pontosParaAcerto habilidade)
-      then if(((velocidade personagemReceptor) - (min numeroDado1 numeroDado2) > 0))
-        then if((velocidade personagemReceptor) - (min numeroDado1 numeroDado2) < numeroDado3) then True
+      then if((velocidadeDiff personagemReceptor personagemEmissor > 0))
+        then if(velocidadeDiff personagemReceptor personagemEmissor < numeroDado3) then True
         else False
       else True
 
   else if not (temImunidade personagemReceptor (tipoDeDano habilidade)) &&
           selecionaAtributoRelacionado (atributo_relacionado habilidade) personagemEmissor + (max numeroDado1 numeroDado2) >= pontosParaAcerto habilidade
-          then if(((velocidade personagemReceptor) - (max numeroDado1 numeroDado2) > 0)) 
-            then if((velocidade personagemReceptor) - (max numeroDado1 numeroDado2) < numeroDado3) then True
+          then if((velocidadeDiff personagemReceptor personagemEmissor > 0)) 
+            then if(velocidadeDiff personagemReceptor personagemEmissor < numeroDado3) then True
             else False
           else True
   
   else False
 
-                                                                                
+
+velocidadeDiff :: Personagem -> Personagem -> Int
+velocidadeDiff personagemReceptor personagemEmissor = (velocidade personagemReceptor) - (velocidade personagemEmissor)
+
+
 taVivo :: Personagem -> Bool
 taVivo personagem = (vida personagem) > 0
 

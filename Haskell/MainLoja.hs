@@ -52,6 +52,7 @@ transformaListaLoja (x:xs) = ((read :: String -> Loja) x):(transformaListaLoja x
 
 criarLoja :: IO ()
 criarLoja = do
+    system "cls"
     putStrLn "Qual o nome da Loja?"
     nome <- getLine 
     appendFile "data/loja.bd" (show (Loja.cadastraLoja nome) ++ "\n")
@@ -86,7 +87,7 @@ adicionaItemLoja = do
                                 then do
                                     putStrLn "Loja Inexistente"
                                 else do
-                                    putStr "Item adicionado com sucesso"
+                                    putStrLn "Item adicionado com sucesso"
                                     if (tipo == "1") then (adicionarEquipLoja (fromJust loja) (getEquipavelFromString item) preco)
                                         else (adicionarConsmvlLoja (fromJust loja) (getConsmvlFromString item) preco)
     restart menuLoja

@@ -424,14 +424,14 @@ batalhaHabilis personagens = do
                         random_gen <- newStdGen
                         let dados = (take 2 (randomRs (1,20) random_gen)) ++ (take 1(randomRs (1,30) random_gen))
                         putStrLn "\nOs Dados tirados Foram:"
-                        putStrLn $ "Para acerto: " ++ (show (head dados)) ++ " e " ++ (show (dados !! 1)) ++ ", Para esquiva: " ++ show(dados !! 2)
+                        putStrLn $ "Para acerto: " ++ (show (head dados)) ++ " e " ++ (show (dados !! 1)) ++ ", a chance de esquiva eh: " ++ show (arredondaPorcentagem ((fromIntegral (Batalha.velocidadeDiff (last envolvidos) (head envolvidos)) :: Float) * 3.3)) ++ "%."
                         putStrLn $ "A habilidade usada foi " ++ show(Habil.nome_habilidade habilidade)
                         putStrLn $ "Esta habilidade requer tirar " ++ show(Habil.pontosParaAcerto habilidade) ++ " pontos para acertar."
                         if tipoDeDano habilidade `elem` Persona.imunidades (last envolvidos) then
                           putStrLn "O receptor tem resistencia ao tipo da habilidade. O dado de menor numero sera usado."
                         else
                           putStrLn "O receptor nao tem resistencia ao tipo da habilidade. O dado de maior numero sera usado."
-                        putStrLn $ "O emissor tem " ++ show(Batalha.selecionaAtributoRelacionado (Habil.atributo_relacionado habilidade) (last envolvidos)) ++ " pontos do atributo relacionado a habilidade. Estes serao somados ao numero do dado para o acerto.\n"
+                        putStrLn $ "O emissor tem " ++ show(Batalha.selecionaAtributoRelacionado (Habil.atributo_relacionado habilidade) (head envolvidos)) ++ " pontos do atributo relacionado a habilidade. Estes serao somados ao numero do dado para o acerto.\n"
                         if Batalha.acertou (head envolvidos) (last envolvidos) habilidade (dados !! 0) (dados !! 1) (dados !! 2) then
                           putStrLn("Acertou!")
                         else
@@ -454,6 +454,13 @@ batalhaHabilis personagens = do
         else do
             putStrLn "Personagem Inexistente"
             restartBatalha menuBatalha personagens
+
+
+arredondaPorcentagem :: Ord a => Num a => a -> a
+arredondaPorcentagem a
+    | a < 0 = 0
+    | otherwise = a
+
 
 restartBatalha :: ([Personagem] -> IO ()) -> [Personagem] -> IO ()
 restartBatalha battle personagens = do
