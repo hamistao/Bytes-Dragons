@@ -19,6 +19,7 @@ menuHabilis = do
             , ("3", detalhesHabil)
             , ("4", excluirHabil)
             , ("5", encantaItem)
+            , ("6", desencantaItem)
             , ("9", print "")
             ]
     putStrLn            "           ("
