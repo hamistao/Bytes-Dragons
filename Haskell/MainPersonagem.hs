@@ -367,21 +367,27 @@ batalhaConsmvl personagens = do
                 let itens = lines contents
                 if id < length itens
                     then do
-                        let envolvidos = getPersonagens [nome, nome2] personagens 
-                        let (s : xs) = Batalha.turnoConsumivel (head envolvidos) (last envolvidos) (getConsmvlFromString (itens !! id))
-                        let (c : xc) = xs 
-                        if(nome_personagem s /= nome_personagem c)
-                            then do
-                                putStrLn "Os Personagens agora estao assim:"
-                                putStrLn $ Persona.exibePersonagemString s
-                                putStrLn $ Persona.exibePersonagemString c
-                                putStrLn "\nEnter para voltar a batalha"
-                                restartBatalha menuBatalha ((Persona.atualizaPersonagem (Persona.atualizaPersonagem personagens s) c))
-                            else do
-                                putStrLn "O Personagem agora esta assim:"
-                                putStrLn $ Persona.exibePersonagemString s
-                                putStrLn "\nEnter para voltar a batalha"
-                                restartBatalha menuBatalha (Persona.atualizaPersonagem personagens s)
+                        let consumivel = getConsmvlFromString (itens !! id)
+                        let usuario = fromJust (getPersng personagens nome)
+                        if (Persona.temConsumivel (usuario) consumivel) then do
+                            if nome /= nome2
+                                then do
+                                    let receptor = fromJust (getPersng personagens nome2)
+                                    let personagensFinais = Batalha.turnoConsumivel2 usuario receptor consumivel
+                                    putStrLn "Os Personagens agora estao assim:"
+                                    putStrLn $ Persona.exibePersonagemString (head personagensFinais)
+                                    putStrLn $ Persona.exibePersonagemString (last personagensFinais)
+                                    putStrLn "\nEnter para voltar a batalha"
+                                    restartBatalha menuBatalha ((Persona.atualizaPersonagem (Persona.atualizaPersonagem personagens (head personagensFinais)) (last personagensFinais)))
+                                else do
+                                    let personagemFinal = Batalha.turnoConsumivel usuario consumivel
+                                    putStrLn "O Personagem agora esta assim:"
+                                    putStrLn $ Persona.exibePersonagemString personagemFinal
+                                    putStrLn "\nEnter para voltar a batalha"
+                                    restartBatalha menuBatalha (Persona.atualizaPersonagem personagens personagemFinal)
+                        else do
+                            putStrLn (nome ++ " nao possui esse consumivel")
+                            restartBatalha menuBatalha personagens
                     else do
                         putStrLn "ID Invalido"
                         restartBatalha menuBatalha personagens
@@ -443,7 +449,7 @@ batalhaHabilis personagens = do
 
                         restartBatalha menuBatalha (Persona.atualizaPersonagem personagens newPerson)
                         else do
-                            putStrLn "Personagem nao possui esta habilidade"
+                            putStrLn (nomeEmissor ++ " nao possui esta habilidade")
                             restartBatalha menuBatalha personagens
                 else do
                     putStrLn "ID Invalido"

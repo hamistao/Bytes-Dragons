@@ -293,8 +293,8 @@ guardarConsumivel item personagem =
 
 removeConsumivel :: Consumivel -> Personagem -> [Consumivel]
 removeConsumivel consumivel personagem
-    | (duracao consumivel) - 1 /= 0 = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel] ++ [reduzDuracao consumivel]
-    | otherwise = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
+    | (duracao consumivel) == 1 = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
+    | otherwise = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel] ++ [reduzDuracao consumivel]
 
 
 reduzDuracao :: Consumivel -> Consumivel
@@ -330,7 +330,7 @@ desequiparConsumivel consumivel personagem =
         ,imunidades = imunidades personagem
     }
 
-aplicarItemConsumivel ::Consumivel -> Personagem -> Personagem
+aplicarItemConsumivel :: Consumivel -> Personagem -> Personagem
 aplicarItemConsumivel consumivel personagem =  
     Personagem{nome_personagem = nome_personagem personagem
         ,raca = raca personagem
