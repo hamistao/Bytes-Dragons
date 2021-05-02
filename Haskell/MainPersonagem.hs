@@ -337,7 +337,7 @@ getPersonagens (x:xs) personagens
 
 menuBatalha :: [Personagem] -> IO ()
 menuBatalha personagens = do
-    putStrLn "Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Comsumivel\n3 - Checar Personagens\n9 - Limpar as mensagens anteriores\n0 - Encerrar a Batalha\n"
+    putStrLn "Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Consumivel\n3 - Checar Personagens\n9 - Limpar as mensagens anteriores\n0 - Encerrar a Batalha\n"
     opcao <- getLine
     let action = lookup opcao [("1", batalhaHabilis), ("2", batalhaConsmvl), ("3", checarPersons),("9", limparChat), ("0", encerramento)]
     verificaEntradaBatalha action personagens
