@@ -462,10 +462,9 @@ atualizaPersonagem :: [Personagem] -> Personagem -> [Personagem]
 atualizaPersonagem lista personagem = [personagem] ++ [ x | x <- lista, nome_personagem x /= nome_personagem personagem]
        
 
+
 temConsumivel :: Personagem -> Consumivel -> Bool
-temConsumivel personagem consumivel
-  | nomeConsumivel consumivel `elem` [x | x <- nomeConsumivel personagem] = True
-  | otherwise = False
+temConsumivel personagem consumivel = nomeConsumivel consumivel `elem` [nomeConsumivel x | x <- consumiveis personagem]
 
 
 alteraVida :: Personagem -> Int -> Personagem
