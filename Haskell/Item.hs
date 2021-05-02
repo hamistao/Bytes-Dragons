@@ -84,7 +84,7 @@ removeHabilidadeEquipavel equipavel habilidade = Equipavel {
 
 listarConsumiveis :: [Consumivel] -> [String]
 listarConsumiveis [] = []
-listarConsumiveis (s:xs) = (show(nomeConsumivel s) ++ "\n") : listarConsumiveis xs
+listarConsumiveis (s:xs) = (show(nomeConsumivel s) ++ "\n" ++ "Duracao: " ++ show(duracao s)) : listarConsumiveis xs
 
 exibirConsumivel :: Consumivel -> String
 exibirConsumivel consumivel = "Nome: " ++ show(nomeConsumivel consumivel) ++ "\n"
