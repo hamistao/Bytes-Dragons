@@ -53,7 +53,7 @@ desencantaItem = do
         entrad <- getLine
         let id_item = read entrad :: Int
         desencantaIdComHabilidade id_item (read (habilidades !! id) :: Habilidade)
-        putStr "Item desencantado com sucesso"
+        putStrLn "Item desencantado com sucesso"
         restart menuHabilis
         else do
             putStrLn "Habilidade Inexistente\n"
@@ -69,8 +69,7 @@ desencantaIdComHabilidade id habilidade = do
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
             let old_item = itens !! id
-            let newItens = (delete (old_item) itens)
-            hPutStr tempHandle $ unlines (map show ((Item.removeHabilidadeEquipavel old_item habilidade):newItens))
+            hPutStr tempHandle $ unlines (map show (mudaItemNaOrdem (Item.removeHabilidadeEquipavel) (old_item) (itens) (habilidade)))
             hClose tempHandle
             removeFile "data/equip.info"
             renameFile tempName "data/equip.info"
@@ -91,7 +90,7 @@ encantaItem = do
         entrad <- getLine
         let id_item = read entrad :: Int
         encantaIdComHabilidade id_item (read (habilidades !! id) :: Habilidade)
-        putStr "Item encantado com sucesso"
+        putStrLn "Item encantado com sucesso"
         restart menuHabilis
         else do
             putStrLn "Habilidade Inexistente\n"
@@ -107,13 +106,18 @@ encantaIdComHabilidade id habilidade = do
         then do
             (tempName, tempHandle) <- openTempFile "data/" "temp"
             let old_item = itens !! id
-            let newItens = (delete (old_item) itens)
-            hPutStr tempHandle $ unlines (map show ((Item.atribuiHabilidadeEquipavel old_item habilidade):newItens))
+            hPutStr tempHandle $ unlines (map show (mudaItemNaOrdem (Item.atribuiHabilidadeEquipavel) (old_item) (itens) (habilidade)))
             hClose tempHandle
             removeFile "data/equip.info"
             renameFile tempName "data/equip.info"
         else putStrLn "Item Inexistente\n"
 
+
+mudaItemNaOrdem :: (Equipavel -> Habilidade -> Equipavel)-> Equipavel -> [Equipavel] -> Habilidade -> [Equipavel]
+mudaItemNaOrdem funcao _ [] _ = []
+mudaItemNaOrdem funcao old (x:xs) habil
+    | old == x = (funcao old habil):xs
+    | otherwise = x:(mudaItemNaOrdem funcao old xs habil)
 
 
 criarHabil :: IO ()
