@@ -240,7 +240,7 @@ comprarConsumivel persng item preco loja
         let new_data = Loja.compraConsumivel persng item preco loja
         replacePersonOnFile (fst(new_data)) persng
         replaceLojaOnFile (snd(new_data)) loja
-        putStr "Item comprado com sucesso"
+        putStrLn "Item comprado com sucesso"
 
 venderItem :: IO ()
 venderItem = do
