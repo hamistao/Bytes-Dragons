@@ -290,12 +290,12 @@ guardarConsumivel item personagem =
         ,imunidades = imunidades personagem
     }
 
-
-removeConsumivel :: Consumivel -> Personagem -> [Consumivel]
-removeConsumivel consumivel personagem
-    | (duracao consumivel) == 1 = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
-    | otherwise = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel] ++ [reduzDuracao consumivel]
-
+removeConsumivel :: Consumivel -> [Consumivel] -> [Consumivel]
+removeConsumivel consumivel (x:xs) = if nomeConsumivel x == nomeConsumivel consumivel
+                                        then if (duracao x) == 1
+                                            then xs
+                                            else (reduzDuracao x):xs
+                                        else x:(removeConsumivel consumivel xs)
 
 reduzDuracao :: Consumivel -> Consumivel
 reduzDuracao consumivel =
@@ -325,7 +325,7 @@ desequiparConsumivel consumivel personagem =
         ,xpUp = xpUp personagem
         ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem
-        ,consumiveis = [item | item <- consumiveis personagem, item /= consumivel]
+        ,consumiveis = [item | item <- consumiveis personagem, nomeConsumivel item /= nomeConsumivel consumivel]
         ,habilidades_personagem = habilidades_personagem personagem
         ,imunidades = imunidades personagem
     }
@@ -374,7 +374,7 @@ usarItemConsumivel consumivel personagem =
         ,xpUp = xpUp personagem
         ,nivel = nivel personagem
         ,equipaveis = equipaveis personagem
-        ,consumiveis = removeConsumivel consumivel personagem
+        ,consumiveis = removeConsumivel consumivel (consumiveis personagem)
         ,habilidades_personagem = habilidades_personagem personagem
         ,imunidades = imunidades personagem
     }
