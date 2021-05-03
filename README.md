@@ -19,7 +19,11 @@ $ cd Bytes-Dragons
 $ ghci Main
 *Main> main
 ```
-- Também estão disponíveis executáveis prontos para Windows (Main.exe) e Linux (Main)
+- Também estão disponíveis executáveis prontos para Windows (Main.exe) e Linux (Main, exemplificado abaixo)
+```fish
+$ cd Bytes-Dragons
+$ ./Main
+```
 
 # Objetivos primários:
 Na plataforma o usuário poderá:
