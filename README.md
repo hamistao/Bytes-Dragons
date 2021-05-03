@@ -5,6 +5,21 @@ Projeto em Haskell pra a disciplina de Paradigmas de linguagem de programação 
 # Proposta do projeto:
 “Bytes&Dragons” será uma plataforma, acessível pela linha de comando, de auxílio de sessões de RPG de mesa, especificamente de Dungeons and Dragons. O intuito do projeto é facilitar e automatizar parte do trabalho do “mestre” ao longo de campanhas realizadas à distância.
 
+# Instalação e uso
+- Compilação local
+```fish
+$ cd Bytes-Dragons
+$ ghc Main
+$ chmod +x Main
+$ ./Main
+```
+- Com interpretador
+```fish
+$ cd Bytes-Dragons
+$ ghci Main
+*Main> main
+```
+- Também estão disponíveis executáveis prontos para Windows (Main.exe) e Linux (Main)
 
 # Objetivos primários:
 Na plataforma o usuário poderá:
