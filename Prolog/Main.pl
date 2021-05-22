@@ -42,19 +42,19 @@ menu("2") :-
     menu('go').
 
 menu("3") :-
-    menuPersg(),
+    menuPersg(0),
     menu('go').
 
 menu("4") :-
-    menuItem(),
+    menuItem(0),
     menu('go').
 
 menu("5") :-
-    menuHabilis(),
+    menuHabilis(0),
     menu('go').
 
 menu("6") :-
-    menuLoja(),
+    menuLoja(0),
     menu('go').
 
 menu("9") :-
@@ -86,10 +86,8 @@ createFile(_).
 
 
 readLore(Path) :-
-    open(Path, read, Str),
-    read_file(Str, Lines),
+    getLinesFromFile(Path, Lines),
     printList(Lines),
-    close(Str),
     readEntrada(_).
 
 
@@ -97,6 +95,12 @@ printList([]).
 printList([X|L]) :-
     writeln(X),
     printList(L).
+
+
+linesFromFile(Path, Lines) :-
+    open(Path, read, Str),
+    read_file(Str, Lines),
+    close(Str).
 
 
 read_file(Stream,[]) :-
@@ -111,7 +115,7 @@ read_file(Stream,[X|L]) :-
 
 writeLore(Path):-
     open(Path, write, Str),
-    writeln('Digite "fim." para encerrar concluir a escrita da lore.'),
+    writeln('Digite "fim" para encerrar concluir a escrita da lore.'),
     readEntrada(Entrada),
     writeMultipleLines(Str, Entrada),
     close(Str).
@@ -129,3 +133,18 @@ readEntrada(Entrada) :-
     read_line_to_codes(user_input, E),
     atom_string(E, Entrada).
 
+
+writeComId([], _).
+writeComId([X|L], Id) :-
+    string_concat(Id, " - ", S1),
+    string_concat(S1, X, S2),
+    writeln(S2),
+    NextId is Id+1,
+    writeComId(L, NextId).
+
+
+elemFromId([], _, _, -1).
+elemFromId([X|_], Id, Id, X).
+elemFromId([X|L], Id, Atual,Elem) :-
+    NextAtual is Atual + 1,
+    elemFromId(L, Id, NextAtual,Elem).
