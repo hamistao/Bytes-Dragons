@@ -148,3 +148,11 @@ elemFromId([X|_], Id, Id, X).
 elemFromId([X|L], Id, Atual,Elem) :-
     NextAtual is Atual + 1,
     elemFromId(L, Id, NextAtual,Elem).
+
+
+stringFromList([], _).
+stringFromList([X|L], R) :-
+    string_concat(R, X, S1),
+    string_concat(S1, '\n', S2),
+    stringFromList(L, S2).
+
