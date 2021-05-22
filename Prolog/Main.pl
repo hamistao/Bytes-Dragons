@@ -60,6 +60,17 @@ menu(X) :-
 
 
 criaArquivos :-
-    writeln('Falta implementar criacao de arquivos'),
-    read(_).
-    
+    createFile('data/persngs.bd'),
+    createFile('data/consmvl.info'),
+    createFile('data/equip.info'),
+    createFile('data/habil.info'),
+    createFile('data/loja.bd'),
+
+
+createFile(Path) :-
+    \+ exists_file(Path),
+    open(Path, write, Out),
+    write(Out, ''),
+    close(Out).
+
+
