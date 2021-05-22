@@ -1,3 +1,4 @@
+:- include('Personagem.pl').
 :- include('Util.pl').
 
 menuPersg :-
