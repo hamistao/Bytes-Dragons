@@ -1,3 +1,5 @@
+:- include ('Habilidade.pl').
+
 menuHabilis :-
     cls,
     writeln( '           ('),
