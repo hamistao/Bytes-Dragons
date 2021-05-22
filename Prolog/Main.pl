@@ -30,26 +30,34 @@ menu('go') :-
     writeln('             \\    `\'  / \\   `\'  / \\   `.\' /'),
     writeln('                `.___,\'   `.__,\'   `.__,\'  VZ '),
     writeln('1 - Ler Campanha\n2 - Definir Lore da campanha\n3 - Menu de Personagem\n4 - Menu de Item\n5 - Menu de Habilidades\n6 - Loja\n9 - Sair\n'),
-    read(Entrada),
+    readEntrada(Entrada),
     menu(Entrada).
 
-menu(3) :-
+menu("1") :-
+    readLore('data/campanha.lore'),
+    menu('go').
+
+menu("2") :-
+    writeLore('data/campanha.lore'),
+    menu('go').
+
+menu("3") :-
     menuPersg(),
     menu('go').
 
-menu(4) :-
+menu("4") :-
     menuItem(),
     menu('go').
 
-menu(5) :-
+menu("5") :-
     menuHabilis(),
     menu('go').
 
-menu(6) :-
+menu("6") :-
     menuLoja(),
     menu('go').
 
-menu(9) :-
+menu("9") :-
     writeln('Programa Encerrado').
 
 menu(X) :-
@@ -65,6 +73,7 @@ criaArquivos :-
     createFile('data/equip.info'),
     createFile('data/habil.info'),
     createFile('data/loja.bd'),
+    createFile('data/campanha.lore').
 
 
 createFile(Path) :-
@@ -73,4 +82,50 @@ createFile(Path) :-
     write(Out, ''),
     close(Out).
 
+createFile(_).
+
+
+readLore(Path) :-
+    open(Path, read, Str),
+    read_file(Str, Lines),
+    printList(Lines),
+    close(Str),
+    readEntrada(_).
+
+
+printList([]).
+printList([X|L]) :-
+    writeln(X),
+    printList(L).
+
+
+read_file(Stream,[]) :-
+    at_end_of_stream(Stream).
+
+read_file(Stream,[X|L]) :-
+    \+ at_end_of_stream(Stream),
+    read_line_to_codes(Stream, Codes),
+    atom_chars(X, Codes),
+    read_file(Stream, L).
+
+
+writeLore(Path):-
+    open(Path, write, Str),
+    writeln('Digite "fim." para encerrar concluir a escrita da lore.'),
+    readEntrada(Entrada),
+    writeMultipleLines(Str, Entrada),
+    close(Str).
+
+
+writeMultipleLines(_, "fim").
+
+writeMultipleLines(Str, Linha):-
+    writeln(Str, Linha),
+    readEntrada(ProximaLinha),
+    writeMultipleLines(Str, ProximaLinha).
+    
+
+readEntrada(Entrada) :-
+    read_line_to_codes(user_input, E),
+    atom_string(E, Entrada).
 
