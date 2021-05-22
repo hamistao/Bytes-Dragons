@@ -9,6 +9,15 @@ isTipoEquipavel("Maos").
 isTipoEquipavel("Arma").
 
 
+listarItens([]):-
+listarItens([Item|L], R) :-
+    listaItens(L, R1),
+    nomeEquipavel(Equipavel, Nome),
+    string_concat("\nNome: ", Nome, S),
+    string_concat(S, R1, R).
+    
+
+
 exibirItem(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
     string_concat("/nNome: ", NomeEquipavel, S1),
     string_concat(S1, "\nAlteracao vida: ", S2),
