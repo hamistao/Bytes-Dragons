@@ -118,7 +118,21 @@ cadastraItem("1") :-
     writeln('Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?'),
     readEntrada(Tipo),
     open('data/equip.info', append, Str),
-    construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item),
+    construtorItemString(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item),
+    writeln(Item),
+    write(Str, Item), writeln(Str, ".").
+
+cadastraItem("2") :-
+    nl, writeln('Qual o nome do Consumivel?'),
+    readEntrada(Nome),
+    writeln('Qual a Alteracao de Vida?'),
+    readEntrada(Vida),
+    writeln('Qual a Alteracao de Velocidade?'),
+    readEntrada(Velocidade),
+    writeln('Qual a Durabilidade?'),
+    readEntrada(Durac),
+    open('data/equip.info', append, Str),
+    construtorItemString(Nome, Vida, Velocidade, Durac, Item),
     writeln(Item),
     write(Str, Item), writeln(Str, ".").
 
@@ -127,40 +141,3 @@ cadastraItem(_) :-
 
 menuItem(_).
 
-
-equipaveisFromStr([], _).
-equipaveisFromStr([Equipavel|L], Lista) :-
-    equipaveisFromStr(L, PLista),
-    writeln(Equipavel),
-    equipavelFromStr(Equipavel, Item),
-    append([Item], PLista, Lista).
-
-
-equipavelFromStr(Str, Item) :-
-    writeln('n sei bro'),
-    nth0(0, Str, Nome),
-    writeln('eu quero morrerrr aaaaaa'),
-    nth0(1, Str, Vida),
-    nth0(2, Str, Forca),
-    nth0(3, Str, Inteligencia),
-    nth0(4, Str, Sabedoria),
-    nth0(5, Str, Destreza),
-    nth0(6, Str, Constituicao),
-    nth0(7, Str, Carisma),
-    nth0(8, Str, Velocd),
-    nth0(9, Str, Tipo),
-    writeln('mais 3 as'),
-    construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item).
-
-
-removeItemFromFile(Path, Id) :-
-    linesFromFile(Path, Lines),
-    nth1(Id, Lines, _, Itens),
-    open(Path, write, Str),
-    writeLinesToFile(Str, Itens),!,
-    close(Str).
-
-writeLinesToFile(_, []).
-writeLinesToFile(Stream, [H|L]) :-
-    writeln(Stream, H),
-    writeLinesToFile(Stream, L).
