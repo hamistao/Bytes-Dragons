@@ -40,7 +40,7 @@ isTipoEquipavel("Arma").
 listarItem([], []).
 listarItem([Item|L], R) :-
     listarItem(L, R1),
-    nomeEquipavel(Item, Nome),
+    nomeItem(Item, Nome),
     string_concat("Nome: ", Nome, S),
     append([S], R1, R).
     
