@@ -22,7 +22,7 @@ menuItem :-
 menuItem("1") :-
     structsFromFile('data/equip.info', EquipaveisStr),
     structsFromFile('data/consmvl.info', Consumiveis),
-    listarEquipaveis(EquipaveisStr, ListaEquip),
+    listarItem(EquipaveisStr, ListaEquip),
     nl, writeln('Itens Equipaveis:'),
     writeComId(ListaEquip, 1),
     writeln('Itens Consumiveis:'),
