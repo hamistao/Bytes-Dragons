@@ -19,21 +19,24 @@ menuItem(0) :-
     menuItem(Entrada).
 
 menuItem("1") :-
-    linesFromFile('data/equip.info', Equipaveis),
-    linesFromFile('data/consmvl.info', Consumiveis),
-    listarEquipaveis(Equipaveis, ListaEquip)
+    structsFromFile('data/equip.info', EquipaveisStr),
+    structsFromFile('data/consmvl.info', Consumiveis),
+    listarEquipaveis(EquipaveisStr, ListaEquip),
+    writeln('Melkaco prego'),
     nl, writeln('Itens Equipaveis:'),
     writeComId(ListaEquip, 1),
-    nl, writeln('Itens Consumiveis:'),
+    writeln('Itens Consumiveis:'),
     writeComId(Consumiveis, 1),
-    readEntrada(_).
+    readEntrada(_),
+    menuItem(0).
 
 menuItem("2") :-
     nl, opcaoDeItem,
     readEntrada(Tipo),
     cadastraItem(Tipo),
     writeln('Item cadastrado com sucesso.\nEnter para continuar'),
-    readEntrada(_).
+    readEntrada(_),
+    menuItem(0).
 
 menuItem("3").
 
@@ -42,31 +45,36 @@ menuItem("4") :-
     readEntrada(Tipo),
     detalheItem(Tipo),
     writeln('\nEnter para continuar'),
-    readEntrada(_).
+    readEntrada(_),
+    menuItem(0).
 
 
 detalheItem("1") :-
     writeln('Qual o ID do Equipavel?'),
     readEntrada(Id),
-    linesFromFile('data/equip.info', Equipaveis),
-    Desejado is Id-1,
+    atom_number(Id, Desejado),
+    Desejado > 0,
+    length(Equipaveis, L),
+    Desejado =< L, %>
+    structsFromFile('data/equip.info', Equipaveis),
     elemFromId(Equipaveis, Desejado, 0, Equipavel),
-    Equipavel != -1,
-    exibeEquipavel(Equipavel, S),
+    exibirItem(Equipavel, S),
     writeln(S).
 
 detalheItem("2") :-
     writeln('Qual o ID do Consumivel?'),
     readEntrada(Id),
-    linesFromFile('data/consmvl.info', Consumiveis),
-    Desejado is Id-1,
+    atom_number(Id, Desejado),
+    structsFromFile('data/consmvl.info', Consumiveis),
     elemFromId(Consumiveis, Desejado, 0, Consumivel),
-    Consumivel != -1,
-    exibeEquipavel(Consumivel, S),
+    Consumivel \= -1,
+    exibirItem(Consumivel, S),
     writeln(S).
 
-detalheItem(_) :-
-    writeln('Id Invalido bro').
+detalheItem(X) :-
+    write('o id - '),
+    write(X),
+    writeln(' - Id Invalido bro').
 
 
 cadastraItem("1") :-
@@ -93,9 +101,34 @@ cadastraItem("1") :-
     open('data/equip.info', append, Str),
     construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item),
     writeln(Item),
-    writeln(Str, Item).
+    append(Str, Item).
 
 cadastraItem(_) :-
     writeln('isso eh balela ai brother').
 
 menuItem(_).
+
+
+equipaveisFromStr([], _).
+equipaveisFromStr([Equipavel|L], Lista) :-
+    equipaveisFromStr(L, PLista),
+    writeln(Equipavel),
+    equipavelFromStr(Equipavel, Item),
+    append([Item], PLista, Lista).
+
+
+equipavelFromStr(Str, Item) :-
+    writeln('n sei bro'),
+    nth0(0, Str, Nome),
+    writeln('eu quero morrerrr aaaaaa'),
+    nth0(1, Str, Vida),
+    nth0(2, Str, Forca),
+    nth0(3, Str, Inteligencia),
+    nth0(4, Str, Sabedoria),
+    nth0(5, Str, Destreza),
+    nth0(6, Str, Constituicao),
+    nth0(7, Str, Carisma),
+    nth0(8, Str, Velocd),
+    nth0(9, Str, Tipo),
+    writeln('mais 3 as'),
+    construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item).

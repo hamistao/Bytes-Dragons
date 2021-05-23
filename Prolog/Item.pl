@@ -9,17 +9,16 @@ isTipoEquipavel("Maos").
 isTipoEquipavel("Arma").
 
 
-listarItens([]):-
-listarItens([Item|L], R) :-
-    listaItens(L, R1),
+listarEquipaveis([], []).
+listarEquipaveis([Equipavel|L], R) :-
+    listarEquipaveis(L, R1),
     nomeEquipavel(Equipavel, Nome),
-    string_concat("\nNome: ", Nome, S),
-    string_concat(S, R1, R).
+    string_concat("Nome: ", Nome, S),
+    append([S], R1, R).
     
 
-
-exibirItem(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
-    string_concat("/nNome: ", NomeEquipavel, S1),
+exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
+    string_concat("\nNome: ", NomeEquipavel, S1),
     string_concat(S1, "\nAlteracao vida: ", S2),
     string_concat(S2, AlteracaoVida, S3),
     string_concat(S3, "\nAlteracao de forca", S4),
@@ -37,6 +36,11 @@ exibirItem(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, Alterac
     string_concat(S15, "\nAlteracao de velocidade no equipavel: ", S16),
     string_concat(S16, AlteracaoVelocidadeEquipavel, S17),
     string_concat(S17, "\nTipo de equipavel: ", S18),
-    string_concat(S18, TipoEquipavel, R),
-    
-nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _) NomeEquipavel).   
+    string_concat(S18, TipoEquipavel, R).
+
+exibirItem(X, Y) :-
+    writeln(X),
+    nomeEquipavel(X, Y).
+
+
+nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).

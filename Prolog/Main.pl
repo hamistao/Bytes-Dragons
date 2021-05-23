@@ -86,7 +86,7 @@ createFile(_).
 
 
 readLore(Path) :-
-    getLinesFromFile(Path, Lines),
+    linesFromFile(Path, Lines),
     printList(Lines),
     readEntrada(_).
 
@@ -99,7 +99,7 @@ printList([X|L]) :-
 
 linesFromFile(Path, Lines) :-
     open(Path, read, Str),
-    read_file(Str, Lines),
+    read_file(Str, Lines),!,
     close(Str).
 
 
@@ -111,6 +111,22 @@ read_file(Stream,[X|L]) :-
     read_line_to_codes(Stream, Codes),
     atom_chars(X, Codes),
     read_file(Stream, L).
+
+
+structsFromFile(Path, Lines) :-
+    open(Path, read, Str),
+    read_file_structures(Str, Lines),!,
+    close(Str).
+
+
+read_file_structures(Stream,[]) :-
+    at_end_of_stream(Stream).
+
+read_file_structures(Stream, [X|L]) :-
+    \+ at_end_of_stream(Stream),
+    read(Stream, X),
+    read_file_structures(Stream, L).
+
 
 
 writeLore(Path):-
@@ -135,10 +151,12 @@ readEntrada(Entrada) :-
 
 
 writeComId([], _).
+
 writeComId([X|L], Id) :-
     string_concat(Id, " - ", S1),
     string_concat(S1, X, S2),
-    writeln(S2),
+    string_concat(S2, "\n", S3),
+    writeln(S3),
     NextId is Id+1,
     writeComId(L, NextId).
 
