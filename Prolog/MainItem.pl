@@ -116,7 +116,7 @@ cadastraItem("1") :-
     open('data/equip.info', append, Str),
     construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item),
     writeln(Item),
-    write(Str, Item), writeln(".").
+    write(Str, Item), writeln(Str, ".").
 
 cadastraItem(_) :-
     writeln('isso eh balela ai brother').
