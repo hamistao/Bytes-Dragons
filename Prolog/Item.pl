@@ -25,8 +25,8 @@ listarConsumiveis([Consumivel | L], R):-
     string_concat(S, R1, R).
     
 
-exibirEquipavel(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
-    string_concat("/nNome: ", NomeEquipavel, S1),
+exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
+    string_concat("\nNome: ", NomeEquipavel, S1),
     string_concat(S1, "\nAlteracao vida: ", S2),
     string_concat(S2, AlteracaoVida, S3),
     string_concat(S3, "\nAlteracao de forca", S4),
@@ -45,8 +45,13 @@ exibirEquipavel(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, Al
     string_concat(S16, AlteracaoVelocidadeEquipavel, S17),
     string_concat(S17, "\nTipo de equipavel: ", S18),
     string_concat(S18, TipoEquipavel, R).
-    
-exibirConsumivel(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), _) :-
+
+exibirItem(X, Y) :-
+    writeln(X),
+    nomeEquipavel(X, Y).
+
+
+exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), R) :-
     string_concat("/nNome: ", NomeConsumivel, S1),
     string_concat(S1, "\nAlteracao de vida: ", S2),
     string_concat(S2, AlteracaoVida, S3),
@@ -55,6 +60,7 @@ exibirConsumivel(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeCo
     string_concat(S5, "\nduracao: ", S6),
     string_concat(S6, Duracao, _).
     
-nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).   
-nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
 
+
+nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _) NomeEquipavel).   
+nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
