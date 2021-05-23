@@ -33,10 +33,3 @@ listaHabilidades([Habilidade|L], R) :-
     append([S], R1, R).
 
 nomeHabilidade(habilidade(Nome, _, _, _, _, _), Nome).
-
-isTipoDano("Cortante").
-isTipoDano("Magico").
-isTipoDano("Venenoso").
-isTipoDano("Fogo").
-isTipoDano("Gelo").
-isTipoDano("Fisico").
