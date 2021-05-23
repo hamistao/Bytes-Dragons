@@ -61,17 +61,4 @@ menuHabilis("4"):-
     readEntrada(_),
     menuHabilis.
     
-menuHabilis(_). 
-    
-exibeFromFile(Path) :-
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    structsFromFile(Path, Itens),
-
-    length(Itens, L),
-    Desejado > 0,
-    \+ Desejado > L,
-
-    elemFromId(Itens, Desejado, 1, Item),
-    exibeHabilidade(Item, S),
-    writeln(S).
+menuHabilis(_).

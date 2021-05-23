@@ -1,7 +1,7 @@
 :- include('Habilidade.pl').
 
 construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria,
-    Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades)) :-
+    Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias)) :-
         
         VidaMaxima is vidaMaxima(Classe) + vidaMaxima(Raca),
         Vida = VidaMaxima,
@@ -39,11 +39,11 @@ construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxi
         Equipaveis = [],
         Consumiveis = [],
         Habilidades = [],
-        Imunidades = [].
+        Imunidades = [],
+        Resistencias = [].
 
-%%Imunidade não ta sendo usado.
 exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades), R) :-
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias), R) :-
         string_concat("\nNome: ", Nome, S1),
         string_concat(S1, "\nRaca: ", S2),
         string_concat(S2, Raca, S3),
@@ -87,7 +87,11 @@ exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Intelige
         string_concat(S37, HabilidadesS, S38),
         string_concat(S38, "Resistencias:\n", S39),
         stringFromList(Resistencias, ResistenciasS),
-        string_concat(S39, ResistenciasS, R).
+        string_concat(S39, HabilidadesS, S40),
+        string_concat(S40, "Imunidades:\n", S41),
+        stringFromList(Imunidades, ImunidadesS),
+        string_concat(S41, ImunidadesS, S42),
+        string_concat(S42, ResistenciasS, R).
 
 listaPersonagens([], []).
 listaPersonagens([Personagem|L], R) :-
@@ -96,8 +100,7 @@ listaPersonagens([Personagem|L], R) :-
     string_concat("Nome: ", Nome, S),
     append([S], R1, R).
 
-nomePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades), Nome).
+nomePersonagem(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), Nome).
 
 isAtributo("Forca").
 isAtributo("Inteligencia").

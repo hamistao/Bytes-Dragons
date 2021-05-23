@@ -93,7 +93,7 @@ exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumiv
     string_concat(S3, "\nAlteracao de velocidade: ", S4),
     string_concat(S4, AlteracaoVelocidadeConsumivel, S5),
     string_concat(S5, "\nduracao: ", S6),
-    string_concat(S6, Duracao, _).
+    string_concat(S6, Duracao, R).
     
 
 

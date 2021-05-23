@@ -1,4 +1,4 @@
-:- include('Loja.pl').
+%:- include('Loja.pl').
 
 menuLoja :-
     write('\e[H\e[2J'),
@@ -14,7 +14,9 @@ menuLoja :-
     writeln(  '1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um item na Loja\n4 - Detalhes de Loja\n5 - Excluir Loja\n6 - Negociar com a Loja\n9 - Voltar Menu\n'),
     read(_).
 
-menuLoja(_).
+menuLoja(_) :-
+    writeln('\nEntrada invalida amigao.'),
+    menuLoja.
     
 menuLoja("1") :-
     structsFromFile('data/loja.info', LojasStr),
@@ -62,23 +64,7 @@ detalheLoja(X) :-
     write(X),
     writeln(' - Id Invalido bro').
 
-excluiLoja(_) :-
-	writeln('brother pare brother').
-
 excluiLoja :-
 	readEntrada(Id),
 	atom_number(Id, Desejado),
 	removeItemFromFile('data/loja.info', Desejado).
-
-exibeFromFile(Path) :-
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    structsFromFile(Path, Lojas),
-
-    length(Lojas, L),
-    Desejado > 0,
-    \+ Desejado > L,
-
-    elemFromId(Lojas, Desejado, 1, Loja),
-    exibirLoja(Loja, S),
-    writeln(S).
