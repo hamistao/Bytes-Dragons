@@ -131,7 +131,7 @@ cadastraItem("2") :-
     readEntrada(Velocidade),
     writeln('Qual a Durabilidade?'),
     readEntrada(Durac),
-    open('data/equip.info', append, Str),
+    open('data/consmvl.info', append, Str),
     construtorItemString(Nome, Vida, Velocidade, Durac, Item),
     writeln(Item),
     write(Str, Item), writeln(Str, ".").
