@@ -22,7 +22,6 @@ menuItem :-
 menuItem("1") :-
     structsFromFile('data/equip.info', EquipaveisStr),
     structsFromFile('data/consmvl.info', Consumiveis),
-    writeln(EquipaveisStr),
     listarEquipaveis(EquipaveisStr, ListaEquip),
     nl, writeln('Itens Equipaveis:'),
     writeComId(ListaEquip, 1),
@@ -42,7 +41,8 @@ menuItem("3") :-
     opcaoDeItem(Tipo),
     excluiItem(Tipo),
     writeln('Item excluido com sucesso'),
-    readEntrada(_).
+    readEntrada(_),
+    menuItem.
 
 menuItem("4") :-
     opcaoDeItem(Tipo),
@@ -131,7 +131,7 @@ cadastraItem("2") :-
     readEntrada(Velocidade),
     writeln('Qual a Durabilidade?'),
     readEntrada(Durac),
-    open('data/equip.info', append, Str),
+    open('data/consmvl.info', append, Str),
     construtorItemString(Nome, Vida, Velocidade, Durac, Item),
     writeln(Item),
     write(Str, Item), writeln(Str, ".").

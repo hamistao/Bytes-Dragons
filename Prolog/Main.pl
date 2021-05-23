@@ -125,7 +125,6 @@ read_file_structures(Stream,[]) :-
 read_file_structures(Stream, [X|L]) :-
     \+ at_end_of_stream(Stream),
     read(Stream, X),
-    writeln(X),
     \+ X == 'end_of_file',
 
     read_file_structures(Stream, L).
