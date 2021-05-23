@@ -88,12 +88,12 @@ exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Intelige
         stringFromList(Resistencias, ResistenciasS),
         string_concat(S39, ResistenciasS, R).
 
-listaPersonagens([], _).
+listaPersonagens([], []).
 listaPersonagens([Personagem|L], R) :-
     listaPersonagens(L, R1),
     nomePersonagem(Personagem, Nome),
-    string_concat("\nNome: ", Nome, S),
-    string_concat(S, R1, R).
+    string_concat("Nome: ", Nome, S),
+    append([S], R1, R).
 
 nomePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades), Nome).
