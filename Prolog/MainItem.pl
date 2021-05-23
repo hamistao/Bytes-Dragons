@@ -77,6 +77,22 @@ detalheItem(X) :-
     writeln(' - Id Invalido bro').
 
 
+excluiItem("1") :-
+    writeln('Qual o ID do Equipavel?'),
+    readEntrada(Id),
+    atom_number(Id, Desejado),
+    removeItemFromFile('data/equip.info', Desejado).
+
+excluiItem("2") :-
+    writeln('Qual o ID do Consumivel?'),
+    readEntrada(Id),
+    atom_number(Id, Desejado),
+    removeItemFromFile('data/consmvl.info', Desejado).
+
+excluiItem(_) :- 
+    writeln('tais trolando brother?').
+
+
 cadastraItem("1") :-
     nl, writeln('Qual o nome do Equipavel?'),
     readEntrada(Nome),

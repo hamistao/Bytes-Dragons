@@ -14,7 +14,7 @@ listarEquipaveis([Equipavel|L], R) :-
     listarEquipaveis(L, R1),
     nomeEquipavel(Equipavel, Nome),
     string_concat("Nome: ", Nome, S),
-    string_concat(S, R1, R).
+    append(S, R1, R).
     
 
 listarConsumiveis([], []).
@@ -22,7 +22,7 @@ listarConsumiveis([Consumivel | L], R):-
     listarConsumiveis(L, R1),
     nomeConsumivel(Consumivel, Nome),
     string_concat("Nome: ", Nome, S),
-    string_concat(S, R1, R).
+    append(S, R1, R).
     
 
 exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
@@ -62,5 +62,5 @@ exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumiv
     
 
 
-nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _) NomeEquipavel).   
+nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).   
 nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
