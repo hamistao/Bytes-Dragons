@@ -22,7 +22,6 @@ menuItem("1") :-
     structsFromFile('data/equip.info', EquipaveisStr),
     structsFromFile('data/consmvl.info', Consumiveis),
     listarEquipaveis(EquipaveisStr, ListaEquip),
-    writeln('Melkaco prego'),
     nl, writeln('Itens Equipaveis:'),
     writeComId(ListaEquip, 1),
     writeln('Itens Consumiveis:'),
@@ -55,7 +54,7 @@ detalheItem("1") :-
     atom_number(Id, Desejado),
     Desejado > 0,
     length(Equipaveis, L),
-    Desejado =< L, %>
+    \+ Desejado > L,
     structsFromFile('data/equip.info', Equipaveis),
     elemFromId(Equipaveis, Desejado, 0, Equipavel),
     exibirItem(Equipavel, S),
@@ -117,7 +116,7 @@ cadastraItem("1") :-
     open('data/equip.info', append, Str),
     construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item),
     writeln(Item),
-    append(Str, Item).
+    write(Str, Item), writeln(".").
 
 cadastraItem(_) :-
     writeln('isso eh balela ai brother').
