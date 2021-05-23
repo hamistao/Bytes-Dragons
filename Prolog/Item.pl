@@ -1,6 +1,36 @@
-construtorItemConsumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao)).
+construtorItemConsumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, R):-
+    string_concat('equipavel("', Nome, S1),
+    string_concat(S1, '",', S2),
+    string_concat(S2, AlteracaoVida, S3),
+    string_concat(S3, ',', S4),
+    string_concat(S4, AlteracaoVelocidadeConsumivel, S5),
+    string_concat(S5, ',', S6),
+    string_concat(S6, Duracao, R).
 
-construtorItemEquipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel)).
+
+
+construtorItemEquipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, R):-
+    string_concat('equipavel("', NomeEquipavel, S1),
+    string_concat(S1, '",', S2),
+    string_concat(S2, AlteracaoVidaMaxima, S3),
+    string_concat(S3, ',', S4),
+    string_concat(S4, AlteracaoForca, S5),
+    string_concat(S5, ',', S6),
+    string_concat(S6, AlteracaoInteligencia, S7),
+    string_concat(S7, ',', S8),
+    string_concat(S8, AlteracaoSabedoria, S9),
+    string_concat(S9, ',', S10),
+    string_concat(S10, AlteracaoDestreza, S11),
+    string_concat(S11, ',', S12),
+    string_concat(S12, AlteracaoConstituicao, S13),
+    string_concat(S13, ',', S14),
+    string_concat(S14, AlteracaoCarisma, S15),
+    string_concat(S15, ',', S16),
+    string_concat(S16, AlteracaoVelocidadeEquipavel, S17),
+    string_concat(S17, ',"', S18),
+    string_concat(S18, TipoEquipavel, S19),
+    string_concat(S19, '")', R).
+    
 
 isTipoEquipavel("Cabeca").
 isTipoEquipavel("Torso").
@@ -14,7 +44,7 @@ listarEquipaveis([Equipavel|L], R) :-
     listarEquipaveis(L, R1),
     nomeEquipavel(Equipavel, Nome),
     string_concat("Nome: ", Nome, S),
-    append(S, R1, R).
+    append([S], R1, R).
     
 
 listarConsumiveis([], []).
@@ -22,7 +52,7 @@ listarConsumiveis([Consumivel | L], R):-
     listarConsumiveis(L, R1),
     nomeConsumivel(Consumivel, Nome),
     string_concat("Nome: ", Nome, S),
-    append(S, R1, R).
+    append([S], R1, R).
     
 
 exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
