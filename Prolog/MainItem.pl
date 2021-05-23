@@ -1,6 +1,6 @@
 :- include('Item.pl').
 
-opcaoDeItem(Opcao) :-
+opcaoDeItem(Tipo) :-
     writeln('1 - Equipavel \nou \n2 -Consumivel?'),
     nl, readEntrada(Tipo).
 
@@ -51,6 +51,9 @@ menuItem("4") :-
     readEntrada(_),
     menuItem.
 
+menuItem(_) :-
+    writeln('\nEntrada invalida.'),
+    menuItem.
 
 detalheItem("1") :-
     writeln('Qual o ID do Equipavel?'),
@@ -60,11 +63,9 @@ detalheItem("2") :-
     writeln('Qual o ID do Consumivel?'),
     exibeItemFromFile('data/consmvl.info').
 
-detalheItem(X) :-
-    write('o id - '),
-    write(X),
-    writeln(' - Id Invalido bro').
-
+detalheItem(_) :-
+    write('tipo de item so pode ser \'1\' ou \'2\''),
+    menuItem("4").
 
 exibeItemFromFile(Path) :-
     readEntrada(Id),
@@ -78,7 +79,6 @@ exibeItemFromFile(Path) :-
     elemFromId(Itens, Desejado, 1, Item),
     exibirItem(Item, S),
     writeln(S).
-
 
 excluiItem("1") :-
     writeln('Qual o ID do Equipavel?'),
@@ -138,6 +138,4 @@ cadastraItem("2") :-
 
 cadastraItem(_) :-
     writeln('isso eh balela ai brother').
-
-menuItem(_).
 

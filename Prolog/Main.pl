@@ -169,7 +169,7 @@ writeComId([X|L], Id) :-
 
 elemFromId([], _, _, -1).
 elemFromId([X|_], Id, Id, X).
-elemFromId([X|L], Id, Atual,Elem) :-
+elemFromId([_|L], Id, Atual,Elem) :-
     NextAtual is Atual + 1,
     elemFromId(L, Id, NextAtual,Elem).
 
@@ -193,3 +193,14 @@ writeLinesToFile(_, []).
 writeLinesToFile(Stream, [H|L]) :-
     writeln(Stream, H),
     writeLinesToFile(Stream, L).
+
+exibeFromFile(Path) :-
+    readEntrada(Id),
+    atom_number(Id, Desejado),
+    structsFromFile(Path, Itens),
+    length(Itens, L),
+    Desejado > 0,
+    \+ Desejado > L,
+    elemFromId(Itens, Desejado, 1, Item),
+    exibirItem(Item, S),
+    writeln(S).

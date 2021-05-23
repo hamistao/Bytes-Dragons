@@ -1,7 +1,7 @@
 :- include('Habilidade.pl').
 
 construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria,
-    Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades)) :-
+    Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias)) :-
         
         VidaMaxima is vidaMaxima(Classe) + vidaMaxima(Raca),
         Vida = VidaMaxima,
@@ -39,10 +39,11 @@ construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxi
         Equipaveis = [],
         Consumiveis = [],
         Habilidades = [],
-        Imunidades = [].
+        Imunidades = [],
+        Resistencias = [].
 
 exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades), R) :-
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias), R) :-
         string_concat("\nNome: ", Nome, S1),
         string_concat(S1, "\nRaca: ", S2),
         string_concat(S2, Raca, S3),
@@ -98,8 +99,7 @@ listaPersonagens([Personagem|L], R) :-
     string_concat("Nome: ", Nome, S),
     append([S], R1, R).
 
-nomePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades), Nome).
+nomePersonagem(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), Nome).
 
 isAtributo("Forca").
 isAtributo("Inteligencia").
