@@ -36,12 +36,3 @@ listaHabilidades([Habilidade|L], R) :-
 :- discontiguous listaHabilidades/2.
 
 nomeHabilidade(habilidade(Nome, _, _, _, _, _), Nome).
-:- discontiguous nomeHabilidade/2.
-
-isTipoDano("Cortante").
-isTipoDano("Magico").
-isTipoDano("Venenoso").
-isTipoDano("Fogo").
-isTipoDano("Gelo").
-isTipoDano("Fisico").
-:- discontiguous isTipoDano/1.

@@ -30,13 +30,6 @@ construtorItemString(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, Alterac
     string_concat(S19, '")', R).
 
 
-construtorItem(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao)).
-
-construtorItem(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel)).
-
-
-
-
 isTipoEquipavel("Cabeca").
 isTipoEquipavel("Torso").
 isTipoEquipavel("Pernas").
@@ -44,18 +37,10 @@ isTipoEquipavel("Maos").
 isTipoEquipavel("Arma").
 
 
-listarEquipaveis([], []).
-listarEquipaveis([Equipavel|L], R) :-
-    listarEquipaveis(L, R1),
-    nomeEquipavel(Equipavel, Nome),
-    string_concat("Nome: ", Nome, S),
-    append([S], R1, R).
-    
-
-listarConsumiveis([], []).
-listarConsumiveis([Consumivel | L], R):-
-    listarConsumiveis(L, R1),
-    nomeConsumivel(Consumivel, Nome),
+listarItem([], []).
+listarItem([Item|L], R) :-
+    listarItem(L, R1),
+    nomeItem(Item, Nome),
     string_concat("Nome: ", Nome, S),
     append([S], R1, R).
     
@@ -97,5 +82,5 @@ exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumiv
     
 
 
-nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).   
-nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
+nomeItem(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).   
+nomeItem(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
