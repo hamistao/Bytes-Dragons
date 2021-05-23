@@ -13,12 +13,12 @@ exibeHabilidade(habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacio
     string_concat(S9, "\nPontos para acerto: ", S10),
     string_concat(S10, PontosParaAcerto, R).
 
-listaHabilidades([], _).
+listaHabilidades([], []).
 listaHabilidades([Habilidade|L], R) :-
     listaHabilidades(L, R1),
     nomeHabilidade(Habilidade, Nome),
-    string_concat("\nNome: ", Nome, S),
-    string_concat(S, R1, R).
+    string_concat("Nome: ", Nome, S),
+    append([S], R1, R).
 
 nomeHabilidade(habilidade(Nome, _, _, _, _, _), Nome).
 

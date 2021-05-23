@@ -1,4 +1,4 @@
-construtorItemConsumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, consumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao)).
+construtorItemConsumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao)).
 
 construtorItemEquipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel)).
 
@@ -11,10 +11,18 @@ isTipoEquipavel("Arma").
 
 listarEquipaveis([], []).
 listarEquipaveis([Equipavel|L], R) :-
-    listarEquipaveis(L, R1),
+    listaEquipaveis(L, R1),
     nomeEquipavel(Equipavel, Nome),
     string_concat("Nome: ", Nome, S),
-    append([S], R1, R).
+    string_concat(S, R1, R).
+    
+
+listarConsumiveis([], []).
+listarConsumiveis([Consumivel | L], R):-
+    listarConsumiveis(L, R1),
+    nomeConsumivel(Consumivel, Nome),
+    string_concat("Nome: ", Nome, S),
+    string_concat(S, R1, R).
     
 
 exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel), R) :- 
@@ -43,4 +51,16 @@ exibirItem(X, Y) :-
     nomeEquipavel(X, Y).
 
 
-nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).
+exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), R) :-
+    string_concat("/nNome: ", NomeConsumivel, S1),
+    string_concat(S1, "\nAlteracao de vida: ", S2),
+    string_concat(S2, AlteracaoVida, S3),
+    string_concat(S3, "\nAlteracao de velocidade: ", S4),
+    string_concat(S4, AlteracaoVelocidadeConsumivel, S5),
+    string_concat(S5, "\nduracao: ", S6),
+    string_concat(S6, Duracao, S7).
+    
+
+
+nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _) NomeEquipavel).   
+nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
