@@ -61,4 +61,8 @@ menuHabilis("4"):-
     readEntrada(_),
     menuHabilis.
     
-menuHabilis(_).
+menuHabilis("9").
+
+menuHabilis(_):-
+    writeln('\nEntrada invalida.'),
+    menuHabilis.
