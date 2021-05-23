@@ -1,5 +1,17 @@
-construtorHabilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano, habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano)).
-
+construtorHabilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano, R):-
+    string_concat('habilidade("', Nome, S1),
+    string_concat(S1, '",', S2),
+    string_concat(S2, ImpactoVida, S3),
+    string_concat(S3, ',', S4),
+    string_concat(S4, ImpactoVelocidade, S5),
+    string_concat(S5, ', "', S6),
+    string_concat(S6, AtributoRelacionado, S7),
+    string_concat(S7, '",', S8),
+    string_concat(S8, PontosParaAcerto, S9),
+    string_concat(S9, ',"', S10),
+    string_concat(S10, TipoDeDano, S11),
+    string_concat(S11, '")', R).
+    
 exibeHabilidade(habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano), R) :-
     string_concat("\nNome: ", Nome, S1),
     string_concat(S1, "\nTipo da habilidade: ", S2),
