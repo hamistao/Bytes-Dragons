@@ -57,15 +57,28 @@ menuItem(_) :-
 
 detalheItem("1") :-
     writeln('Qual o ID do Equipavel?'),
-    exibeFromFile('data/equip.info').
+    exibeItemFromFile('data/equip.info').
 
 detalheItem("2") :-
     writeln('Qual o ID do Consumivel?'),
-    exibeFromFile('data/consmvl.info').
+    exibeItemFromFile('data/consmvl.info').
 
 detalheItem(_) :-
     write('tipo de item so pode ser \'1\' ou \'2\''),
     menuItem("4").
+
+exibeItemFromFile(Path) :-
+    readEntrada(Id),
+    atom_number(Id, Desejado),
+    structsFromFile(Path, Itens),
+
+    length(Itens, L),
+    Desejado > 0,
+    \+ Desejado > L,
+
+    elemFromId(Itens, Desejado, 1, Item),
+    exibirItem(Item, S),
+    writeln(S).
 
 excluiItem("1") :-
     writeln('Qual o ID do Equipavel?'),
