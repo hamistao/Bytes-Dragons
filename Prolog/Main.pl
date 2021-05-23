@@ -125,7 +125,14 @@ read_file_structures(Stream,[]) :-
 read_file_structures(Stream, [X|L]) :-
     \+ at_end_of_stream(Stream),
     read(Stream, X),
+    writeln(X),
+    \+ X == 'end_of_file',
+
     read_file_structures(Stream, L).
+
+read_file_structures(Stream, _) :-
+    read(Stream, X),
+    X == 'end_of_file'.
 
 
 
@@ -174,3 +181,16 @@ stringFromList([X|L], R) :-
     string_concat(S1, '\n', S2),
     stringFromList(L, S2).
 
+
+removeItemFromFile(Path, Id) :-
+    linesFromFile(Path, Lines),
+    nth1(Id, Lines, _, Itens),
+    open(Path, write, Str),
+    writeLinesToFile(Str, Itens),!,
+    close(Str).
+
+
+writeLinesToFile(_, []).
+writeLinesToFile(Stream, [H|L]) :-
+    writeln(Stream, H),
+    writeLinesToFile(Stream, L).

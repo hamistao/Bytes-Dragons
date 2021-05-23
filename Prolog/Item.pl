@@ -1,5 +1,5 @@
-construtorItemConsumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, R):-
-    string_concat('equipavel("', Nome, S1),
+construtorItemString(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, R):-
+    string_concat('consumivel("', Nome, S1),
     string_concat(S1, '",', S2),
     string_concat(S2, AlteracaoVida, S3),
     string_concat(S3, ',', S4),
@@ -7,9 +7,7 @@ construtorItemConsumivel(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Dur
     string_concat(S5, ',', S6),
     string_concat(S6, Duracao, R).
 
-
-
-construtorItemEquipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, R):-
+construtorItemString(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, R):-
     string_concat('equipavel("', NomeEquipavel, S1),
     string_concat(S1, '",', S2),
     string_concat(S2, AlteracaoVidaMaxima, S3),
@@ -30,7 +28,14 @@ construtorItemEquipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, Alte
     string_concat(S17, ',"', S18),
     string_concat(S18, TipoEquipavel, S19),
     string_concat(S19, '")', R).
-    
+
+
+construtorItem(Nome, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao, consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao)).
+
+construtorItem(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel)).
+
+
+
 
 isTipoEquipavel("Cabeca").
 isTipoEquipavel("Torso").

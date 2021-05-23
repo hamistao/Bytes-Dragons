@@ -1,7 +1,8 @@
 :- include('Item.pl').
 
-opcaoDeItem :-
-    writeln('1 - Equipavel \nou \n2 -Consumivel?').
+opcaoDeItem(Opcao) :-
+    writeln('1 - Equipavel \nou \n2 -Consumivel?'),
+    nl, readEntrada(Tipo).
 
 menuItem :-
     write('\e[H\e[2J'),
@@ -21,6 +22,7 @@ menuItem :-
 menuItem("1") :-
     structsFromFile('data/equip.info', EquipaveisStr),
     structsFromFile('data/consmvl.info', Consumiveis),
+    writeln(EquipaveisStr),
     listarEquipaveis(EquipaveisStr, ListaEquip),
     nl, writeln('Itens Equipaveis:'),
     writeComId(ListaEquip, 1),
@@ -30,18 +32,20 @@ menuItem("1") :-
     menuItem.
 
 menuItem("2") :-
-    nl, opcaoDeItem,
-    readEntrada(Tipo),
+    opcaoDeItem(Tipo),
     cadastraItem(Tipo),
     writeln('Item cadastrado com sucesso.\nEnter para continuar'),
     readEntrada(_),
     menuItem.
 
-menuItem("3").
+menuItem("3") :-
+    opcaoDeItem(Tipo),
+    excluiItem(Tipo),
+    writeln('Item excluido com sucesso'),
+    readEntrada(_).
 
 menuItem("4") :-
-    nl, opcaoDeItem,
-    readEntrada(Tipo),
+    opcaoDeItem(Tipo),
     detalheItem(Tipo),
     writeln('\nEnter para continuar'),
     readEntrada(_),
@@ -50,30 +54,30 @@ menuItem("4") :-
 
 detalheItem("1") :-
     writeln('Qual o ID do Equipavel?'),
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    Desejado > 0,
-    length(Equipaveis, L),
-    \+ Desejado > L,
-    structsFromFile('data/equip.info', Equipaveis),
-    elemFromId(Equipaveis, Desejado, 0, Equipavel),
-    exibirItem(Equipavel, S),
-    writeln(S).
+    exibeFromFile('data/equip.info').
 
 detalheItem("2") :-
     writeln('Qual o ID do Consumivel?'),
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    structsFromFile('data/consmvl.info', Consumiveis),
-    elemFromId(Consumiveis, Desejado, 0, Consumivel),
-    Consumivel \= -1,
-    exibirItem(Consumivel, S),
-    writeln(S).
+    exibeFromFile('data/consmvl.info').
 
 detalheItem(X) :-
     write('o id - '),
     write(X),
     writeln(' - Id Invalido bro').
+
+
+exibeFromFile(Path) :-
+    readEntrada(Id),
+    atom_number(Id, Desejado),
+    structsFromFile(Path, Itens),
+
+    length(Itens, L),
+    Desejado > 0,
+    \+ Desejado > L,
+
+    elemFromId(Itens, Desejado, 1, Item),
+    exibirItem(Item, S),
+    writeln(S).
 
 
 excluiItem("1") :-
@@ -147,3 +151,16 @@ equipavelFromStr(Str, Item) :-
     nth0(9, Str, Tipo),
     writeln('mais 3 as'),
     construtorItemEquipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item).
+
+
+removeItemFromFile(Path, Id) :-
+    linesFromFile(Path, Lines),
+    nth1(Id, Lines, _, Itens),
+    open(Path, write, Str),
+    writeLinesToFile(Str, Itens),!,
+    close(Str).
+
+writeLinesToFile(_, []).
+writeLinesToFile(Stream, [H|L]) :-
+    writeln(Stream, H),
+    writeLinesToFile(Stream, L).
