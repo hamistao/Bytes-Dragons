@@ -32,7 +32,7 @@ exibirEquipavel(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, Al
     string_concat(S3, "\nAlteracao de forca", S4),
     string_concat(S4, AlteracaoForca, S5),
     string_concat(S5, "\nAlteracao de inteligencia: ", S6),
-    string_concat(S6, AlteracaoInteligencia: , S7),
+    string_concat(S6, AlteracaoInteligencia , S7),
     string_concat(S7, "\nAlteracao de sabedoria: ", S8),
     string_concat(S8, AlteracaoSabedoria, S9),
     string_concat(S9, "\nAlteracao de destreza: ", S10),
@@ -46,15 +46,15 @@ exibirEquipavel(equipavel(NomeEquipavel, AlteracaoVidaMaxima, AlteracaoForca, Al
     string_concat(S17, "\nTipo de equipavel: ", S18),
     string_concat(S18, TipoEquipavel, R).
     
-exibirConsumivel(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), R) :-
+exibirConsumivel(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), _) :-
     string_concat("/nNome: ", NomeConsumivel, S1),
     string_concat(S1, "\nAlteracao de vida: ", S2),
     string_concat(S2, AlteracaoVida, S3),
     string_concat(S3, "\nAlteracao de velocidade: ", S4),
     string_concat(S4, AlteracaoVelocidadeConsumivel, S5),
     string_concat(S5, "\nduracao: ", S6),
-    string_concat(S6, Duracao, S7).
+    string_concat(S6, Duracao, _).
     
-nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _) NomeEquipavel).   
+nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _), NomeEquipavel).   
 nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
 

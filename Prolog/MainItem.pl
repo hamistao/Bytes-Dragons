@@ -4,7 +4,7 @@ opcaoDeItem :-
     writeln('1 - Equipavel \nou \n2 -Consumivel?').
 
 menuItem(0) :-
-    
+    write('\e[H\e[2J'),
     writeln(   '                          ( (('),
     writeln(   '                           ) ))'),
     writeln(   '  .::.                    / /('),
@@ -21,7 +21,7 @@ menuItem(0) :-
 menuItem("1") :-
     linesFromFile('data/equip.info', Equipaveis),
     linesFromFile('data/consmvl.info', Consumiveis),
-    listarEquipaveis(Equipaveis, ListaEquip)
+    listarEquipaveis(Equipaveis, ListaEquip),
     nl, writeln('Itens Equipaveis:'),
     writeComId(ListaEquip, 1),
     nl, writeln('Itens Consumiveis:'),
@@ -51,7 +51,7 @@ detalheItem("1") :-
     linesFromFile('data/equip.info', Equipaveis),
     Desejado is Id-1,
     elemFromId(Equipaveis, Desejado, 0, Equipavel),
-    Equipavel != -1,
+    Equipavel \= -1,
     exibeEquipavel(Equipavel, S),
     writeln(S).
 
@@ -61,7 +61,7 @@ detalheItem("2") :-
     linesFromFile('data/consmvl.info', Consumiveis),
     Desejado is Id-1,
     elemFromId(Consumiveis, Desejado, 0, Consumivel),
-    Consumivel != -1,
+    Consumivel \= -1,
     exibeEquipavel(Consumivel, S),
     writeln(S).
 

@@ -41,6 +41,7 @@ construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxi
         Habilidades = [],
         Imunidades = [].
 
+%%Imunidade não ta sendo usado.
 exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades), R) :-
         string_concat("\nNome: ", Nome, S1),

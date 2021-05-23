@@ -2,7 +2,6 @@
 :- include('MainItem.pl').
 :- include('MainLoja.pl').
 :- include('MainPersonagem.pl').
-:- include('Util.pl').
 
 main :- 
     menu('start'),
@@ -14,7 +13,8 @@ menu('start') :-
     menu('go').
 
 menu('go') :-
-    cls,
+    write('\e[H\e[2J'),
+    write('\e[H\e[2J'),
     writeln('                  ______________'),
     writeln('            ,===:\'.,            `-._'),
     writeln('                 `:.`---.__         `-._'),
@@ -42,19 +42,19 @@ menu("2") :-
     menu('go').
 
 menu("3") :-
-    menuPersg(0),
+    menuPersg,
     menu('go').
 
 menu("4") :-
-    menuItem(0),
+    menuItem,
     menu('go').
 
 menu("5") :-
-    menuHabilis(0),
+    menuHabilis,
     menu('go').
 
 menu("6") :-
-    menuLoja(0),
+    menuLoja,
     menu('go').
 
 menu("9") :-

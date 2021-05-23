@@ -1,7 +1,5 @@
-:- include('Util.pl').
-
 menuLoja :-
-    cls,
+    write('\e[H\e[2J'),
     writeln(  '  _______________'),
     writeln(  ' /     Loja     /'),
     writeln(  '/______________/'),

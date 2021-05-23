@@ -1,7 +1,7 @@
-:- include ('Habilidade.pl').
+:- include('Habilidade.pl').
 
 menuHabilis :-
-    cls,
+    write('\e[H\e[2J'),
     writeln( '           ('),
     writeln( '            )'),
     writeln( '           (  ('),

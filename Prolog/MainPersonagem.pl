@@ -1,8 +1,7 @@
 :- include('Personagem.pl').
-:- include('Util.pl').
 
 menuPersg :-
-    cls,
+    write('\e[H\e[2J'),
     writeln(  '  ,   A           {}'),
     writeln(  ' / \\, | ,        .--.'),
     writeln(  '|    =|= >      /.--.\\ '),
