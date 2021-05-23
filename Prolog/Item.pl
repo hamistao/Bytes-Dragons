@@ -11,7 +11,7 @@ isTipoEquipavel("Arma").
 
 listarEquipaveis([], []).
 listarEquipaveis([Equipavel|L], R) :-
-    listaEquipaveis(L, R1),
+    listarEquipaveis(L, R1),
     nomeEquipavel(Equipavel, Nome),
     string_concat("Nome: ", Nome, S),
     string_concat(S, R1, R).

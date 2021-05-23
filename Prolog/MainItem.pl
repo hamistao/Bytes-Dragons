@@ -3,7 +3,7 @@
 opcaoDeItem :-
     writeln('1 - Equipavel \nou \n2 -Consumivel?').
 
-menuItem(0) :-
+menuItem :-
     write('\e[H\e[2J'),
     writeln(   '                          ( (('),
     writeln(   '                           ) ))'),
@@ -28,7 +28,7 @@ menuItem("1") :-
     writeln('Itens Consumiveis:'),
     writeComId(Consumiveis, 1),
     readEntrada(_),
-    menuItem(0).
+    menuItem.
 
 menuItem("2") :-
     nl, opcaoDeItem,
@@ -36,7 +36,7 @@ menuItem("2") :-
     cadastraItem(Tipo),
     writeln('Item cadastrado com sucesso.\nEnter para continuar'),
     readEntrada(_),
-    menuItem(0).
+    menuItem.
 
 menuItem("3").
 
@@ -46,7 +46,7 @@ menuItem("4") :-
     detalheItem(Tipo),
     writeln('\nEnter para continuar'),
     readEntrada(_),
-    menuItem(0).
+    menuItem.
 
 
 detalheItem("1") :-
