@@ -174,7 +174,7 @@ elemFromId([X|L], Id, Atual,Elem) :-
     elemFromId(L, Id, NextAtual,Elem).
 
 
-stringFromList([], _).
+stringFromList([], "").
 stringFromList([X|L], R) :-
     string_concat(R, X, S1),
     string_concat(S1, '\n', S2),

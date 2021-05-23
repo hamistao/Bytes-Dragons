@@ -54,11 +54,11 @@ menuItem("4") :-
 
 detalheItem("1") :-
     writeln('Qual o ID do Equipavel?'),
-    exibeFromFile('data/equip.info').
+    exibeItemFromFile('data/equip.info').
 
 detalheItem("2") :-
     writeln('Qual o ID do Consumivel?'),
-    exibeFromFile('data/consmvl.info').
+    exibeItemFromFile('data/consmvl.info').
 
 detalheItem(X) :-
     write('o id - '),
@@ -66,7 +66,7 @@ detalheItem(X) :-
     writeln(' - Id Invalido bro').
 
 
-exibeFromFile(Path) :-
+exibeItemFromFile(Path) :-
     readEntrada(Id),
     atom_number(Id, Desejado),
     structsFromFile(Path, Itens),
