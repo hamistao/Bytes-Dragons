@@ -56,5 +56,5 @@ exibirConsumivel(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeCo
     string_concat(S6, Duracao, S7).
     
 nomeEquipavel(equipavel(NomeEquipavel, _, _, _, _, _, _, _, _, _) NomeEquipavel).   
-nomeConsumivel(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), NomeConsumivel).
+nomeConsumivel(consumivel(NomeConsumivel, _, _, _), NomeConsumivel).
 
