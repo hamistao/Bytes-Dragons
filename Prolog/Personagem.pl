@@ -85,7 +85,7 @@ exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Intelige
         stringFromList(S38, S39),
         string_concat(S37, S39, S40),
         string_concat(S40, "Habilidades:\n", S41),
-        listaHabilidades(Habilidades, S42)
+        listaHabilidades(Habilidades, S42),
         stringFromList(S42, S43),
         string_concat(S41, S43, S44),
         string_concat(S45, "Resistencias:\n", S46),
@@ -100,6 +100,18 @@ listaPersonagens([Personagem|L], R) :-
     append([S], R1, R).
 
 nomePersonagem(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), Nome).
+
+usaConsumivel(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias),
+    consumivel(Nome, AlteracaoVida, AlteracaoVelocidade, Duracao),
+    personagem(Nome, Raca, Classe, VidaMaxima, VidaF, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+    Carisma, VelocidadeF, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias),
+    consumivel(Nome, AlteracaoVida, AlteracaoVelocidade, DuracaoF)) :-
+    VidaF is Vida + AlteracaoVida,
+    DuracaoF is Duracao - 1,
+    VelocidadeF is Velocidade + AlteracaoVelocidade.
+
+
 
 isAtributo("Forca").
 isAtributo("Inteligencia").
