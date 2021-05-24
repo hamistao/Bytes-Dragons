@@ -1,6 +1,7 @@
 :- use_module(library(persistency)).
 
-:- persistent equipavel(nome:any, alteracaoVidaMaxima:any, alteracaoForca:any, alteracaoInteligencia:any, alteracaoSabedoria:any, alteracaoDestreza:any, alteracaoConstituicao:any, alteracaoCarisma:any, alteracaoVelocidade:any, tipo:any, habilidades:any).
+:- persistent equipavel(nome:any, alteracaoVidaMaxima:any, alteracaoForca:any, alteracaoInteligencia:any, alteracaoSabedoria:any, alteracaoDestreza:any, alteracaoConstituicao:any, alteracaoCarisma:any, alteracaoVelocidade:any, tipo:any),
+   equipavelTemHabilidade(nomeEquipavel:any, nomeHabilidade:any).
 
 :- initialization(init).
 
@@ -9,7 +10,7 @@ init :-
 	db_attach(File, []).
 
 exibeEquipavel(Nome) :-
-	equipavel(Nome, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel, Habilidades),
+	equipavel(Nome, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel),
 	nl, write("Nome: "),
 	writeln(Nome),
 	write("Alteracao na vida maxima: "),
@@ -29,8 +30,10 @@ exibeEquipavel(Nome) :-
 	write("Tipo do equipavel: "),
 	writeln(TipoEquipavel),
 	write("Habilidades: "),
-	%% Fazer a listagem de habilidades
-	writeln("TODO").
+	listarHabilidadesEquipavel(Nome).
 
 listarEquipaveis :-
-	foreach(equipavel(Nome, _, _, _, _, _, _, _, _, _, _), writeln(Nome)).
+	foreach(equipavel(Nome, _, _, _, _, _, _, _, _, _), writeln(Nome)).
+
+listarHabilidadesEquipavel(Nome) :-
+	foreach(equipavelTemHabilidade(Nome, Habilidade), writeln(Habilidade)).

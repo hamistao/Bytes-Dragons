@@ -49,6 +49,20 @@ menuItem("4") :-
     readEntrada(_),
     menuItem.
 
+menuItem("5") :-
+    nl, writeln('Qual o nome do Equipavel?'),
+    readEntrada(Equipavel),
+	equipavel(Equipavel, _, _, _, _, _, _, _, _, _),
+
+	writeln('Qual o nome da Habilidade?')
+	readEntrada(Habilidade),
+	habilidade(Habilidade, _, _, _, _, _),
+
+	assert_equipavelTemHabilidade(Equipavel, Habilidade),
+    writeln('Item encantado com sucesso.\nEnter para continuar'),
+    readEntrada(_),
+    menuItem.
+
 menuItem("9").
 
 menuItem(_) :-
@@ -72,7 +86,7 @@ detalheItem(_) :-
 excluiItem("1") :-
     writeln('Qual o nome do Equipavel?'),
     readEntrada(Nome),
-    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _, _).
+    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _).
 
 excluiItem("2") :-
     writeln('Qual o nome do Consumivel?'),
@@ -104,8 +118,8 @@ cadastraItem("1") :-
     readEntrada(Velocd),
     writeln('Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?'),
     readEntrada(Tipo),
-    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _, _),
-    assert_equipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, []).
+    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _),
+    assert_equipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo).
 
 cadastraItem("2") :-
     nl, writeln('Qual o nome do Consumivel?'),
