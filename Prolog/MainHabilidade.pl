@@ -18,10 +18,9 @@ menuHabilis :-
     menuHabilis(Entrada).
 
 menuHabilis("1"):-
-    structsFromFile('data/habil.info', Habilidades),
-    listaHabilidades(Habilidades, ListaHabilidades),
     nl, writeln('Habilidades:'),
-    writeComId(ListaHabilidades, 1),
+    listarHabilidades,
+    writeln('\nEnter para continuar'),
     readEntrada(_),
     menuHabilis.
 
@@ -38,26 +37,24 @@ menuHabilis("2"):-
     readEntrada(PontosParaAcerto),
     writeln('Qual o tipo de dano da habilidade (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico) ?'),
     readEntrada(TipoDeDano),
-    open('data/habil.info', append, Str),
-    construtorHabilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano, Habilidade),
-    writeln(Habilidade),
-    write(Str, Habilidade), writeln(Str, "."),
+    assert_habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano),
     writeln('Habilidade cadastrada com sucesso.\nEnter para continuar'),
+    writeln('\nEnter para continuar'),
     readEntrada(_),
     menuHabilis.
 
 menuHabilis("3"):-
-    writeln('Qual o id da Habilidade? '),
-    exibeFromFile('data/habil.info'),
+    writeln('Qual o nome da habilidade?'),
+	readEntrada(Nome),
+	exibeHabilidade(Nome).
     readEntrada(_),
     menuHabilis.
 
 menuHabilis("4"):-
-    nl, writeln('Qual o ID da Habilidade?'),
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    removeFromFile('data/habil.info', Desejado),
-    write('Habilidade excluida com sucesso'),
+    nl, writeln('Qual o nome da Habilidade?'),
+    readEntrada(Nome),
+    retract_habilidade(Nome, _, _, _, _, _).
+    writeln('Habilidade excluida com sucesso'),
     readEntrada(_),
     menuHabilis.
     
