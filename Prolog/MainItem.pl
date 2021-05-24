@@ -95,7 +95,6 @@ excluiItem("2") :-
 excluiItem(_) :- 
     writeln('tais trolando brother?').
 
-
 cadastraItem("1") :-
     nl, writeln('Qual o nome do Equipavel?'),
     readEntrada(Nome),
@@ -117,34 +116,17 @@ cadastraItem("1") :-
     readEntrada(Velocd),
     writeln('Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?'),
     readEntrada(Tipo),
-	tipoEquipavel(Tipo),
+    tenta_tirar(Nome),
     assert_equipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo),
     writeln('Item cadastrado com sucesso.\nEnter para continuar').
 
-cadastraItem("1") :-
-    nl, writeln('Qual o nome do Equipavel?'),
-    readEntrada(Nome),
-    writeln('Qual a Alteracao de Vida Maxima?'),
-    readEntrada(Vida_maxima),
-    writeln('Qual a Alteracao de Forca?'),
-    readEntrada(Forca),
-    writeln('Qual a Alteracao de Inteligencia?'),
-    readEntrada(Inteligencia),
-    writeln('Qual a Alteracao de Sabedoria?'),
-    readEntrada(Sabedoria),
-    writeln('Qual a Alteracao de Destreza?'),
-    readEntrada(Destreza),
-    writeln('Qual a Alteracao de Constituicao?'),
-    readEntrada(Constituicao),
-    writeln('Qual a Alteracao de Carisma?'),
-    readEntrada(Carisma),
-    writeln('Qual a Alteracao de Velocidade?'),
-    readEntrada(Velocd),
-    writeln('Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?'),
-    readEntrada(Tipo),
-    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _),
-    assert_equipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo),
-    writeln('Item cadastrado com sucesso.\nEnter para continuar').
+tenta_tirar(Nome) :-
+    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _).
+tenta_tirar(_).
+
+tenta_tirar_consmvl(Nome) :-
+    retract_consumivel(Nome, _, _, _).
+tenta_tirar_consmvl(_).
 
 cadastraItem("2") :-
     nl, writeln('Qual o nome do Consumivel?'),
@@ -167,7 +149,7 @@ cadastraItem("2") :-
     readEntrada(Velocidade),
     writeln('Qual a Durabilidade?'),
     readEntrada(Durac),
-	retract_consumivel(Nome, _, _, _);
+    tenta_tirar_consmvl(Nome),
 	assert_consumivel(Nome, Vida, Velocidade, Durac),
     writeln('Item cadastrado com sucesso.\nEnter para continuar').
 
