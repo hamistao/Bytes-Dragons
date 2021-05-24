@@ -53,7 +53,7 @@ menuItem("5") :-
     readEntrada(Equipavel),
 	equipavel(Equipavel, _, _, _, _, _, _, _, _, _),
 
-	writeln('Qual o nome da Habilidade?')
+	writeln('Qual o nome da Habilidade?'),
 	readEntrada(Habilidade),
 	habilidade(Habilidade, _, _, _, _, _),
 
