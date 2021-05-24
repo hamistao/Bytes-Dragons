@@ -45,6 +45,7 @@ menuPersg("2") :-
     writeln('Qual a Raca do Personagem?'),
     readEntrada(Raca),
     checkRaca(Raca),
+    deleteWithName(Nome),
     open('data/persngs.bd', append, Str),
     construtorPersonagem(Nome, Raca, Classe, Personagem),
     writeln(Personagem),
@@ -57,23 +58,55 @@ menuPersg("3") :-
     readEntrada(Nome),
     structsFromFile('data/persngs.bd', Personagens),
     exibeByName(Personagens, Nome),!,
-    menuPersg.
+    readEntrada(_), menuPersg.
 
 
 menuPersg("4") :-
     writeln('Qual o Nome do Personagem a ser deletado?'),
     readEntrada(Nome),
-    structsFromFile('data/persngs.bd', Personagens),
-    deleteByName(Personagens, Nome, PersonagensFinais),
-    open('data/persngs.bd', write, Str),
-    writeLinesToFile(Str, PersonagensFinais), !,
-    close(Str), menuPersg.
+    deleteWithName(Nome), menuPersg.
 
 
 menuPersg("9").
 
 menuPersg(_):-
     menuPersg.
+
+
+
+exibeByName([], Nome) :-
+    string_concat('\nNome: ', Nome, S1),
+    string_concat(S1, "\nNao eh valido.", S2),
+    writeln(S2).
+
+exibeByName([Personagem|L], Nome):-
+    nomePersonagem(Personagem, Nome),
+    exibePersonagem(Personagem, S),
+    writeln(S).
+
+exibeByName([X|L], Nome) :-
+    exibeByName(L, Nome).
+
+
+
+deleteWithName(Nome) :- 
+    structsFromFile('data/persngs.bd', Personagens),
+    deleteByName(Personagens, Nome, PersonagensFinais),
+    open('data/persngs.bd', write, Str),
+    writeLinesToFile(Str, PersonagensFinais), !,
+    close(Str).
+
+
+deleteByName([], _, []).
+deleteByName([X|L], Nome, L) :-
+    nomePersonagem(X, NomeTeste),
+    Nome == NomeTeste.
+
+deleteByName([X|L], Nome, R) :-
+    deleteByName(L, Nome, R1).
+    append([X], R1, R).
+
+
 
 
 
