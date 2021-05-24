@@ -36,16 +36,14 @@ menuPersg("1") :-
 menuPersg("2") :-
     nl, writeln('Qual o Nome do Personagem?'),
     readEntrada(Nome),
-    personagemExiste(Nome),
     writeln('Qual a Classe do Personagem?'),
     readEntrada(Classe),
     checkClasse(Classe),
     writeln('Qual a Raca do Personagem?'),
     readEntrada(Raca),
     checkRaca(Raca),
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
-    assert_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
-    menuPersg.
+    constroiPersonagem(Nome, Classe, Raca),
+    menuPersg.    
 
 menuPersg("3") :-
     writeln('Qual o Nome do Personagem desejado?'),
@@ -83,6 +81,14 @@ menuPersg("9").
 
 menuPersg(_):-
     menuPersg.
+
+
+constroiPersonagem(Nome, Classe, Raca) :-
+    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    criaPersonagem(Nome, Classe, Raca).
+constroiPersonagem(Nome, Classe, Raca) :-
+    criaPersonagem(Nome, Classe, Raca).
+
 
 
 checkRaca(Raca):-
@@ -134,7 +140,8 @@ menuItemPersonagem("1"):-
     writeln('Qual o nome do Equipavel?'),
     readEntrada(Equipavel),
     equipavelExiste(Equipavel),
-    colocaItemPersonagem(Nome, Equipavel).
+    colocaItemPersonagem(Nome, Equipavel),
+    menuItemPersonagem.
 
 menuItemPersonagem("2") :-
     nl, writeln('Qual o nome do Personagem?'),
@@ -143,7 +150,8 @@ menuItemPersonagem("2") :-
     writeln('Qual o nome do Consumivel?'),
     readEntrada(Consumivel),
     consumivelExiste(Consumivel),
-    colocaConsumivelPersonagem(Nome, Consumivel).
+    colocaConsumivelPersonagem(Nome, Consumivel),
+    menuItemPersonagem.
 
 menuItemPersonagem("3") :-
     nl, writeln('Qual o nome do Personagem?'),
@@ -152,7 +160,8 @@ menuItemPersonagem("3") :-
     writeln('Qual o nome da Habilidade?'),
     readEntrada(Habilidade),
     habilidadeExiste(Habilidade),
-    colocaHabilidadePersonagem(Nome, Habilidade).
+    colocaHabilidadePersonagem(Nome, Habilidade),
+    menuItemPersonagem.
 
 menuItemPersonagem("4") :-
     nl, writeln('Qual o nome do Personagem?'),
@@ -161,7 +170,8 @@ menuItemPersonagem("4") :-
     writeln('Qual o nome da Equipavel?'),
     readEntrada(Equipavel),
     equipavelExiste(Equipavel),
-    tiraEquipavelPersonagem(Nome, Equipavel).
+    tiraEquipavelPersonagem(Nome, Equipavel),
+    menuItemPersonagem.
 
 menuItemPersonagem("5") :-
     nl, writeln('Qual o nome do Personagem?'),
@@ -170,7 +180,8 @@ menuItemPersonagem("5") :-
     writeln('Qual o nome da Consumivel?'),
     readEntrada(Consumivel),
     consumivelExiste(Consumivel),
-    tiraConsumivelPersonagem(Nome, Consumivel).
+    tiraConsumivelPersonagem(Nome, Consumivel),
+    menuItemPersonagem.
 
 menuItemPersonagem("6") :-
     nl, writeln('Qual o nome do Personagem?'),
@@ -179,7 +190,8 @@ menuItemPersonagem("6") :-
     writeln('Qual o nome da Habilidade?'),
     readEntrada(Habilidade),
     habilidadeExiste(Habilidade),
-    tiraHabilidadePersonagem(Nome, Habilidade).
+    tiraHabilidadePersonagem(Nome, Habilidade),
+    menuItemPersonagem.
 
 menuItemPersonagem("9").
 
@@ -194,7 +206,6 @@ colocaHabilidadePersonagem(Nome, Habilidade) :-
 
 colocaHabilidadePersonagem(Nome, Habilidade) :-
     assert_personagemTemHabilidade(Nome, Habilidade).
-
 
 colocaConsumivelPersonagem(Nome, Consumivel) :-
     retract_personagemTemConsumivel(Nome, Consumivel),
