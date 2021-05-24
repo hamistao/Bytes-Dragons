@@ -7,11 +7,42 @@
 :- persistent personagemTemHabilidade(nomePersonagem:any, nomeHabilidade:any).
 :- persistent personagemTemResistencia(nomePersonagem:any, nomeResistencia:any).
 
-:- initialization(init).
-
 init :-
 	absolute_file_name('data/persngs.db', File, [access(write)]),
 	db_attach(File, []).
+
+criaPersonagem(Nome, Raca, Classe) :-
+    vidaMaxima(Classe, VidaMaximaClasse),
+	vidaMaxima(Raca, VidaMaximaRaca),
+	VidaMaxima is VidaMaximaClasse + VidaMaximaRaca,
+
+    forca(Classe, ForcaClasse),
+    forca(Raca, ForcaRaca),
+    Forca is ForcaClasse + ForcaRaca,
+
+    inteligencia(Classe, InteligenciaClasse),
+    inteligencia(Raca, InteligenciaRaca),
+    Inteligencia is InteligenciaClasse + InteligenciaRaca,
+
+    sabedoria(Classe, SabedoriaClasse),
+    sabedoria(Raca, SabedoriaRaca),
+    Sabedoria is SabedoriaClasse + SabedoriaRaca,
+
+    destreza(Classe, DestrezaClasse),
+    destreza(Raca, DestrezaRaca),
+    Destreza is DestrezaClasse + DestrezaRaca,
+
+    constituicao(Classe, ConstituicaoClasse),
+    constituicao(Raca, ConstituicaoRaca),
+    Constituicao is ConstituicaoClasse + ConstituicaoRaca,
+
+    carisma(Classe, CarismaClasse),
+    carisma(Raca, CarismaRaca),
+    Carisma is CarismaClasse + CarismaRaca,
+
+    Velocidade is DestrezaClasse + DestrezaRaca - (ConstituicaoClasse + ConstituicaoRaca),
+    
+    assert_personagem(Nome, Raca, Classe, VidaMaxima, VidaMaxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocidade, 0, 0, 1000, 1).
 
 exibePersonagem(Nome) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
