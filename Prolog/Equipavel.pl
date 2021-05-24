@@ -1,7 +1,7 @@
 :- use_module(library(persistency)).
 
-:- persistent equipavel(nome:any, alteracaoVidaMaxima:any, alteracaoForca:any, alteracaoInteligencia:any, alteracaoSabedoria:any, alteracaoDestreza:any, alteracaoConstituicao:any, alteracaoCarisma:any, alteracaoVelocidade:any, tipo:any),
-   equipavelTemHabilidade(nomeEquipavel:any, nomeHabilidade:any).
+:- persistent equipavel(nome:any, alteracaoVidaMaxima:any, alteracaoForca:any, alteracaoInteligencia:any, alteracaoSabedoria:any, alteracaoDestreza:any, alteracaoConstituicao:any, alteracaoCarisma:any, alteracaoVelocidade:any, tipo:any).
+:- persistent equipavelTemHabilidade(nomeEquipavel:any, nomeHabilidade:any).
 
 :- initialization(init).
 
