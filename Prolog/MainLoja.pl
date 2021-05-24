@@ -1,4 +1,4 @@
-%:- include('Loja.pl').
+:- include('Loja.pl').
 
 menuLoja :-
     write('\e[H\e[2J'),
@@ -12,7 +12,8 @@ menuLoja :-
     writeln(  '| |            |'),
     writeln(  '|              |'),
     writeln(  '1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um item na Loja\n4 - Detalhes de Loja\n5 - Excluir Loja\n6 - Negociar com a Loja\n9 - Voltar Menu\n'),
-    read(_).
+    readEntrada(Entrada),
+    menuLoja(Entrada).
 
 menuLoja(_) :-
     writeln('\nEntrada invalida amigao.'),
@@ -27,7 +28,9 @@ menuLoja("1") :-
 	menuLoja.
 
 menuLoja("2") :-
-	cadastraLoja,
+    writeln('Qual o nome da loja?'),
+    readEntrada(Entrada),
+    construtorLoja(Entrada),
     writeln('Loja cadastrada com sucesso.\nEnter para continuar'),
     readEntrada(_),
 	menuLoja.
