@@ -1,10 +1,14 @@
 :- include('Habilidade.pl').
+:- include('Classe.pl').
+:- include('Raca.pl').
 
 construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria,
-    Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias)) :-
-        
-        VidaMaxima is vidaMaxima(Classe) + vidaMaxima(Raca),
-        Vida = VidaMaxima,
+													Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias)) :-
+	
+	vidaMaxima(Classe, VidaMaximaClasse),
+	vidaMaxima(Raca, VidaMaximaRaca),
+	VidaMaxima is VidaMaximaClasse + VidaMaximaRaca,
+	Vida = VidaMaxima,
 
         forca(Classe, ForcaClasse),
         forca(Raca, ForcaRaca),

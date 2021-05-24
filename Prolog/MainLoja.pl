@@ -1,4 +1,4 @@
-%:- include('Loja.pl').
+:- include('Loja.pl').
 
 menuLoja :-
     write('\e[H\e[2J'),
@@ -12,14 +12,11 @@ menuLoja :-
     writeln(  '| |            |'),
     writeln(  '|              |'),
     writeln(  '1 - Listar Lojas\n2 - Criar Loja\n3 - Adiciona um item na Loja\n4 - Detalhes de Loja\n5 - Excluir Loja\n6 - Negociar com a Loja\n9 - Voltar Menu\n'),
-    read(_).
+    readEntrada(Entrada),
+    menuLoja(Entrada).
 
-menuLoja(_) :-
-    writeln('\nEntrada invalida amigao.'),
-    menuLoja.
-    
 menuLoja("1") :-
-    structsFromFile('data/loja.info', LojasStr),
+    structsFromFile('data/loja.bd', LojasStr),
 	listarLojas(LojasStr, ListaLojas),
 	nl, writeln('Lojas disponiveis:'),
 	writeComId(ListaLojas, 1),
@@ -27,7 +24,9 @@ menuLoja("1") :-
 	menuLoja.
 
 menuLoja("2") :-
-	cadastraLoja,
+    writeln('Qual o nome da loja?'),
+    readEntrada(Entrada),
+    construtorLoja(Entrada),
     writeln('Loja cadastrada com sucesso.\nEnter para continuar'),
     readEntrada(_),
 	menuLoja.
@@ -44,20 +43,24 @@ menuLoja("5") :-
     readEntrada(_),
 	menuLoja.
 
+menuLoja(_) :-
+    writeln('\nEntrada invalida amigao.'),
+    menuLoja.
+
 excluiLoja(_) :-
 	writeln('sem essa brother').
 
 cadastraLoja :-
     nl, writeln('Qual o nome da loja?'),
     readEntrada(Nome),
-    open('data/loja.info', append, Str),
+    open('data/loja.bd', append, Str),
     construtorLojaString(Nome, Loja),
     writeln(Loja),
     write(Str, Loja), writeln(Str, ".").
 
 detalheLoja :-
     writeln('Qual o ID da loja?'),
-    exibeFromFile('data/loja.info').
+    exibeFromFile('data/loja.bd').
 
 detalheLoja(X) :-
     write('o id - '),
@@ -67,4 +70,4 @@ detalheLoja(X) :-
 excluiLoja :-
 	readEntrada(Id),
 	atom_number(Id, Desejado),
-	removeItemFromFile('data/loja.info', Desejado).
+	removeItemFromFile('data/loja.bd', Desejado).

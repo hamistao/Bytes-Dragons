@@ -181,11 +181,11 @@ stringFromList([X|L], R) :-
     stringFromList(L, S2).
 
 
-removeItemFromFile(Path, Id) :-
+removeFromFile(Path, Id) :-
     linesFromFile(Path, Lines),
-    nth1(Id, Lines, _, Itens),
+    nth1(Id, Lines, _, List),
     open(Path, write, Str),
-    writeLinesToFile(Str, Itens),!,
+    writeLinesToFile(Str, List),!,
     close(Str).
 
 
@@ -197,10 +197,10 @@ writeLinesToFile(Stream, [H|L]) :-
 exibeFromFile(Path) :-
     readEntrada(Id),
     atom_number(Id, Desejado),
-    structsFromFile(Path, Itens),
-    length(Itens, L),
+    structsFromFile(Path, Lista),
+    length(Lista, L),
     Desejado > 0,
     \+ Desejado > L,
-    elemFromId(Itens, Desejado, 1, Item),
-    exibirItem(Item, S),
+    elemFromId(Lista, Desejado, 1, Elem),
+    exibir(Elem, S),
     writeln(S).

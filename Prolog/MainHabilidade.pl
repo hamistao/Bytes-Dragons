@@ -13,7 +13,7 @@ menuHabilis :-
     writeln( '     (_;-// | \\ \\-\'.\\'),
     writeln( '     ( `.__ _  ___,\')'),
     writeln( 'jrei  `\'(_ )_)(_)_)\n'),
-    writeln( '1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n5 - Encatar um Item\n6 - Desencanta um Item\n9 - Voltar Menu\n'),
+    writeln( '1 - Listar Habilidades\n2 - Criar Habilidade\n3 - Detalhes de Habilidade\n4 - Excluir Habilidade\n9 - Voltar Menu\n'),
     readEntrada(Entrada),
     menuHabilis(Entrada).
 
@@ -56,7 +56,7 @@ menuHabilis("4"):-
     nl, writeln('Qual o ID da Habilidade?'),
     readEntrada(Id),
     atom_number(Id, Desejado),
-    removeItemFromFile('data/habil.info', Desejado),
+    removeFromFile('data/habil.info', Desejado),
     write('Habilidade excluida com sucesso'),
     readEntrada(_),
     menuHabilis.
