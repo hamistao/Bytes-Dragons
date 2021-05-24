@@ -13,7 +13,7 @@ construtorHabilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, 
     string_concat(S11, '")', R).
 :- discontiguous construtorHabilidade/7.
     
-exibeHabilidade(habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano), R) :-
+exibir(habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano), R) :-
     string_concat("\nNome: ", Nome, S1),
     string_concat(S1, "\nTipo da habilidade: ", S2),
     string_concat(S2, TipoDeDano, S3),
@@ -25,7 +25,7 @@ exibeHabilidade(habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacio
     string_concat(S8, ImpactoVelocidade, S9),
     string_concat(S9, "\nPontos para acerto: ", S10),
     string_concat(S10, PontosParaAcerto, R).
-:- discontiguous exibeHabilidade/2.
+:- discontiguous exibir/2.
 
 listaHabilidades([], []).
 listaHabilidades([Habilidade|L], R) :-
@@ -36,3 +36,4 @@ listaHabilidades([Habilidade|L], R) :-
 :- discontiguous listaHabilidades/2.
 
 nomeHabilidade(habilidade(Nome, _, _, _, _, _), Nome).
+:- discontiguous nomeHabilidade/2.

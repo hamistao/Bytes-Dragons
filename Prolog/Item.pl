@@ -47,7 +47,7 @@ listarItem([Item|L], R) :-
     append([S], R1, R).
     
 
-exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, Habilidades), R) :- 
+exibir(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidadeEquipavel, TipoEquipavel, Habilidades), R) :- 
     string_concat("\nNome: ", NomeEquipavel, S1),
     string_concat(S1, "\nAlteracao vida: ", S2),
     string_concat(S2, AlteracaoVida, S3),
@@ -72,12 +72,12 @@ exibirItem(equipavel(NomeEquipavel, AlteracaoVida, AlteracaoForca, AlteracaoInte
     stringFromList(S21, S22),
     string_concat(S20, S22, R).
 
-exibirItem(X, Y) :-
+exibir(X, Y) :-
     writeln(X),
     nomeEquipavel(X, Y).
 
 
-exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), R) :-
+exibir(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumivel, Duracao), R) :-
     string_concat("/nNome: ", NomeConsumivel, S1),
     string_concat(S1, "\nAlteracao de vida: ", S2),
     string_concat(S2, AlteracaoVida, S3),
@@ -85,6 +85,7 @@ exibirItem(consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidadeConsumiv
     string_concat(S4, AlteracaoVelocidadeConsumivel, S5),
     string_concat(S5, "\nduracao: ", S6),
     string_concat(S6, Duracao, R).
+:- discontiguous exibir/2.
     
 
 

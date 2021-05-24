@@ -56,7 +56,7 @@ menuHabilis("4"):-
     nl, writeln('Qual o ID da Habilidade?'),
     readEntrada(Id),
     atom_number(Id, Desejado),
-    removeItemFromFile('data/habil.info', Desejado),
+    removeFromFile('data/habil.info', Desejado),
     write('Habilidade excluida com sucesso'),
     readEntrada(_),
     menuHabilis.
