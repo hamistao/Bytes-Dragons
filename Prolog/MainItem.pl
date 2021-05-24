@@ -15,7 +15,7 @@ menuItem :-
     writeln(   '  `::\'                    \\ \\('),
     writeln(   '                           ) ))'),
     writeln(   '                          (_(('),
-    writeln(   '1 - Listar Itens\n2 - Cadastrar Item\n3 - Excluir Item\n4 - Detalhes de Item\n9 - Retorna Menu\n'),
+    writeln(   '1 - Listar Itens\n2 - Cadastrar Item\n3 - Excluir Item\n4 - Detalhes de Item\n5 - Encatar um Item\n6 - Desencanta um Item\n9 - Retorna Menu\n'),
     readEntrada(Entrada),
     menuItem(Entrada).
 
