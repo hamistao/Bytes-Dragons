@@ -1,3 +1,4 @@
-equipavel("Espada",10,0,0,0,0,0,0,0,"Arma").
-equipavel("Espada",-10,0,0,0,0,0,0,0,"Arma").
-equipavel("cabecao",-20,0,0,0,0,0,0,0,"Cabeca").
+equipavel("Espada",10,0,0,0,0,0,0,0,"Arma",[]).
+equipavel("Espada",-10,0,0,0,0,0,0,0,"Arma",[]).
+equipavel("cabecao",-20,0,0,0,0,0,0,0,"Cabeca",[]).
+equipavel("aaaaaaaa",10,-5,0,0,0,0,0,0,"Torso",[]).

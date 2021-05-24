@@ -15,7 +15,7 @@ menuItem :-
     writeln(   '  `::\'                    \\ \\('),
     writeln(   '                           ) ))'),
     writeln(   '                          (_(('),
-    writeln(   '1 - Listar Itens\n2 - Cadastrar Item\n3 - Excluir Item\n4 - Detalhes de Item\n9 - Retorna Menu\n'),
+    writeln(   '1 - Listar Itens\n2 - Cadastrar Item\n3 - Excluir Item\n4 - Detalhes de Item\n5 - Encatar um Item\n6 - Desencanta um Item\n9 - Retorna Menu\n'),
     readEntrada(Entrada),
     menuItem(Entrada).
 
@@ -51,7 +51,7 @@ menuItem("4") :-
     readEntrada(_),
     menuItem.
 
-menuItem(9).
+menuItem("9").
 
 menuItem(_) :-
     writeln('\nEntrada invalida.'),
@@ -59,15 +59,28 @@ menuItem(_) :-
 
 detalheItem("1") :-
     writeln('Qual o ID do Equipavel?'),
-    exibeFromFile('data/equip.info').
+    exibeItemFromFile('data/equip.info').
 
 detalheItem("2") :-
     writeln('Qual o ID do Consumivel?'),
-    exibeFromFile('data/consmvl.info').
+    exibeItemFromFile('data/consmvl.info').
 
 detalheItem(_) :-
     write('tipo de item so pode ser \'1\' ou \'2\''),
     menuItem("4").
+
+exibeItemFromFile(Path) :-
+    readEntrada(Id),
+    atom_number(Id, Desejado),
+    structsFromFile(Path, Itens),
+
+    length(Itens, L),
+    Desejado > 0,
+    \+ Desejado > L,
+
+    elemFromId(Itens, Desejado, 1, Item),
+    exibirItem(Item, S),
+    writeln(S).
 
 excluiItem("1") :-
     writeln('Qual o ID do Equipavel?'),

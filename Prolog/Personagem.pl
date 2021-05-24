@@ -78,21 +78,20 @@ exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Intelige
         string_concat(S30, Nivel, S31),
         string_concat(S31, "\nItens:", S32),
         string_concat(S32, "\nEquipaveis:\n", S33),
-        stringFromList(Equipaveis, EquipaveisS),
-        string_concat(S33, EquipaveisS, S34),
-        string_concat(S34, "Consumiveis:\n", S35),
-        stringFromList(Consumiveis, ConsumiveisS),
-        string_concat(S35, ConsumiveisS, S36),
-        string_concat(S36, "Habilidades:\n", S37),
-        stringFromList(Habilidades, HabilidadesS),
-        string_concat(S37, HabilidadesS, S38),
-        string_concat(S38, "Resistencias:\n", S39),
-        stringFromList(Resistencias, ResistenciasS),
-        string_concat(S39, HabilidadesS, S40),
-        string_concat(S40, "Imunidades:\n", S41),
-        stringFromList(Imunidades, ImunidadesS),
-        string_concat(S41, ImunidadesS, S42),
-        string_concat(S42, ResistenciasS, R).
+        listarItem(Equipaveis, S34),
+        stringFromList(S34, S35),
+        string_concat(S33, S35, S36),
+        string_concat(S36, "Consumiveis:\n", S37),
+        listarItem(Consumiveis, S38),
+        stringFromList(S38, S39),
+        string_concat(S37, S39, S40),
+        string_concat(S40, "Habilidades:\n", S41),
+        listaHabilidades(Habilidades, S42)
+        stringFromList(S42, S43),
+        string_concat(S41, S43, S44),
+        string_concat(S45, "Resistencias:\n", S46),
+        stringFromList(Resistencias, S47),
+        string_concat(S46, S47, R).
 
 listaPersonagens([], []).
 listaPersonagens([Personagem|L], R) :-
