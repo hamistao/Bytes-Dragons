@@ -15,12 +15,8 @@ menuLoja :-
     readEntrada(Entrada),
     menuLoja(Entrada).
 
-menuLoja(_) :-
-    writeln('\nEntrada invalida amigao.'),
-    menuLoja.
-    
 menuLoja("1") :-
-    structsFromFile('data/loja.info', LojasStr),
+    structsFromFile('data/loja.bd', LojasStr),
 	listarLojas(LojasStr, ListaLojas),
 	nl, writeln('Lojas disponiveis:'),
 	writeComId(ListaLojas, 1),
@@ -47,20 +43,24 @@ menuLoja("5") :-
     readEntrada(_),
 	menuLoja.
 
+menuLoja(_) :-
+    writeln('\nEntrada invalida amigao.'),
+    menuLoja.
+
 excluiLoja(_) :-
 	writeln('sem essa brother').
 
 cadastraLoja :-
     nl, writeln('Qual o nome da loja?'),
     readEntrada(Nome),
-    open('data/loja.info', append, Str),
+    open('data/loja.bd', append, Str),
     construtorLojaString(Nome, Loja),
     writeln(Loja),
     write(Str, Loja), writeln(Str, ".").
 
 detalheLoja :-
     writeln('Qual o ID da loja?'),
-    exibeFromFile('data/loja.info').
+    exibeFromFile('data/loja.bd').
 
 detalheLoja(X) :-
     write('o id - '),
@@ -70,4 +70,4 @@ detalheLoja(X) :-
 excluiLoja :-
 	readEntrada(Id),
 	atom_number(Id, Desejado),
-	removeItemFromFile('data/loja.info', Desejado).
+	removeItemFromFile('data/loja.bd', Desejado).
