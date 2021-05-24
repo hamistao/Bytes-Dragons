@@ -1,3 +1,10 @@
+:- use_module(library(persistency)).
+:- initialization(init).
+
+init :-
+	absolute_file_name('./data/database.db', File, [access(write)]),
+	db_attach(File, []).
+
 :- include('MainHabilidade.pl').
 :- include('MainItem.pl').
 :- include('MainLoja.pl').

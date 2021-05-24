@@ -1,12 +1,4 @@
-:- use_module(library(persistency)).
-
 :- persistent habilidade(nome:any, impactoVida:any, impactoVelocidade:any, atributoRelacionado:any, pontosParaAcerto:any, tipoDeDano:any).
-
-:- initialization(init).
-
-init :-
-	absolute_file_name('/data/habil.db', File, [access(write)]),
-	db_attach(File, []).
 
 exibeHabilidade(Nome) :-
 	habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano),
@@ -20,7 +12,7 @@ exibeHabilidade(Nome) :-
 	writeln(AtributoRelacionado),
 	write("Pontos para o acerto: "),
 	writeln(PontosParaAcerto),
-	write("Tipode de dano: "),
+	write("Tipo de dano: "),
 	writeln(TipoDeDano).
 	
 listarHabilidades :-

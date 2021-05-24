@@ -1,13 +1,5 @@
-:- use_module(library(persistency)).
-
 :- persistent equipavel(nome:any, alteracaoVidaMaxima:any, alteracaoForca:any, alteracaoInteligencia:any, alteracaoSabedoria:any, alteracaoDestreza:any, alteracaoConstituicao:any, alteracaoCarisma:any, alteracaoVelocidade:any, tipo:any).
 :- persistent equipavelTemHabilidade(nomeEquipavel:any, nomeHabilidade:any).
-
-:- initialization(init).
-
-init :-
-	absolute_file_name('data/equipavel.db', File, [access(write)]),
-	db_attach(File, []).
 
 exibeEquipavel(Nome) :-
 	equipavel(Nome, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel),
@@ -29,7 +21,7 @@ exibeEquipavel(Nome) :-
 	writeln(AlteracaoVelocidade),
 	write("Tipo do equipavel: "),
 	writeln(TipoEquipavel),
-	write("Habilidades: "),
+	writeln("Habilidades: "),
 	listarHabilidadesEquipavel(Nome).
 
 listarEquipaveis :-
@@ -37,3 +29,9 @@ listarEquipaveis :-
 
 listarHabilidadesEquipavel(Nome) :-
 	foreach(equipavelTemHabilidade(Nome, Habilidade), writeln(Habilidade)).
+
+tipoEquipavel("Cabeca").
+tipoEquipavel("Torso").
+tipoEquipavel("Pernas").
+tipoEquipavel("Maos").
+tipoEquipavel("Arma").
