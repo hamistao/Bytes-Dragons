@@ -51,6 +51,8 @@ menuItem("4") :-
     readEntrada(_),
     menuItem.
 
+menuItem(9).
+
 menuItem(_) :-
     writeln('\nEntrada invalida.'),
     menuItem.
