@@ -105,6 +105,40 @@ listarHabilidadesPersonagem(Nome) :-
 listarResistenciasPersonagem(Nome) :-
     foreach(personagemTemResistencia(Nome, Resistencia), writeComMarcador(Resistencia)).
 
+equipaItem(Nome, Equipavel) :-
+    equipavel(Equipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel),
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewVidaMaxima is VidaMaxima + AlteracaoVidaMaxima,
+    NewVida is Vida + AlteracaoVidaMaxima,
+    NewForca is Forca + AlteracaoForca,
+    NewInteligencia is Inteligencia + AlteracaoInteligencia,
+    NewSabedoria is Sabedoria + AlteracaoSabedoria,
+    NewDestreza is Destreza + AlteracaoDestreza,
+    NewConstituicao is Constituicao + AlteracaoConstituicao,
+    NewCarisma is Carisma + AlteracaoCarisma,
+    NewVelocidade is Velocidade + AlteracaoVelocidade,
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, NewVidaMaxima, NewVida, NewForca, NewInteligencia, NewSabedoria, NewDestreza, NewConstituicao,
+        NewCarisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
+
+dequipaItem(Nome, Equipavel) :-
+    equipavel(Equipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel),
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewVidaMaxima is VidaMaxima - AlteracaoVidaMaxima,
+    NewVida is Vida - AlteracaoVidaMaxima,
+    NewForca is Forca - AlteracaoForca,
+    NewInteligencia is Inteligencia - AlteracaoInteligencia,
+    NewSabedoria is Sabedoria - AlteracaoSabedoria,
+    NewDestreza is Destreza - AlteracaoDestreza,
+    NewConstituicao is Constituicao - AlteracaoConstituicao,
+    NewCarisma is Carisma - AlteracaoCarisma,
+    NewVelocidade is Velocidade - AlteracaoVelocidade,
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, NewVidaMaxima, NewVida, NewForca, NewInteligencia, NewSabedoria, NewDestreza, NewConstituicao,
+        NewCarisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
+
 aumentaXp(Nome, XpAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, Velocidade, Ouro, XpStr, XpUp, Nivel),
