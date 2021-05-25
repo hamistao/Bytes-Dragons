@@ -72,7 +72,9 @@ menuPersg("6") :-
     writeln('Qual o Nome do Personagem?'),
     readEntrada(Nome),
     personagemExiste(Nome),
-    assert_personagemTemResistencia(Nome, Tipo).
+    assert_personagemTemResistencia(Nome, Tipo),
+    write('Resistencia concedida'),
+    readEntrada(_), menuPersg.
 
 
 menuPersg("7") :-
@@ -157,6 +159,8 @@ menuItemPersonagem("2") :-
     readEntrada(Consumivel),
     consumivel(Consumivel, _, _, Duracao),
     colocaConsumivelPersonagem(Nome, Consumivel, Duracao),
+    writeln('Consumivel equipado'),
+    readEntrada(_),
     menuItemPersonagem.
 
 menuItemPersonagem("3") :-
@@ -167,6 +171,8 @@ menuItemPersonagem("3") :-
     readEntrada(Habilidade),
     habilidadeExiste(Habilidade),
     colocaHabilidadePersonagem(Nome, Habilidade),
+    writeln('Habilidade alocada'),
+    readEntrada(_),
     menuItemPersonagem.
 
 menuItemPersonagem("4") :-
@@ -177,6 +183,8 @@ menuItemPersonagem("4") :-
     readEntrada(Equipavel),
     equipavelExiste(Equipavel),
     tiraEquipavelPersonagem(Nome, Equipavel),
+    writeln('Item desequipado'),
+    readEntrada(_),
     menuItemPersonagem.
 
 menuItemPersonagem("5") :-
@@ -187,6 +195,8 @@ menuItemPersonagem("5") :-
     readEntrada(Consumivel),
     consumivelExiste(Consumivel),
     tiraConsumivelPersonagem(Nome, Consumivel),
+    writeln('Consumivel desequipado'),
+    readEntrada(_),
     menuItemPersonagem.
 
 menuItemPersonagem("6") :-
@@ -197,6 +207,8 @@ menuItemPersonagem("6") :-
     readEntrada(Habilidade),
     habilidadeExiste(Habilidade),
     tiraHabilidadePersonagem(Nome, Habilidade),
+    writeln('Habilidade Desalocada'),
+    readEntrada(_),
     menuItemPersonagem.
 
 menuItemPersonagem("9").

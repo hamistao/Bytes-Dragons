@@ -1,7 +1,7 @@
 :- include('Batalha.pl').
 
 menuBatalha :-
-    ln, writeln('Quais os personagens que irao batalhar?'),
+    nl, writeln('Quais os personagens que irao batalhar?'),
     readEntrada(P),
     verificaPersonagens(P),
     
@@ -16,9 +16,9 @@ menuBatalha("1") :-
     writeln('Qual Personagem usara a Habilidade?'),
     readEntrada(Nome),
     participaDaBatalha(Nome),
-    writeln('A(s) Habilidade(s) disponivel(is) sao:')
+    writeln('\nA(s) Habilidade(s) disponivel(is) sao:'),
     exibeHabilidadesPersonagem(Nome),
-    writeln('Qual Habilidade sera usado?'),
+    writeln('\nQual Habilidade sera usado?'),
     readEntrada(Habilidade),
     personagemTemHabilidadeEquipavel(Nome, Habilidade),
     writeln('Em quem sera usado a Habilidade?'),
@@ -80,10 +80,10 @@ menuBatalha(_):-
 
 
 exibePersonagensMortos :-
-    foreach(participaDaBatalha(Nome), \+isVivo(Nome), exibePersonagem(Nome)).
+    foreach(participaDaBatalha(Nome), (\+isVivo(Nome), exibePersonagem(Nome))).
 
 exibePersonagensVivos :-
-    foreach(participaDaBatalha(Nome), isVivo(Nome), exibePersonagem(Nome)).
+    foreach(participaDaBatalha(Nome), (isVivo(Nome), exibePersonagem(Nome))).
 
 isVivo(Nome) :-
     personagem(Nome, _, _, _, Vida, _, _, _, _, _, _, _, _, _, _, _),
@@ -101,7 +101,7 @@ recuperaVidaPersonagens(Nome) :-
     readEntrada(P),
     recuperaVidaPersonagens(P).
 recuperaVidaPersonagens(NomeErrado) :-
-    write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
+    write('\nPersonagem '), write(NomeErrado), writeln(' nao participa da Batalha.\n'),
     readEntrada(P),
     recuperaVidaPersonagens(P).
 
@@ -163,7 +163,6 @@ encerraBatalha :-
     foreach(participaDaBatalha(Nome), retract_participaDaBatalha(Nome)).
 
 
-
 verificaPersonagens("").
 verificaPersonagens(Nome) :-
     personagemExiste(Nome),
@@ -171,7 +170,7 @@ verificaPersonagens(Nome) :-
     readEntrada(P),
     verificaPersonagens(P).
 verificaPersonagens(NomeErrado) :-
-    write('Personagem '), write(NomeErrado), writeln('Nao existe'),
+    write('Personagem '), write(NomeErrado), writeln(' nao existe'),
     readEntrada(P),
     verificaPersonagens(P).
 
@@ -185,7 +184,7 @@ writeResultadosDaHabilidade(Emissor, Habilidade, Alvo) :-
     random(1,31, R3),
     writeln('Os dados tirados foram:'),
     write('Para acerto: '), write(R1), write(' e '), writeln(R2),
-    chanceDeEsquiva(Emissor, Alvo, R3, C),
+    chanceDeEsquiva(Emissor, Alvo, C),
     write('A chance de esquiva eh: '), write(C), writeln('%.'),
     write('A Habilidade Usada foi: '), writeln(Habilidade),
     habilidade(Habilidade, _, _, _, Acerto, _),

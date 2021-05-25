@@ -16,6 +16,7 @@ main :-
 
 
 menu('start') :-
+    foreach(participaDaBatalha(N), retract_participaDaBatalha(N)),
     criaArquivos,
     menu('go').
 
@@ -75,11 +76,6 @@ menu(X) :-
 
 
 criaArquivos :-
-    createFile('data/persngs.bd'),
-    createFile('data/consmvl.info'),
-    createFile('data/equip.info'),
-    createFile('data/habil.info'),
-    createFile('data/loja.bd'),
     createFile('data/campanha.lore').
 
 
@@ -120,28 +116,6 @@ read_file(Stream,[X|L]) :-
     read_file(Stream, L).
 
 
-structsFromFile(Path, Lines) :-
-    open(Path, read, Str),
-    read_file_structures(Str, Lines),!,
-    close(Str).
-
-
-read_file_structures(Stream,[]) :-
-    at_end_of_stream(Stream).
-
-read_file_structures(Stream, [X|L]) :-
-    \+ at_end_of_stream(Stream),
-    read(Stream, X),
-    \+ X == 'end_of_file',
-
-    read_file_structures(Stream, L).
-
-read_file_structures(Stream, _) :-
-    read(Stream, X),
-    X == 'end_of_file'.
-
-
-
 writeLore(Path):-
     open(Path, write, Str),
     writeln('Digite "fim" para encerrar concluir a escrita da lore.'),
@@ -162,52 +136,3 @@ readEntrada(Entrada) :-
     read_line_to_codes(user_input, E),
     atom_string(E, Entrada).
 
-
-writeComId([], _).
-
-writeComId([X|L], Id) :-
-    string_concat(Id, " - ", S1),
-    string_concat(S1, X, S2),
-    string_concat(S2, "\n", S3),
-    writeln(S3),
-    NextId is Id+1,
-    writeComId(L, NextId).
-
-
-elemFromId([], _, _, -1).
-elemFromId([X|_], Id, Id, X).
-elemFromId([_|L], Id, Atual,Elem) :-
-    NextAtual is Atual + 1,
-    elemFromId(L, Id, NextAtual,Elem).
-
-
-stringFromList([], "").
-stringFromList([X|L], R) :-
-    string_concat(R, X, S1),
-    string_concat(S1, '\n', S2),
-    stringFromList(L, S2).
-
-
-removeFromFile(Path, Id) :-
-    linesFromFile(Path, Lines),
-    nth1(Id, Lines, _, List),
-    open(Path, write, Str),
-    writeLinesToFile(Str, List),!,
-    close(Str).
-
-
-writeLinesToFile(_, []).
-writeLinesToFile(Stream, [H|L]) :-
-    writeln(Stream, H),
-    writeLinesToFile(Stream, L).
-
-exibeFromFile(Path) :-
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    structsFromFile(Path, Lista),
-    length(Lista, L),
-    Desejado > 0,
-    \+ Desejado > L,
-    elemFromId(Lista, Desejado, 1, Elem),
-    exibir(Elem, S),
-    writeln(S).

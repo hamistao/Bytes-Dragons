@@ -1,4 +1,0 @@
-habilidade("to titi",10,0,"Forca",1,"Magico").
-habilidade("aaa",-10,0,"Forca",2,"Cortante").
-habilidade("e oq",-2,0,"Destreza",10,"Magico").
-habilidade("n aguento mais",10,5,"Forca",15,"Cortante").

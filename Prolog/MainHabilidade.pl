@@ -38,7 +38,7 @@ menuHabilis("2"):-
     writeln('Qual o tipo de dano da habilidade (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico) ?'),
     readEntrada(TipoDeDano),
     assert_habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano),
-    writeln('Habilidade cadastrada com sucesso.\nEnter para continuar'),
+    writeln('Habilidade cadastrada com sucesso.'),
     writeln('\nEnter para continuar'),
     readEntrada(_),
     menuHabilis.
@@ -46,7 +46,7 @@ menuHabilis("2"):-
 menuHabilis("3"):-
     writeln('Qual o nome da habilidade?'),
 	readEntrada(Nome),
-	exibeHabilidade(Nome).
+	exibeHabilidade(Nome),
     readEntrada(_),
     menuHabilis.
 

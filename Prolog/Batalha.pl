@@ -42,10 +42,11 @@ personagemTemHabilidadeEquipavel(Nome, Habilidade) :-
     equipavelTemHabilidade(Equipavel, Habilidade).
 
 acertouHabilidade(Emissor, Habilidade, Alvo, D1, D2, D3) :-
-    habilidade(Habilidade, _, _, _, Acerto, Tipo),
+    habilidade(Habilidade, _, _, _, AcertoStr, Tipo),
     personagemTemResistencia(Alvo, Tipo),!,
     atributoPersonagem(Emissor, Atributo, Valor),
     menorDado(D1, D2, Dmenor),
+    atom_number(AcertoStr, Acerto),
     Valor + Dmenor > Acerto,!,
     \+consegueEsquivar(Emissor, Alvo, D3).
 
@@ -54,12 +55,18 @@ acertouHabilidade(Emissor, Habilidade, Alvo, D1, D2, D3) :-
     \+personagemTemResistencia(Alvo, Tipo),!,
     atributoPersonagem(Emissor, Atributo, Valor),
     maiorDado(D1, D2, Dmaior),
+    atom_number(AcertoStr, Acerto),
     Valor + Dmaior > Acerto,!,
     \+consegueEsquivar(Emissor, Alvo, D3).
 
 consegueEsquivar(Emissor, Alvo, D) :-
     diferencaVelocidade(Emissor, Alvo, Valor),
     D > Valor.
+
+diferencaVelocidade(Emissor, Alvo, Valor) :-
+    personagem(Emissor, _, _, _, _, _, _, _, _, _, _, V1, _, _, _, _),
+    personagem(Alvo, _, _, _, _, _, _, _, _, _, _, V2, _, _, _, _),
+    Valor is V2 - V1.
 
 menorDado(D1, D2, D1) :-
     D1 < D2.
