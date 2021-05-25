@@ -100,7 +100,7 @@ recuperaVidaPersonagens :-
 recuperaVidaPersonagens("").
 recuperaVidaPersonagens(Nome) :-
     participaDaBatalha(Nome),
-    personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),!,
+    personagem(Nome, A, B, C, _, E, F, G, H, I, J, K, L, M, N, O),!,
     retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
     readEntrada(P),

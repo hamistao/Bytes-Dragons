@@ -121,7 +121,7 @@ comprar("2", Loja, Personagem, Ouro) :-
 	assert_personagemTemConsumivel(Personagem, Consumivel, Duracao),
 	writeln('Item comprado com sucesso\nEnter para continuar').
 
-vender("1", Loja, Personagem, Ouro) :-
+vender("1", _, Personagem, _) :-
 	writeln("Qual o nome do equipavel que deseja vender?"),
 	readEntrada(Equipavel),
 	equipavel(Equipavel, _, _, _, _, _, _, _, _, _),
@@ -133,7 +133,7 @@ vender("1", Loja, Personagem, Ouro) :-
 	aumentaOuro(Personagem, PrecoInt),
 	writeln('Item vendido com sucesso\nEnter para continuar').
 
-vender("2", Loja, Personagem, Ouro) :-
+vender("2", _, Personagem, _) :-
 	writeln("Qual o nome do consumivel que deseja vender?"),
 	readEntrada(Consumivel),
 	consumivel(Consumivel, _, _, _),

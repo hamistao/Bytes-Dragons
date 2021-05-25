@@ -116,8 +116,8 @@ aumentaXp(Nome, XpAdicional) :-
         Carisma, Velocidade, Ouro, NewXp, XpUp, Nivel).
 
 aumentaXp(Nome, XpAdicional) :-
-    personagem(Nome, Raca, Classe, VidaMaximaStr, VidaStr, ForcaStr, InteligenciaStr, SabedoriaStr, DestrezaStr, ConstituicaoStr,
-        CarismaStr, VelocidadeStr, Ouro, XpStr, XpUpStr, NivelStr),
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewVida is Vida + 20,
     NewVidaMaxima is VidaMaxima + 20,
     NewForca is Forca + 1,
@@ -146,17 +146,17 @@ aumentaOuro(Nome, OuroAdicional) :-
 atributoPersonagem(Emissor, "Forca", Valor) :-
     personagem(Emissor, _, _, _, _, Valor, _, _, _, _, _, _, _, _, _, _).
 
-atributoPersonagem(Emissor, "Inteligencia", Valor).
+atributoPersonagem(Emissor, "Inteligencia", Valor) :-
     personagem(Emissor, _, _, _, _, _, Valor, _, _, _, _, _, _, _, _, _).
 
-atributoPersonagem(Emissor, "Sabedoria", Valor).
+atributoPersonagem(Emissor, "Sabedoria", Valor) :-
     personagem(Emissor, _, _, _, _, _, _, Valor, _, _, _, _, _, _, _, _).
 
-atributoPersonagem(Emissor, "Destreza", Valor).
+atributoPersonagem(Emissor, "Destreza", Valor) :-
     personagem(Emissor, _, _, _, _, _, _, _, Valor, _, _, _, _, _, _, _).
 
-atributoPersonagem(Emissor, "Constituicao", Valor).
+atributoPersonagem(Emissor, "Constituicao", Valor) :-
     personagem(Emissor, _, _, _, _, _, _, _, _, Valor, _, _, _, _, _, _).
 
-atributoPersonagem(Emissor, "Carisma", Valor).
+atributoPersonagem(Emissor, "Carisma", Valor) :-
     personagem(Emissor, _, _, _, _, _, _, _, _, _, Valor, _, _, _, _, _).

@@ -11,7 +11,7 @@ usarConsumivel(NomePersonagem, NomeConsumivel) :-
     assert_personagemTemConsumivel(NomePersonagem, NomeConsumivel, NewDuracao).
     
 aplicarConsumivel(NomePersonagem, NomeConsumivel):-
-    consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidade, Duracao),
+    consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidade, _),
     personagem(NomePersonagem, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),!,
     NewVida is (Vida + AlteracaoVida), 
