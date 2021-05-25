@@ -17,6 +17,8 @@ exibeEquipavel(Nome) :-
 	writeln(AlteracaoDestreza),
 	write("Alteracao na Constituicao: "),
 	writeln(AlteracaoConstituicao),
+	write("Alteracao no Carisma: "),
+	writeln(AlteracaoCarisma),
 	write("Alteracao na Velocidade: "),
 	writeln(AlteracaoVelocidade),
 	write("Tipo do equipavel: "),
