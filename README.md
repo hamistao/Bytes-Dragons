@@ -1,5 +1,5 @@
 # Bytes-Dragons
-Projeto em Haskell pra a disciplina de Paradigmas de linguagem de programação da UFCG.
+Projeto em Haskell e Prolog pra a disciplina de Paradigmas de linguagem de programação da UFCG.
 
 
 # Proposta do projeto:
