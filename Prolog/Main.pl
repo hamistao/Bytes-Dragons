@@ -1,3 +1,4 @@
+:- style_check(-discontiguous).
 :- use_module(library(persistency)).
 :- initialization(init).
 
