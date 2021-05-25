@@ -1,7 +1,10 @@
-:- persistent equipavel(nome:any, alteracaoVidaMaxima:any, alteracaoForca:any, alteracaoInteligencia:any, alteracaoSabedoria:any, alteracaoDestreza:any, alteracaoConstituicao:any, alteracaoCarisma:any, alteracaoVelocidade:any, tipo:any).
+:- persistent participaDaBatalha(nomePersonagem:any).
 
 usarConsumivel(NomePersonagem, NomeConsumivel) :-
-    retract_personagemTemConsumivel(NomePersonagem, NomeConsumivel).
+    personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
+    NewDuracao is Duracao - 1,
+    retract_personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
+    assert_personagemTemConsumivel(NomePersonagem, NomeConsumivel, NewDuracao).
     
 aplicarConsumivel(NomePersonagem, NomeConsumivel):-
     consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidade, Duracao),

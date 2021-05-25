@@ -155,8 +155,8 @@ menuItemPersonagem("2") :-
     personagemExiste(Nome),
     writeln('Qual o nome do Consumivel?'),
     readEntrada(Consumivel),
-    consumivelExiste(Consumivel),
-    colocaConsumivelPersonagem(Nome, Consumivel),
+    consumivel(Consumivel, _, _, Duracao),
+    colocaConsumivelPersonagem(Nome, Consumivel, Duracao),
     menuItemPersonagem.
 
 menuItemPersonagem("3") :-
@@ -214,12 +214,12 @@ colocaHabilidadePersonagem(Nome, Habilidade) :-
 colocaHabilidadePersonagem(Nome, Habilidade) :-
     assert_personagemTemHabilidade(Nome, Habilidade).
 
-colocaConsumivelPersonagem(Nome, Consumivel) :-
-    retract_personagemTemConsumivel(Nome, Consumivel),
-    assert_personagemTemConsumivel(Nome, Consumivel).
+colocaConsumivelPersonagem(Nome, Consumivel, Duracao) :-
+    retract_personagemTemConsumivel(Nome, Consumivel, _),
+    assert_personagemTemConsumivel(Nome, Consumivel, Duracao).
 
-colocaConsumivelPersonagem(Nome, Consumivel) :-
-    assert_personagemTemConsumivel(Nome, Consumivel).
+colocaConsumivelPersonagem(Nome, Consumivel, Duracao) :-
+    assert_personagemTemConsumivel(Nome, Consumivel, Duracao).
 
 tipoIndisponivel(Nome, Equipavel) :-
     personagemTemEquipavel(Nome, Equipado),
@@ -238,7 +238,7 @@ tiraEquipavelPersonagem(Nome, Equipavel).
 tiraEquipavelPersonagem(_, _).
 
 tiraConsumivelPersonagem(Nome, Consumivel).
-    retract_personagemTemConsumivel(Nome, Consumivel).
+    retract_personagemTemConsumivel(Nome, Consumivel, _).
 tiraConsumivelPersonagem(_, _).
 
 tiraHabilidadePersonagem(Nome, Habilidade).
