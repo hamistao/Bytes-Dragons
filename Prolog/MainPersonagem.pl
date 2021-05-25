@@ -101,6 +101,7 @@ checkRaca(Raca):-
 checkRaca(R):-
     string_concat(R, ' nao eh uma raca valida', S),
     writeln(S),!,
+    readEntrada(_),
     false.
 
 
@@ -109,6 +110,7 @@ checkClasse(Classe):-
 checkClasse(C) :-
     string_concat(C, ' nao eh uma classe valida', S),
     writeln(S),!,
+    readEntrada(_),
     false.
 
 
