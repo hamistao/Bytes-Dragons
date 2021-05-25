@@ -43,6 +43,8 @@ menuPersg("2") :-
     readEntrada(Raca),
     checkRaca(Raca),
     constroiPersonagem(Nome, Classe, Raca),
+    write('Personagem criado <3'),
+    readEntrada(_),
     menuPersg.    
 
 menuPersg("3") :-
@@ -55,7 +57,7 @@ menuPersg("4") :-
     writeln('Qual o Nome do Personagem a ser deletado?'),
     readEntrada(Nome),
     personagemExiste(Nome),
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     write('Personagem deletado'),
     readEntrada(_), menuPersg.
 
@@ -84,7 +86,7 @@ menuPersg(_):-
 
 
 constroiPersonagem(Nome, Classe, Raca) :-
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     criaPersonagem(Nome, Classe, Raca).
 constroiPersonagem(Nome, Classe, Raca) :-
     criaPersonagem(Nome, Classe, Raca).
@@ -140,7 +142,10 @@ menuItemPersonagem("1"):-
     writeln('Qual o nome do Equipavel?'),
     readEntrada(Equipavel),
     equipavelExiste(Equipavel),
-    colocaItemPersonagem(Nome, Equipavel),
+    \+tipoIndisponivel(Nome, Equipavel),
+    colocaEquipavelPersonagem(Nome, Equipavel),
+    writeln('Item equipado'),
+    readEntrada(_),
     menuItemPersonagem.
 
 menuItemPersonagem("2") :-
@@ -196,7 +201,8 @@ menuItemPersonagem("6") :-
 menuItemPersonagem("9").
 
 menuItemPersonagem(_):-
-    write('\nEntrada invalida.'),
+    writeln('\nEntrada invalida.'),
+    readEntrada(_),
     menuItemPersonagem.
 
 
@@ -213,6 +219,11 @@ colocaConsumivelPersonagem(Nome, Consumivel) :-
 
 colocaConsumivelPersonagem(Nome, Consumivel) :-
     assert_personagemTemConsumivel(Nome, Consumivel).
+
+tipoIndisponivel(Nome, Equipavel) :-
+    personagemTemEquipavel(Nome, Equipado),
+    equipavel(Equipavel, _, _, _, _, _, _, _, _, Tipo),
+    equipavel(Equipado, _, _, _, _, _, _, _, _, Tipo).
 
 colocaEquipavelPersonagem(Nome, Equipavel) :-
     retract_personagemTemEquipavel(Nome, Equipavel),
@@ -234,7 +245,7 @@ tiraHabilidadePersonagem(Nome, Habilidade).
 tiraHabilidadePersonagem(_, _).
 
 personagemExiste(Nome) :-
-    personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _).
+    personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _).
 
 consumivelExiste(Nome) :-
     consumivel(Nome, _, _, _).
