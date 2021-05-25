@@ -29,15 +29,16 @@ menuBatalha("1") :-
 
 menuBatalha("2") :-
     writeln('Qual Personagem usara o Consumivel?'),
-    readEntrada(Nome),
-    participaDaBatalha(Nome),
+    readEntrada(Emissor),
+    participaDaBatalha(Emissor),
     writeln('Qual Consumivel sera usado?'),
     readEntrada(Consumivel),
-    personagemTemConsumivel(Nome, Consumivel),
+    personagemTemConsumivel(Emissor, Consumivel, Duracao),
     writeln('Em quem sera usado o consumivel?'),
     readEntrada(Alvo),
-    personagemTemConsumivel(Nome, Consumivel),
+    Duracao > 0,
     aplicarConsumivel(Alvo, Consumivel),
+    usarConsumivel(Emissor, Consumivel),
     writeln('Consumivel usado com sucesso'),
     readEntrada(_),
     menuBatalha(0).
@@ -52,22 +53,23 @@ menuBatalha("3") :-
 
 menuBatalha("9") :-
     writeln('Batalha Encerrada.'),
+    foreach(participaDaBatalha(N), writeln(N)),
     writeln('Os Personagens que morreram foram:'),
     exibePersonagensMortos,
     writeln('Os Personagens que sobreviveram foram:'),
     exibePersonagensVivos,
     writeln('Quais Personagens voce gostaria de recuperar para vida maxima?'),
-    recuperaVidaPersonagens,
-    writeln('\nQuais Personagens voce gostaria que ganhassem XP?'),
-    vaoGanharXP,
-    writeln('Quanto de XP ganharao?'),
+    recuperaVidaPersonagens,!,
+    writeln('Quanto de XP sera concedido?'),
     readEntrada(Xp),
-    writeln('\nQuais Personagens voce gostaria que ganhassem Ouro?'),
-    vaoGanharOuro,
-    writeln('Quanto de Ouro ganharao?'),
+    atom_number(Xp, XpInt),
+    writeln('\nQuais Personagens voce gostaria que ganhassem XP?'),
+    vaoGanharXP(XpInt),
+    writeln('Quanto de Ouro sera concedido?'),
     readEntrada(Ouro),
-    colocaXP(Xp),
-    colocaOuro(Ouro),
+    atom_number(Ouro, OuroInt),
+    writeln('\nQuais Personagens voce gostaria que ganhassem Ouro?'),
+    vaoGanharOuro(OuroInt),
     writeln('Quais Personagens voce gostaria de apagar do sistema?'),
     apagaPersonagens,
     encerraBatalha,
@@ -81,9 +83,11 @@ menuBatalha(_):-
 
 exibePersonagensMortos :-
     foreach(participaDaBatalha(Nome), (\+isVivo(Nome), exibePersonagem(Nome))).
+exibePersonagensMortos.
 
 exibePersonagensVivos :-
     foreach(participaDaBatalha(Nome), (isVivo(Nome), exibePersonagem(Nome))).
+exibePersonagensVivos.
 
 isVivo(Nome) :-
     personagem(Nome, _, _, _, Vida, _, _, _, _, _, _, _, _, _, _, _),
@@ -96,7 +100,8 @@ recuperaVidaPersonagens :-
 recuperaVidaPersonagens("").
 recuperaVidaPersonagens(Nome) :-
     participaDaBatalha(Nome),
-    retractall_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
+    personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),!,
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
     readEntrada(P),
     recuperaVidaPersonagens(P).
@@ -106,42 +111,34 @@ recuperaVidaPersonagens(NomeErrado) :-
     recuperaVidaPersonagens(P).
 
 
-vaoGanharXP :-
+vaoGanharXP(Xp) :-
     readEntrada(P),
-    vaoGanharXP(P).
-vaoGanharXP("").
-vaoGanharXP(Nome) :-
+    vaoGanharXP(P, Xp).
+vaoGanharXP("", _).
+vaoGanharXP(Nome, Xp) :-
     participaDaBatalha(Nome),
-    assert_vaiGanharXp(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
-    readEntrada(P),
-    vaoGanharXP(P).
-vaoGanharXP(NomeErrado) :-
+    aumentaXp(Nome, Xp),
+    readEntrada(Per),
+    vaoGanharXP(Per, Xp).
+vaoGanharXP(NomeErrado, Xp) :-
     write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
     readEntrada(P),
-    vaoGanharXP(P).
+    vaoGanharXP(P, Xp).
 
 
-vaoGanharOuro :-
+vaoGanharOuro(Ouro) :-
     readEntrada(P),
-    vaoGanharOuro(P).
-vaoGanharOuro("").
-vaoGanharOuro(Nome) :-
+    vaoGanharOuro(P, Ouro).
+vaoGanharOuro("", _).
+vaoGanharOuro(Nome, Ouro) :-
     participaDaBatalha(Nome),
-    assert_vaiGanharOuro(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
+    aumentaOuro(Nome, Ouro),
     readEntrada(P),
-    vaoGanharOuro(P).
-vaoGanharOuro(NomeErrado) :-
+    vaoGanharOuro(P, Ouro).
+vaoGanharOuro(NomeErrado, Ouro) :-
     write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
     readEntrada(P),
-    vaoGanharOuro(P).
-
-
-colocaXP(Xp) :-
-    foreach(vaiGanharXp(Nome), aumentaXp(Nome, Xp)).
-
-colocaOuro(Ouro) :-
-    foreach(vaiGanharOuro(Nome), aumentaOuro(Nome, Ouro)).
-
+    vaoGanharOuro(P, Ouro).
 
 apagaPersonagens :-
     readEntrada(P),
@@ -149,7 +146,7 @@ apagaPersonagens :-
 apagaPersonagens("").
 apagaPersonagens(Nome) :-
     participaDaBatalha(Nome),
-    retractall_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
+    deletaPersonagem(Nome),
     retractall_participaDaBatalha(Nome),
     readEntrada(P),
     apagaPersonagens(P).

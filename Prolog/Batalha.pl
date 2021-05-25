@@ -13,9 +13,10 @@ usarConsumivel(NomePersonagem, NomeConsumivel) :-
 aplicarConsumivel(NomePersonagem, NomeConsumivel):-
     consumivel(NomeConsumivel, AlteracaoVida, AlteracaoVelocidade, Duracao),
     personagem(NomePersonagem, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),!,
     NewVida is (Vida + AlteracaoVida), 
-    NewVelocidade is (Velocidade + AlteracaoVelocidade), 
+    writeln(Velocidade), writeln(AlteracaoVelocidade),
+    NewVelocidade is (Velocidade + AlteracaoVelocidade), writeln(NewVelocidade),
     retractall_personagem(NomePersonagem, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(NomePersonagem, Raca, Classe, VidaMaxima, NewVida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).

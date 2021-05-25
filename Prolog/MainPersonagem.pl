@@ -58,12 +58,16 @@ menuPersg("4") :-
     writeln('Qual o Nome do Personagem a ser deletado?'),
     readEntrada(Nome),
     personagemExiste(Nome),
+    deletaPersonagem(Nome),
+    write('Personagem deletado'),
+    readEntrada(_), menuPersg.
+
+deletaPersonagem(Nome) :-
     retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     retractall_personagemTemConsumivel(Nome, _, _),
     retractall_personagemTemEquipavel(Nome, _),
-    retractall_personagemTemHabilidade(Nome, _),
-    write('Personagem deletado'),
-    readEntrada(_), menuPersg.
+    retractall_personagemTemHabilidade(Nome, _).
+
 
 menuPersg("5") :-
     menuItemPersonagem,
