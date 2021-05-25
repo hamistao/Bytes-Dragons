@@ -141,8 +141,7 @@ dequipaItem(Nome, Equipavel) :-
 
 aumentaXp(Nome, XpAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-        Carisma, Velocidade, Ouro, XpStr, XpUp, Nivel),
-    atom_number(XpStr, Xp),
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewXp is Xp + XpAdicional,
     NewXp < XpUp,
     retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
@@ -170,8 +169,7 @@ aumentaXp(Nome, XpAdicional) :-
 
 aumentaOuro(Nome, OuroAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-        Carisma, Velocidade, OuroStr, Xp, XpUp, Nivel),
-    atom_number(OuroStr, Ouro),
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewOuro is Ouro + OuroAdicional,
     retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,

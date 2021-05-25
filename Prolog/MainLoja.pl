@@ -8,7 +8,7 @@ menuLoja :-
     writeln(  '/______________/'),
     writeln(  '| |  _[___]_   |'),
     writeln(  '| |__( o_o )___|'),
-    writeln(  '| /    /|\\    |'),
+    writeln(  '| /    /|\\     |'),
     writeln(  '|/_____________|'),
     writeln(  '| |            |'),
     writeln(  '|              |'),
