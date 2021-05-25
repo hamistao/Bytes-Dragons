@@ -1,6 +1,10 @@
 :- persistent participaDaBatalha(nomePersonagem:any).
 
 usarConsumivel(NomePersonagem, NomeConsumivel) :-
+    personagemTemConsumivel(NomePersonagem, NomeConsumivel, 1),
+    deletaConsumivel(NomeConsumivel).
+
+usarConsumivel(NomePersonagem, NomeConsumivel) :-
     personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
     NewDuracao is Duracao - 1,
     retractall_personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
