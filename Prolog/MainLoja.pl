@@ -49,6 +49,8 @@ menuLoja("5") :-
     readEntrada(_),
 	menuLoja.
 
+menuLoja("9").
+
 menuLoja(_) :-
     writeln('\nEntrada invalida amigao.'),
     menuLoja.
