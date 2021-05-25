@@ -93,12 +93,15 @@ excluiItem("1") :-
 excluiItem("2") :-
     writeln('Qual o nome do Consumivel?'),
     readEntrada(Nome),
-    retractall_consumivel(Nome, _, _, _),
-    retractall_personagemTemConsumivel(_, Nome, _),
-    retractall_lojaTemConsumivel(_, Nome, _).
+    deletaConsumivel(Nome).
 
 excluiItem(_) :- 
     writeln('tais trolando brother?').
+
+deletaConsumivel(Nome) :-
+    retractall_consumivel(Nome, _, _, _),
+    retractall_personagemTemConsumivel(_, Nome, _),
+    retractall_lojaTemConsumivel(_, Nome, _).
 
 cadastraItem("1") :-
     nl, writeln('Qual o nome do Equipavel?'),
