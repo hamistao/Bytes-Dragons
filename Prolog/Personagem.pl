@@ -106,7 +106,7 @@ listarResistenciasPersonagem(Nome) :-
     foreach(personagemTemResistencia(Nome, Resistencia), writeComMarcador(Resistencia)).
 
 equipaItem(Nome, Equipavel) :-
-    equipavel(Equipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel),
+    equipavel(Equipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, _),
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewVidaMaxima is VidaMaxima + AlteracaoVidaMaxima,
@@ -123,7 +123,7 @@ equipaItem(Nome, Equipavel) :-
         NewCarisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
 
 dequipaItem(Nome, Equipavel) :-
-    equipavel(Equipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, TipoEquipavel),
+    equipavel(Equipavel, AlteracaoVidaMaxima, AlteracaoForca, AlteracaoInteligencia, AlteracaoSabedoria, AlteracaoDestreza, AlteracaoConstituicao, AlteracaoCarisma, AlteracaoVelocidade, _),
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewVidaMaxima is VidaMaxima - AlteracaoVidaMaxima,
