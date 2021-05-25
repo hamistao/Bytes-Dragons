@@ -72,7 +72,7 @@ menuPersg("6") :-
     writeln('Qual o Nome do Personagem?'),
     readEntrada(Nome),
     personagemExiste(Nome),
-    assert_resistencia(Nome, Tipo).
+    assert_personagemTemResistencia(Nome, Tipo).
 
 
 menuPersg("7") :-

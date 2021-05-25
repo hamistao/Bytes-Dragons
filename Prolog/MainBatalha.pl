@@ -8,7 +8,7 @@ menuBatalha :-
     menuBatalha(0).
 
 menuBatalha(0) :-
-    writeln("Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Consumivel\n3 - Checar Personagens\n8 - Limpar as mensagens anteriores\n9 - Encerrar a Batalha\n"),
+    writeln("Qual sera a proxima acao?\n1 - Personagem Usar Habilidade\n2 - Personagem Usar Consumivel\n3 - Checar Personagens\n9 - Encerrar a Batalha\n"),
     readEntrada(Entrada),
     menuBatalha(Entrada).
 
@@ -50,14 +50,117 @@ menuBatalha("3") :-
     readEntrada(_),
     menuBatalha(0).
 
-menuBatalha("8").
 menuBatalha("9") :-
-    writeln('TODO XP, GOLD e LEVEL').
+    writeln('Batalha Encerrada.'),
+    writeln('Os Personagens que morreram foram:'),
+    exibePersonagensMortos,
+    writeln('Os Personagens que sobreviveram foram:'),
+    exibePersonagensVivos,
+    writeln('Quais Personagens voce gostaria de recuperar para vida maxima?'),
+    recuperaVidaPersonagens,
+    writeln('\nQuais Personagens voce gostaria que ganhassem XP?'),
+    vaoGanharXP,
+    writeln('Quanto de XP ganharao?'),
+    readEntrada(Xp),
+    writeln('\nQuais Personagens voce gostaria que ganhassem Ouro?'),
+    vaoGanharOuro,
+    writeln('Quanto de Ouro ganharao?'),
+    readEntrada(Ouro),
+    colocaXP(Xp),
+    colocaOuro(Ouro),
+    writeln('Quais Personagens voce gostaria de apagar do sistema?'),
+    apagaPersonagens,
+    encerraBatalha,
+    readEntrada(_).
 
 menuBatalha(_):-
     writeln('\nEntrada Invalida.'),
     readEntrada(_),
     menuBatalha(0).
+
+
+exibePersonagensMortos :-
+    foreach(participaDaBatalha(Nome), \+isVivo(Nome), exibePersonagem(Nome)).
+
+exibePersonagensVivos :-
+    foreach(participaDaBatalha(Nome), isVivo(Nome), exibePersonagem(Nome)).
+
+isVivo(Nome) :-
+    personagem(Nome, _, _, _, Vida, _, _, _, _, _, _, _, _, _, _, _),
+    Vida > 0.
+
+
+recuperaVidaPersonagens :-
+    readEntrada(P),
+    recuperaVidaPersonagens(P).
+recuperaVidaPersonagens("").
+recuperaVidaPersonagens(Nome) :-
+    participaDaBatalha(Nome),
+    retract_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
+    assert_personagem(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
+    readEntrada(P),
+    recuperaVidaPersonagens(P).
+recuperaVidaPersonagens(NomeErrado) :-
+    write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
+    readEntrada(P),
+    recuperaVidaPersonagens(P).
+
+
+vaoGanharXP :-
+    readEntrada(P),
+    vaoGanharXP(P).
+vaoGanharXP("").
+vaoGanharXP(Nome) :-
+    participaDaBatalha(Nome),
+    assert_vaiGanharXp(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
+    readEntrada(P),
+    vaoGanharXP(P).
+vaoGanharXP(NomeErrado) :-
+    write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
+    readEntrada(P),
+    vaoGanharXP(P).
+
+
+vaoGanharOuro :-
+    readEntrada(P),
+    vaoGanharOuro(P).
+vaoGanharOuro("").
+vaoGanharOuro(Nome) :-
+    participaDaBatalha(Nome),
+    assert_vaiGanharOuro(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
+    readEntrada(P),
+    vaoGanharOuro(P).
+vaoGanharOuro(NomeErrado) :-
+    write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
+    readEntrada(P),
+    vaoGanharOuro(P).
+
+
+colocaXP(Xp) :-
+    foreach(vaiGanharXp(Nome), aumentaXp(Nome, Xp)).
+
+colocaOuro(Ouro) :-
+    foreach(vaiGanharOuro(Nome), aumentaOuro(Nome, Ouro)).
+
+
+apagaPersonagens :-
+    readEntrada(P),
+    apagaPersonagens(P).
+apagaPersonagens("").
+apagaPersonagens(Nome) :-
+    participaDaBatalha(Nome),
+    retract_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
+    retract_participaDaBatalha(Nome),
+    readEntrada(P),
+    apagaPersonagens(P).
+apagaPersonagens(NomeErrado) :-
+    write('Personagem '), write(NomeErrado), writeln(' nao participa da Batalha.'),
+    readEntrada(P),
+    apagaPersonagens(P).
+
+
+encerraBatalha :-
+    foreach(participaDaBatalha(Nome), retract_participaDaBatalha(Nome)).
 
 
 

@@ -38,7 +38,6 @@ personagemTemHabilidadeEquipavel(Nome, Habilidade) :-
     personagemTemEquipavel(Nome, Equipavel),
     equipavelTemHabilidade(Equipavel, Habilidade).
 
-
 acertouHabilidade(Emissor, Habilidade, Alvo, D1, D2, D3) :-
     habilidade(Habilidade, _, _, _, Acerto, Tipo),
     personagemTemResistencia(Alvo, Tipo),!,
