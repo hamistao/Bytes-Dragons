@@ -159,6 +159,7 @@ menuItemPersonagem("1"):-
     equipavelExiste(Equipavel),
     \+tipoIndisponivel(Nome, Equipavel),
     colocaEquipavelPersonagem(Nome, Equipavel),
+    equipaItem(Nome, Equipavel),
     writeln('Item equipado'),
     readEntrada(_),
     menuItemPersonagem.
@@ -195,6 +196,7 @@ menuItemPersonagem("4") :-
     readEntrada(Equipavel),
     equipavelExiste(Equipavel),
     tiraEquipavelPersonagem(Nome, Equipavel),
+    dequipaItem(Nome, Equipavel),
     writeln('Item desequipado'),
     readEntrada(_),
     menuItemPersonagem.
