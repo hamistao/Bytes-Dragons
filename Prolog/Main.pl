@@ -136,6 +136,10 @@ readEntrada(Entrada) :-
     read_line_to_codes(user_input, E),
     atom_string(E, Entrada).
 
+readEntradaInt(Entrada) :-
+    read_line_to_codes(user_input, E),
+    atom_number(E, Entrada).
+
 writeComMarcador(Str) :-
 	write("- "),
 	writeln(Str).
