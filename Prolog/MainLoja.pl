@@ -1,4 +1,4 @@
-:- include('Loja.pl')
+:- include('Loja.pl').
 
 menuLoja :-
     write('\e[H\e[2J'),
@@ -16,7 +16,7 @@ menuLoja :-
     menuLoja(Entrada).
 
 menuLoja("1") :-
-	writeln("Lojas disponiveis:")
+	writeln("Lojas disponiveis:"),
 	listarLojas,
 	readEntrada(_),
 	menuLoja.
