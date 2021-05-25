@@ -12,4 +12,4 @@ exibeConsumivel(Nome) :-
 	writeln(Duracao).
 
 listarConsumiveis :-
-	foreach(consumivel(Nome, _, _, _), writeln(Nome)).
+	foreach(consumivel(Nome, _, _, _), writeComMarcador(Nome)).
