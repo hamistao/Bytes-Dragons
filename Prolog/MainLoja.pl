@@ -48,7 +48,9 @@ menuLoja("4") :-
 menuLoja("5") :-
     writeln('Qual o nome da loja?'),
     readEntrada(Nome),
-	retract_loja(Nome),
+	retractall_loja(Nome),
+	retractall_lojaTemConsumivel(Nome, _, _),
+	retractall_lojaTemEquipavel(Nome, _, _),
     writeln('Loja excluida com sucesso.'),
     readEntrada(_),
 	menuLoja.
