@@ -245,15 +245,15 @@ tipoIndisponivel(Nome, Equipavel) :-
     equipavel(Equipavel, _, _, _, _, _, _, _, _, Tipo),
     equipavel(Equipado, _, _, _, _, _, _, _, _, Tipo).
 
-tiraEquipavelPersonagem(Nome, Equipavel).
+tiraEquipavelPersonagem(Nome, Equipavel) :-
     retractall_personagemTemEquipavel(Nome, Equipavel).
 tiraEquipavelPersonagem(_, _).
 
-tiraConsumivelPersonagem(Nome, Consumivel).
+tiraConsumivelPersonagem(Nome, Consumivel) :-
     retractall_personagemTemConsumivel(Nome, Consumivel, _).
 tiraConsumivelPersonagem(_, _).
 
-tiraHabilidadePersonagem(Nome, Habilidade).
+tiraHabilidadePersonagem(Nome, Habilidade) :-
     retractall_personagemTemHabilidade(Nome, Habilidade).
 tiraHabilidadePersonagem(_, _).
 
