@@ -101,6 +101,25 @@ listarHabilidadesPersonagem(Nome) :-
 listarResistenciasPersonagem(Nome) :-
     foreach(personagemTemResistencia(Nome, Habilidade), writeln(Habilidade)).
 
+aumentaXp(Nome, XpAdicional) :-
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewXp is Xp + XpAdicional,
+    NewXp < XpUp,
+    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, NewXp, XpUp, Nivel).
+
+aumentaXp(Nome, XpAdicional) :-
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewXp is (Xp + XpAdicional - XpUp),
+    NewXpUp is XpUp + 500,
+    NewNivel is Nivel + 1,
+    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, NewXp, NewXpUp, NewNivel).
+
 atributo("Forca").
 atributo("Inteligencia").
 atributo("Sabedoria").

@@ -1,0 +1,5 @@
+created(1621902271.405403).
+assert(personagem("aaaaa","Bardo","Ogro",120,120,2,0,0,1,2,2,-1,0,0,1000,1)).
+assert(equipavel("melk","10","10","10","10","38","11","10","297","Maos")).
+assert(equipavel("rodrigo","0","0","0","0","0","0","0","0","Maos")).
+assert(personagemTemEquipavel("aaaaa","melk")).
