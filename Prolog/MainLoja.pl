@@ -1,3 +1,5 @@
+:- include('Loja.pl')
+
 menuLoja :-
     write('\e[H\e[2J'),
     writeln(  '  _______________'),
