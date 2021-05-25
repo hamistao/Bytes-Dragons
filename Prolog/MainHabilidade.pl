@@ -53,7 +53,9 @@ menuHabilis("3"):-
 menuHabilis("4"):-
     nl, writeln('Qual o nome da Habilidade?'),
     readEntrada(Nome),
-    retract_habilidade(Nome, _, _, _, _, _).
+    retractall_habilidade(Nome, _, _, _, _, _),
+    retractall_equipavelTemHabilidade(_, Nome),
+    retractall_personagemTemHabilidade(_, Nome),
     writeln('Habilidade excluida com sucesso'),
     readEntrada(_),
     menuHabilis.

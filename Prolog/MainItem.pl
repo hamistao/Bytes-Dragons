@@ -85,12 +85,17 @@ detalheItem(_) :-
 excluiItem("1") :-
     writeln('Qual o nome do Equipavel?'),
     readEntrada(Nome),
-    retractall_equipavel(Nome, _, _, _, _, _, _, _, _, _).
+    retractall_equipavel(Nome, _, _, _, _, _, _, _, _, _),
+    retractall_equipavelTemHabilidade(Nome, _),
+    retractall_lojaTemEquipavel(_, Nome, _),
+    retractall_personagemTemEquipavel(_, Nome).
 
 excluiItem("2") :-
     writeln('Qual o nome do Consumivel?'),
     readEntrada(Nome),
-    retractall_consumivel(Nome, _, _, _).
+    retractall_consumivel(Nome, _, _, _),
+    retractall_personagemTemConsumivel(_, Nome, _),
+    retractall_lojaTemConsumivel(_, Nome, _).
 
 excluiItem(_) :- 
     writeln('tais trolando brother?').
