@@ -1,4 +1,5 @@
 :- include('Personagem.pl').
+:- include('MainBatalha.pl').
 
 menuPersg :-
     write('\e[H\e[2J'),

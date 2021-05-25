@@ -113,7 +113,7 @@ aumentaXp(Nome, XpAdicional) :-
 aumentaXp(Nome, XpAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
-    NewXp is (Xp + XpAdicional - XpUp),
+    NewXp is Xp + XpAdicional - XpUp,
     NewXpUp is XpUp + 500,
     NewNivel is Nivel + 1,
     retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
