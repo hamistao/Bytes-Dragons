@@ -1,5 +1,3 @@
-:- use_module(library(persistency)).
-
 :- persistent consumivel(nome:any, raca:any, classe:any, vidaMaxima:any, vida:any, forca:any, inteligencia:any, sabedoria:any,
     destreza:any, constituicao:any, carisma:any, velocidade:any, ouro:any, xp:any, xpUp:any, nivel:any).
 :- persistent personagemTemEquipavel(nomePersonagem:any, nomeEquipavel:any).
@@ -7,9 +5,6 @@
 :- persistent personagemTemHabilidade(nomePersonagem:any, nomeHabilidade:any).
 :- persistent personagemTemResistencia(nomePersonagem:any, nomeResistencia:any).
 
-init :-
-	absolute_file_name('data/persngs.db', File, [access(write)]),
-	db_attach(File, []).
 
 criaPersonagem(Nome, Raca, Classe) :-
     vidaMaxima(Classe, VidaMaximaClasse),
