@@ -113,12 +113,21 @@ aumentaXp(Nome, XpAdicional) :-
 aumentaXp(Nome, XpAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewVida is Vida + 20,
+    NewVidaMaxima is VidaMaxima + 20,
+    NewForca is Forca + 1,
+    NewInteligencia is Inteligencia + 1,
+    NewSabedoria is Sabedoria + 1,
+    NewDestreza is Destreza + 1,
+    NewConstituicao is Constituicao + 1,
+    NewCarisma is Carisma + 1,
+    NewVelocidade is Velocidade + 1,
     NewXp is (Xp + XpAdicional - XpUp),
     NewXpUp is XpUp + 500,
     NewNivel is Nivel + 1,
     retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
-    assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-        Carisma, Velocidade, Ouro, NewXp, NewXpUp, NewNivel).
+    assert_personagem(Nome, Raca, Classe, NewVidaMaxima, NewVida, NewForca, NewInteligencia, NewSabedoria, NewDestreza, NewConstituicao,
+        NewCarisma, NewVelocidade, Ouro, NewXp, NewXpUp, NewNivel).
 
 atributo("Forca").
 atributo("Inteligencia").
