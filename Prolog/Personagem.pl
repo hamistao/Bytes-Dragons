@@ -87,30 +87,30 @@ exibePersonagem(Nome) :-
     listarResistenciasPersonagem(Nome).
 
 listarPersonagens :-
-    foreach(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), writeln(Nome)).
+    foreach(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), writeComMarcador(Nome)).
 
 listarEquipaveisPersonagem(Nome) :-
-    foreach(personagemTemEquipavel(Nome, Equipavel), writeln(Equipavel)).
+    foreach(personagemTemEquipavel(Nome, Equipavel), writeComMarcador(Equipavel)).
 
 listarConsumiveisPersonagem(Nome) :-
     foreach(personagemTemConsumivel(Nome, Consumivel, Duracao),
-    (write("Nome: "),
+    (write("- Nome: "),
     writeln(Consumivel),
-    write("Duracao: "),
+    write("  Duracao: "),
     writeln(Duracao))).
 
 listarHabilidadesPersonagem(Nome) :-
-    foreach(personagemTemHabilidade(Nome, Habilidade), writeln(Habilidade)).
+    foreach(personagemTemHabilidade(Nome, Habilidade), writeComMarcador(Habilidade)).
 
 listarResistenciasPersonagem(Nome) :-
-    foreach(personagemTemResistencia(Nome, Resistencia), writeln(Resistencia)).
+    foreach(personagemTemResistencia(Nome, Resistencia), writeComMarcador(Resistencia)).
 
 aumentaXp(Nome, XpAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewXp is Xp + XpAdicional,
     NewXp < XpUp,
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, Velocidade, Ouro, NewXp, XpUp, Nivel).
 
@@ -129,7 +129,7 @@ aumentaXp(Nome, XpAdicional) :-
     NewXp is (Xp + XpAdicional - XpUp),
     NewXpUp is XpUp + 500,
     NewNivel is Nivel + 1,
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, Raca, Classe, NewVidaMaxima, NewVida, NewForca, NewInteligencia, NewSabedoria, NewDestreza, NewConstituicao,
         NewCarisma, NewVelocidade, Ouro, NewXp, NewXpUp, NewNivel).
 
@@ -137,7 +137,7 @@ aumentaOuro(Nome, OuroAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewOuro is Ouro + OuroAdicional,
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, NewOuro, Xp, XpUp, Nivel).
 

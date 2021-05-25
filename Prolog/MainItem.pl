@@ -85,12 +85,12 @@ detalheItem(_) :-
 excluiItem("1") :-
     writeln('Qual o nome do Equipavel?'),
     readEntrada(Nome),
-    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _).
+    retractall_equipavel(Nome, _, _, _, _, _, _, _, _, _).
 
 excluiItem("2") :-
     writeln('Qual o nome do Consumivel?'),
     readEntrada(Nome),
-    retract_consumivel(Nome, _, _, _).
+    retractall_consumivel(Nome, _, _, _).
 
 excluiItem(_) :- 
     writeln('tais trolando brother?').
@@ -122,11 +122,11 @@ cadastraItem("1") :-
     writeln('Item cadastrado com sucesso.\nEnter para continuar').
 
 tenta_tirar(Nome) :-
-    retract_equipavel(Nome, _, _, _, _, _, _, _, _, _).
+    retractall_equipavel(Nome, _, _, _, _, _, _, _, _, _).
 tenta_tirar(_).
 
 tenta_tirar_consmvl(Nome) :-
-    retract_consumivel(Nome, _, _, _).
+    retractall_consumivel(Nome, _, _, _).
 tenta_tirar_consmvl(_).
 
 cadastraItem("2") :-

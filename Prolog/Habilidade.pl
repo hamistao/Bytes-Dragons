@@ -16,4 +16,4 @@ exibeHabilidade(Nome) :-
 	writeln(TipoDeDano).
 	
 listarHabilidades :-
-	foreach(habilidade(Nome, _, _, _, _, _), writeln(Nome)).
+	foreach(habilidade(Nome, _, _, _, _, _), writeComMarcador(Nome)).

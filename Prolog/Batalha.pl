@@ -3,7 +3,7 @@
 usarConsumivel(NomePersonagem, NomeConsumivel) :-
     personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
     NewDuracao is Duracao - 1,
-    retract_personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
+    retractall_personagemTemConsumivel(NomePersonagem, NomeConsumivel, Duracao),
     assert_personagemTemConsumivel(NomePersonagem, NomeConsumivel, NewDuracao).
     
 aplicarConsumivel(NomePersonagem, NomeConsumivel):-
@@ -12,7 +12,7 @@ aplicarConsumivel(NomePersonagem, NomeConsumivel):-
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     NewVida is (Vida + AlteracaoVida), 
     NewVelocidade is (Velocidade + AlteracaoVelocidade), 
-    retract_personagem(NomePersonagem, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(NomePersonagem, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(NomePersonagem, Raca, Classe, VidaMaxima, NewVida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
 
@@ -22,7 +22,7 @@ aplicarHabilidade(Nome, Habilidade) :-
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     mudaVida(Vida, ImpactoVida, VidaMaxima, NewVida),
     NewVelocidade is (Velocidade + ImpactoVelocidade),
-    retract_personagem(NomePersonagem, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(NomePersonagem, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(NomePersonagem, Raca, Classe, VidaMaxima, NewVida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
 

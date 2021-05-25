@@ -25,10 +25,10 @@ exibeEquipavel(Nome) :-
 	listarHabilidadesEquipavel(Nome).
 
 listarEquipaveis :-
-	foreach(equipavel(Nome, _, _, _, _, _, _, _, _, _), writeln(Nome)).
+	foreach(equipavel(Nome, _, _, _, _, _, _, _, _, _), writeComMarcador(Nome)).
 
 listarHabilidadesEquipavel(Nome) :-
-	foreach(equipavelTemHabilidade(Nome, Habilidade), writeln(Habilidade)).
+	foreach(equipavelTemHabilidade(Nome, Habilidade), writeComMarcador(Habilidade)).
 
 tipoEquipavel("Cabeca").
 tipoEquipavel("Torso").

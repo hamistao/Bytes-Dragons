@@ -58,7 +58,7 @@ menuPersg("4") :-
     writeln('Qual o Nome do Personagem a ser deletado?'),
     readEntrada(Nome),
     personagemExiste(Nome),
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     write('Personagem deletado'),
     readEntrada(_), menuPersg.
 
@@ -89,7 +89,7 @@ menuPersg(_):-
 
 
 constroiPersonagem(Nome, Classe, Raca) :-
-    retract_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     criaPersonagem(Nome, Classe, Raca).
 constroiPersonagem(Nome, Classe, Raca) :-
     criaPersonagem(Nome, Classe, Raca).
@@ -220,41 +220,32 @@ menuItemPersonagem(_):-
 
 
 colocaHabilidadePersonagem(Nome, Habilidade) :-
-    retract_personagemTemHabilidade(Nome, Habilidade),
-    assert_personagemTemHabilidade(Nome, Habilidade).
-
-colocaHabilidadePersonagem(Nome, Habilidade) :-
+	tentaTirarHabilidadePersonagem(Nome, Habilidade),
     assert_personagemTemHabilidade(Nome, Habilidade).
 
 colocaConsumivelPersonagem(Nome, Consumivel, Duracao) :-
-    retract_personagemTemConsumivel(Nome, Consumivel, _),
+	tentaTirarConsumivelPersonagem(Nome, Consumivel),
     assert_personagemTemConsumivel(Nome, Consumivel, Duracao).
 
-colocaConsumivelPersonagem(Nome, Consumivel, Duracao) :-
-    assert_personagemTemConsumivel(Nome, Consumivel, Duracao).
+colocaEquipavelPersonagem(Nome, Equipavel) :-
+	tentaTirarEquipavelPersonagem(Nome, Equipavel),
+    assert_personagemTemEquipavel(Nome, Equipavel).
 
 tipoIndisponivel(Nome, Equipavel) :-
     personagemTemEquipavel(Nome, Equipado),
     equipavel(Equipavel, _, _, _, _, _, _, _, _, Tipo),
     equipavel(Equipado, _, _, _, _, _, _, _, _, Tipo).
 
-colocaEquipavelPersonagem(Nome, Equipavel) :-
-    retract_personagemTemEquipavel(Nome, Equipavel),
-    assert_personagemTemEquipavel(Nome, Equipavel).
-
-colocaEquipavelPersonagem(Nome, Equipavel) :-
-    assert_personagemTemEquipavel(Nome, Equipavel).
-
 tiraEquipavelPersonagem(Nome, Equipavel).
-    retract_personagemTemEquipavel(Nome, Equipavel).
+    retractall_personagemTemEquipavel(Nome, Equipavel).
 tiraEquipavelPersonagem(_, _).
 
 tiraConsumivelPersonagem(Nome, Consumivel).
-    retract_personagemTemConsumivel(Nome, Consumivel, _).
+    retractall_personagemTemConsumivel(Nome, Consumivel, _).
 tiraConsumivelPersonagem(_, _).
 
 tiraHabilidadePersonagem(Nome, Habilidade).
-    retract_personagemTemHabilidade(Nome, Habilidade).
+    retractall_personagemTemHabilidade(Nome, Habilidade).
 tiraHabilidadePersonagem(_, _).
 
 personagemExiste(Nome) :-
@@ -268,3 +259,15 @@ habilidadeExiste(Nome) :-
 
 equipavelExiste(Nome) :-
     equipavel(Nome, _, _, _, _, _, _, _, _, _).
+
+tentaTirarEquipavelPersonagem(Personagem, Equipavel) :-
+	retractall_personagemTemEquipavel(Personagem, Equipavel).
+tentaTirarEquipavelPersonagem(_).
+
+tentaTirarConsumivelPersonagem(Personagem, Consumivel) :-
+	retractall_personagemTemConsumivel(Personagem, Consumivel, _).
+tentaTirarConsumivelPersonagem(_).
+
+tentaTirarHabilidadePersonagem(Personagem, Habilidade) :-
+	retractall_personagemTemHabilidade(Personagem, Habilidade).
+tentaTirarHabilidadePersonagem(_).

@@ -96,7 +96,7 @@ recuperaVidaPersonagens :-
 recuperaVidaPersonagens("").
 recuperaVidaPersonagens(Nome) :-
     participaDaBatalha(Nome),
-    retract_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
+    retractall_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
     assert_personagem(Nome, A, B, C, C, E, F, G, H, I, J, K, L, M, N, O),
     readEntrada(P),
     recuperaVidaPersonagens(P).
@@ -149,8 +149,8 @@ apagaPersonagens :-
 apagaPersonagens("").
 apagaPersonagens(Nome) :-
     participaDaBatalha(Nome),
-    retract_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
-    retract_participaDaBatalha(Nome),
+    retractall_personagem(Nome, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O),
+    retractall_participaDaBatalha(Nome),
     readEntrada(P),
     apagaPersonagens(P).
 apagaPersonagens(NomeErrado) :-
@@ -160,7 +160,7 @@ apagaPersonagens(NomeErrado) :-
 
 
 encerraBatalha :-
-    foreach(participaDaBatalha(Nome), retract_participaDaBatalha(Nome)).
+    foreach(participaDaBatalha(Nome), retractall_participaDaBatalha(Nome)).
 
 
 verificaPersonagens("").
