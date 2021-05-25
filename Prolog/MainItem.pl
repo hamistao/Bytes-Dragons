@@ -116,6 +116,7 @@ cadastraItem("1") :-
     readEntrada(Velocd),
     writeln('Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?'),
     readEntrada(Tipo),
+    tipoEquipavel(Tipo),
     tenta_tirar(Nome),
     assert_equipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo),
     writeln('Item cadastrado com sucesso.\nEnter para continuar').
@@ -137,22 +138,10 @@ cadastraItem("2") :-
     readEntrada(Velocidade),
     writeln('Qual a Durabilidade?'),
     readEntrada(Durac),
-	assert_consumivel(Nome, Vida, Velocidade, Durac),
-    writeln('Item cadastrado com sucesso.\nEnter para continuar').
-
-cadastraItem("2") :-
-    nl, writeln('Qual o nome do Consumivel?'),
-    readEntrada(Nome),
-    writeln('Qual a Alteracao de Vida?'),
-    readEntrada(Vida),
-    writeln('Qual a Alteracao de Velocidade?'),
-    readEntrada(Velocidade),
-    writeln('Qual a Durabilidade?'),
-    readEntrada(Durac),
     tenta_tirar_consmvl(Nome),
 	assert_consumivel(Nome, Vida, Velocidade, Durac),
     writeln('Item cadastrado com sucesso.\nEnter para continuar').
 
 cadastraItem(_) :-
-    writeln('isso eh balela ai brother').
+    writeln('\nEntrada invalida').
 
