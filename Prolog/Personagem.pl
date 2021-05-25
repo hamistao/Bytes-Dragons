@@ -1,125 +1,160 @@
-:- include('Habilidade.pl').
-:- include('Classe.pl').
-:- include('Raca.pl').
+:- persistent personagem(nome:any, raca:any, classe:any, vidaMaxima:any, vida:any, forca:any, inteligencia:any, sabedoria:any,
+    destreza:any, constituicao:any, carisma:any, velocidade:any, ouro:any, xp:any, xpUp:any, nivel:any).
+:- persistent personagemTemEquipavel(nomePersonagem:any, nomeEquipavel:any).
+:- persistent personagemTemConsumivel(nomePersonagem:any, nomeConsumivel:any, duracao:any).
+:- persistent personagemTemHabilidade(nomePersonagem:any, nomeHabilidade:any).
+:- persistent personagemTemResistencia(nomePersonagem:any, nomeResistencia:any).
 
-construtorPersonagem(Nome, Raca, Classe, personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria,
-													Destreza, Constituicao, Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias)) :-
-	
-	vidaMaxima(Classe, VidaMaximaClasse),
+:- include('Raca.pl').
+:- include('Classe.pl').
+
+criaPersonagem(Nome, Raca, Classe) :-
+    vidaMaxima(Classe, VidaMaximaClasse),
 	vidaMaxima(Raca, VidaMaximaRaca),
 	VidaMaxima is VidaMaximaClasse + VidaMaximaRaca,
-	Vida = VidaMaxima,
 
-        forca(Classe, ForcaClasse),
-        forca(Raca, ForcaRaca),
-        Forca is ForcaClasse + ForcaRaca,
+    forca(Classe, ForcaClasse),
+    forca(Raca, ForcaRaca),
+    Forca is ForcaClasse + ForcaRaca,
 
-        inteligencia(Classe, InteligenciaClasse),
-        inteligencia(Raca, InteligenciaRaca),
-        Inteligencia is InteligenciaClasse + InteligenciaRaca,
+    inteligencia(Classe, InteligenciaClasse),
+    inteligencia(Raca, InteligenciaRaca),
+    Inteligencia is InteligenciaClasse + InteligenciaRaca,
 
-        sabedoria(Classe, SabedoriaClasse),
-        sabedoria(Raca, SabedoriaRaca),
-        Sabedoria is SabedoriaClasse + SabedoriaRaca,
+    sabedoria(Classe, SabedoriaClasse),
+    sabedoria(Raca, SabedoriaRaca),
+    Sabedoria is SabedoriaClasse + SabedoriaRaca,
 
-        destreza(Classe, DestrezaClasse),
-        destreza(Raca, DestrezaRaca),
-        Destreza is DestrezaClasse + DestrezaRaca,
+    destreza(Classe, DestrezaClasse),
+    destreza(Raca, DestrezaRaca),
+    Destreza is DestrezaClasse + DestrezaRaca,
 
-        constituicao(Classe, ConstituicaoClasse),
-        constituicao(Raca, ConstituicaoRaca),
-        Constituicao is ConstituicaoClasse + ConstituicaoRaca,
+    constituicao(Classe, ConstituicaoClasse),
+    constituicao(Raca, ConstituicaoRaca),
+    Constituicao is ConstituicaoClasse + ConstituicaoRaca,
 
-        carisma(Classe, CarismaClasse),
-        carisma(Raca, CarismaRaca),
-        Carisma is CarismaClasse + CarismaRaca,
+    carisma(Classe, CarismaClasse),
+    carisma(Raca, CarismaRaca),
+    Carisma is CarismaClasse + CarismaRaca,
 
-        Velocidade is DestrezaClasse + DestrezaRaca - (ConstituicaoClasse + ConstituicaoRaca),
+    Velocidade is DestrezaClasse + DestrezaRaca - (ConstituicaoClasse + ConstituicaoRaca),
+    
+    assert_personagem(Nome, Raca, Classe, VidaMaxima, VidaMaxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocidade, 0, 0, 1000, 1).
 
-        Ouro = 0,
-        Xp = 0,
-        XpUp = 0,
-        Nivel = 1,
-        Equipaveis = [],
-        Consumiveis = [],
-        Habilidades = [],
-        Imunidades = [],
-        Resistencias = [].
+exibePersonagem(Nome) :-
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    nl, write("Nome: "),
+	writeln(Nome),
+	write("Raca: "),
+	writeln(Raca),
+    write("Classe: "),
+    writeln(Classe),
+    write("Vida: "),
+    write(Vida),
+    write("/"),
+    writeln(VidaMaxima),
+    write("Forca: "),
+    writeln(Forca),
+    write("Inteligencia: "),
+    writeln(Inteligencia),
+    write("Sabedoria: "),
+    writeln(Sabedoria),
+    write("Destreza: "),
+    writeln(Destreza),
+    write("Constituicao: "),
+    writeln(Constituicao),
+    write("Carisma: "),
+    writeln(Carisma),
+    write("Velocidade: "),
+    writeln(Velocidade),
+    write("Ouro: "),
+    writeln(Ouro),
+    write("Xp: "),
+    write(Xp),
+    write("/"),
+    writeln(XpUp),
+    write("Nivel: "),
+    writeln(Nivel),
+    writeln("Itens:"),
+    writeln("Equipaveis:"),
+    listarEquipaveisPersonagem(Nome),
+    writeln("Consumiveis: "),
+    listarConsumiveisPersonagem(Nome),
+    writeln("Habilidades: "),
+    listarHabilidadesPersonagem(Nome),
+    writeln("Resistencias: "),
+    listarResistenciasPersonagem(Nome).
 
-exibePersonagem(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias), R) :-
-        string_concat("\nNome: ", Nome, S1),
-        string_concat(S1, "\nRaca: ", S2),
-        string_concat(S2, Raca, S3),
-        string_concat(S3, "\nClasse: ", S4),
-        string_concat(S4, Classe, S5),
-        string_concat(S5, "\nVida: ", S6),
-        string_concat(S6, Vida, S7),
-        string_concat(S7, "/", S8),
-        string_concat(S8, VidaMaxima, S9),
-        string_concat(S9, "\nForca: ", S10),
-        string_concat(S10, Forca, S11),
-        string_concat(S11, "\nInteligencia: ", S12),
-        string_concat(S12, Inteligencia, S13),
-        string_concat(S13, "\nSabedoria: ", S14),
-        string_concat(S14, Sabedoria, S15),
-        string_concat(S15, "\nDestreza: ", S16),
-        string_concat(S16, Destreza, S17),
-        string_concat(S17, "\nConstituicao: ", S18),
-        string_concat(S18, Constituicao, S19),
-        string_concat(S19, "\nCarisma: ", S20),
-        string_concat(S20, Carisma, S21),
-        string_concat(S21, "\nVelocidade: ", S22),
-        string_concat(S22, Velocidade, S23),
-        string_concat(S23, "\nOuro: ", S24),
-        string_concat(S24, Ouro, S25),
-        string_concat(S25, "\nXP: ", S26),
-        string_concat(S26, Xp, S27),
-        string_concat(S27, "/", S28),
-        string_concat(S28, XpUp, S29),
-        string_concat(S29, "\nNivel: ", S30),
-        string_concat(S30, Nivel, S31),
-        string_concat(S31, "\nItens:", S32),
-        string_concat(S32, "\nEquipaveis:\n", S33),
-        listarItem(Equipaveis, S34),
-        stringFromList(S34, S35),
-        string_concat(S33, S35, S36),
-        string_concat(S36, "Consumiveis:\n", S37),
-        listarItem(Consumiveis, S38),
-        stringFromList(S38, S39),
-        string_concat(S37, S39, S40),
-        string_concat(S40, "Habilidades:\n", S41),
-        listaHabilidades(Habilidades, S42),
-        stringFromList(S42, S43),
-        string_concat(S41, S43, S44),
-        string_concat(S45, "Resistencias:\n", S46),
-        stringFromList(Resistencias, S47),
-        string_concat(S46, S47, R).
+listarPersonagens :-
+    foreach(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), writeComMarcador(Nome)).
 
-listaPersonagens([], []).
-listaPersonagens([Personagem|L], R) :-
-    listaPersonagens(L, R1),
-    nomePersonagem(Personagem, Nome),
-    string_concat("Nome: ", Nome, S),
-    append([S], R1, R).
+listarEquipaveisPersonagem(Nome) :-
+    foreach(personagemTemEquipavel(Nome, Equipavel), writeComMarcador(Equipavel)).
 
-nomePersonagem(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), Nome).
+listarConsumiveisPersonagem(Nome) :-
+    foreach(personagemTemConsumivel(Nome, Consumivel, Duracao),
+    (write("- Nome: "),
+    writeln(Consumivel),
+    write("  Duracao: "),
+    writeln(Duracao))).
 
-usaConsumivel(personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias),
-    consumivel(Nome, AlteracaoVida, AlteracaoVelocidade, Duracao),
-    personagem(Nome, Raca, Classe, VidaMaxima, VidaF, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, VelocidadeF, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias),
-    consumivel(Nome, AlteracaoVida, AlteracaoVelocidade, DuracaoF)) :-
-    VidaF is Vida + AlteracaoVida,
-    DuracaoF is Duracao - 1,
-    VelocidadeF is Velocidade + AlteracaoVelocidade.
+listarHabilidadesPersonagem(Nome) :-
+    foreach(personagemTemHabilidade(Nome, Habilidade), writeComMarcador(Habilidade)).
 
+listarResistenciasPersonagem(Nome) :-
+    foreach(personagemTemResistencia(Nome, Resistencia), writeComMarcador(Resistencia)).
 
+aumentaXp(Nome, XpAdicional) :-
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewXp is Xp + XpAdicional,
+    NewXp < XpUp,
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, NewXp, XpUp, Nivel).
 
-isAtributo("Forca").
-isAtributo("Inteligencia").
-isAtributo("Sabedoria").
-isAtributo("Destreza").
-isAtributo("Constituicao").
-isAtributo("Carisma").
+aumentaXp(Nome, XpAdicional) :-
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewVida is Vida + 20,
+    NewVidaMaxima is VidaMaxima + 20,
+    NewForca is Forca + 1,
+    NewInteligencia is Inteligencia + 1,
+    NewSabedoria is Sabedoria + 1,
+    NewDestreza is Destreza + 1,
+    NewConstituicao is Constituicao + 1,
+    NewCarisma is Carisma + 1,
+    NewVelocidade is Velocidade + 1,
+    NewXp is (Xp + XpAdicional - XpUp),
+    NewXpUp is XpUp + 500,
+    NewNivel is Nivel + 1,
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, NewVidaMaxima, NewVida, NewForca, NewInteligencia, NewSabedoria, NewDestreza, NewConstituicao,
+        NewCarisma, NewVelocidade, Ouro, NewXp, NewXpUp, NewNivel).
+
+aumentaOuro(Nome, OuroAdicional) :-
+    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    NewOuro is Ouro + OuroAdicional,
+    retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
+    assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
+    Carisma, Velocidade, NewOuro, Xp, XpUp, Nivel).
+
+atributoPersonagem(Emissor, "Forca", Valor) :-
+    personagem(Emissor, _, _, _, _, Valor, _, _, _, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Inteligencia", Valor).
+    personagem(Emissor, _, _, _, _, _, Valor, _, _, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Sabedoria", Valor).
+    personagem(Emissor, _, _, _, _, _, _, Valor, _, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Destreza", Valor).
+    personagem(Emissor, _, _, _, _, _, _, _, Valor, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Constituicao", Valor).
+    personagem(Emissor, _, _, _, _, _, _, _, _, Valor, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Carisma", Valor).
+    personagem(Emissor, _, _, _, _, _, _, _, _, _, Valor, _, _, _, _, _).

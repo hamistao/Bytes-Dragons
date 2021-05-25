@@ -1,7 +1,8 @@
-:- include('Item.pl').
+:- include('Consumivel.pl').
+:- include('Equipavel.pl').
 
 opcaoDeItem(Tipo) :-
-    writeln('1 - Equipavel \nou \n2 -Consumivel?'),
+    writeln('1 - Equipavel \nou \n2 - Consumivel?'),
     nl, readEntrada(Tipo).
 
 menuItem :-
@@ -20,20 +21,16 @@ menuItem :-
     menuItem(Entrada).
 
 menuItem("1") :-
-    structsFromFile('data/equip.info', EquipaveisStr),
-    structsFromFile('data/consmvl.info', Consumiveis),
-    listarItem(EquipaveisStr, ListaEquip),
     nl, writeln('Itens Equipaveis:'),
-    writeComId(ListaEquip, 1),
-    writeln('Itens Consumiveis:'),
-    writeComId(Consumiveis, 1),
+	listarEquipaveis,
+    nl, writeln('Itens Consumiveis:'),
+	listarConsumiveis,
     readEntrada(_),
     menuItem.
 
 menuItem("2") :-
     opcaoDeItem(Tipo),
     cadastraItem(Tipo),
-    writeln('Item cadastrado com sucesso.\nEnter para continuar'),
     readEntrada(_),
     menuItem.
 
@@ -51,6 +48,20 @@ menuItem("4") :-
     readEntrada(_),
     menuItem.
 
+menuItem("5") :-
+    nl, writeln('Qual o nome do Equipavel?'),
+    readEntrada(Equipavel),
+	equipavel(Equipavel, _, _, _, _, _, _, _, _, _),
+
+	writeln('Qual o nome da Habilidade?'),
+	readEntrada(Habilidade),
+	habilidade(Habilidade, _, _, _, _, _),
+
+	assert_equipavelTemHabilidade(Equipavel, Habilidade),
+    writeln('Item encantado com sucesso.\nEnter para continuar'),
+    readEntrada(_),
+    menuItem.
+
 menuItem("9").
 
 menuItem(_) :-
@@ -58,32 +69,39 @@ menuItem(_) :-
     menuItem.
 
 detalheItem("1") :-
-    writeln('Qual o ID do Equipavel?'),
-    exibeFromFile('data/equip.info').
+    writeln('Qual o nome do Equipavel?'),
+	readEntrada(Nome),
+	exibeEquipavel(Nome).
 
 detalheItem("2") :-
-    writeln('Qual o ID do Consumivel?'),
-    exibeFromFile('data/consmvl.info').
+    writeln('Qual o nome do Consumivel?'),
+	readEntrada(Nome),
+	exibeConsumivel(Nome).
 
 detalheItem(_) :-
     write('tipo de item so pode ser \'1\' ou \'2\''),
     menuItem("4").
 
 excluiItem("1") :-
-    writeln('Qual o ID do Equipavel?'),
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    removeFromFile('data/equip.info', Desejado).
+    writeln('Qual o nome do Equipavel?'),
+    readEntrada(Nome),
+    retractall_equipavel(Nome, _, _, _, _, _, _, _, _, _),
+    retractall_equipavelTemHabilidade(Nome, _),
+    retractall_lojaTemEquipavel(_, Nome, _),
+    retractall_personagemTemEquipavel(_, Nome).
 
 excluiItem("2") :-
-    writeln('Qual o ID do Consumivel?'),
-    readEntrada(Id),
-    atom_number(Id, Desejado),
-    removeFromFile('data/consmvl.info', Desejado).
+    writeln('Qual o nome do Consumivel?'),
+    readEntrada(Nome),
+    deletaConsumivel(Nome).
 
 excluiItem(_) :- 
     writeln('tais trolando brother?').
 
+deletaConsumivel(Nome) :-
+    retractall_consumivel(Nome, _, _, _),
+    retractall_personagemTemConsumivel(_, Nome, _),
+    retractall_lojaTemConsumivel(_, Nome, _).
 
 cadastraItem("1") :-
     nl, writeln('Qual o nome do Equipavel?'),
@@ -106,10 +124,18 @@ cadastraItem("1") :-
     readEntrada(Velocd),
     writeln('Onde sera Equipavel (Cabeca | Torso | Pernas | Maos | Arma) ?'),
     readEntrada(Tipo),
-    open('data/equip.info', append, Str),
-    construtorItemString(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo, Item),
-    writeln(Item),
-    write(Str, Item), writeln(Str, ".").
+    tipoEquipavel(Tipo),
+    tenta_tirar(Nome),
+    assert_equipavel(Nome, Vida_maxima, Forca, Inteligencia, Sabedoria, Destreza, Constituicao, Carisma, Velocd, Tipo),
+    writeln('Item cadastrado com sucesso.\nEnter para continuar').
+
+tenta_tirar(Nome) :-
+    retractall_equipavel(Nome, _, _, _, _, _, _, _, _, _).
+tenta_tirar(_).
+
+tenta_tirar_consmvl(Nome) :-
+    retractall_consumivel(Nome, _, _, _).
+tenta_tirar_consmvl(_).
 
 cadastraItem("2") :-
     nl, writeln('Qual o nome do Consumivel?'),
@@ -120,11 +146,10 @@ cadastraItem("2") :-
     readEntrada(Velocidade),
     writeln('Qual a Durabilidade?'),
     readEntrada(Durac),
-    open('data/consmvl.info', append, Str),
-    construtorItemString(Nome, Vida, Velocidade, Durac, Item),
-    writeln(Item),
-    write(Str, Item), writeln(Str, ".").
+    tenta_tirar_consmvl(Nome),
+	assert_consumivel(Nome, Vida, Velocidade, Durac),
+    writeln('Item cadastrado com sucesso.\nEnter para continuar').
 
 cadastraItem(_) :-
-    writeln('isso eh balela ai brother').
+    writeln('\nEntrada invalida').
 
