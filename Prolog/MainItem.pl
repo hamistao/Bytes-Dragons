@@ -2,7 +2,7 @@
 :- include('Equipavel.pl').
 
 opcaoDeItem(Tipo) :-
-    writeln('1 - Equipavel \nou \n2 -Consumivel?'),
+    writeln('1 - Equipavel \nou \n2 - Consumivel?'),
     nl, readEntrada(Tipo).
 
 menuItem :-
