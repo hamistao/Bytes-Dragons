@@ -129,9 +129,20 @@ aumentaXp(Nome, XpAdicional) :-
     assert_personagem(Nome, Raca, Classe, NewVidaMaxima, NewVida, NewForca, NewInteligencia, NewSabedoria, NewDestreza, NewConstituicao,
         NewCarisma, NewVelocidade, Ouro, NewXp, NewXpUp, NewNivel).
 
-atributo("Forca").
-atributo("Inteligencia").
-atributo("Sabedoria").
-atributo("Destreza").
-atributo("Constituicao").
-atributo("Carisma").
+atributoPersonagem(Emissor, "Forca", Valor) :-
+    personagem(Emissor, _, _, _, _, Valor, _, _, _, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Inteligencia", Valor).
+    personagem(Emissor, _, _, _, _, _, Valor, _, _, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Sabedoria", Valor).
+    personagem(Emissor, _, _, _, _, _, _, Valor, _, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Destreza", Valor).
+    personagem(Emissor, _, _, _, _, _, _, _, Valor, _, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Constituicao", Valor).
+    personagem(Emissor, _, _, _, _, _, _, _, _, Valor, _, _, _, _, _, _).
+
+atributoPersonagem(Emissor, "Carisma", Valor).
+    personagem(Emissor, _, _, _, _, _, _, _, _, _, Valor, _, _, _, _, _).
