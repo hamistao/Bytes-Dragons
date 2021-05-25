@@ -139,7 +139,7 @@ readEntrada(Entrada) :-
 
 readEntradaInt(Entrada) :-
     read_line_to_codes(user_input, E),
-    atom_number(E, Entrada).
+    number_codes(Entrada, E).
 
 writeComMarcador(Str) :-
 	write("- "),

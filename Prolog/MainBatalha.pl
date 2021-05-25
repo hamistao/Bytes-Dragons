@@ -160,7 +160,8 @@ encerraBatalha :-
     foreach(participaDaBatalha(Nome), retractall_participaDaBatalha(Nome)).
 
 
-verificaPersonagens("").
+verificaPersonagens("") :-
+    participaDaBatalha(_).
 verificaPersonagens(Nome) :-
     personagemExiste(Nome),
     assert_participaDaBatalha(Nome),

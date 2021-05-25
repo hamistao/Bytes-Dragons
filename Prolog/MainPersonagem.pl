@@ -51,6 +51,7 @@ menuPersg("2") :-
 menuPersg("3") :-
     writeln('Qual o Nome do Personagem desejado?'),
     readEntrada(Nome),
+    writeln('Personagem recuperado:'),
     exibePersonagem(Nome),
     readEntrada(_), menuPersg.
 
@@ -92,6 +93,8 @@ menuPersg("7") :-
 menuPersg("9").
 
 menuPersg(_):-
+    writeln('Entrada invalida.'),
+    readEntrada,
     menuPersg.
 
 

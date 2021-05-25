@@ -15,8 +15,7 @@ aplicarConsumivel(NomePersonagem, NomeConsumivel):-
     personagem(NomePersonagem, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
     Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),!,
     NewVida is (Vida + AlteracaoVida), 
-    writeln(Velocidade), writeln(AlteracaoVelocidade),
-    NewVelocidade is (Velocidade + AlteracaoVelocidade), writeln(NewVelocidade),
+    NewVelocidade is (Velocidade + AlteracaoVelocidade),
     retractall_personagem(NomePersonagem, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(NomePersonagem, Raca, Classe, VidaMaxima, NewVida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
@@ -31,8 +30,7 @@ aplicarHabilidade(Nome, Habilidade) :-
     assert_personagem(NomePersonagem, Raca, Classe, VidaMaxima, NewVida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
         Carisma, NewVelocidade, Ouro, Xp, XpUp, Nivel).
 
-mudaVida(Vida, ImpactoVidaStr, VidaMaxima, NewVida) :-
-	atom_number(ImpactoVidaStr, ImpactoVida),
+mudaVida(Vida, ImpactoVida, VidaMaxima, NewVida) :-
     \+ Vida + ImpactoVida >  VidaMaxima,
     NewVida is (Vida + ImpactoVida).
 mudaVida(_, _, NewVida, NewVida).
@@ -48,20 +46,18 @@ personagemTemHabilidadeEquipavel(Nome, Habilidade) :-
     equipavelTemHabilidade(Equipavel, Habilidade).
 
 acertouHabilidade(Emissor, Habilidade, Alvo, D1, D2, D3) :-
-    habilidade(Habilidade, _, _, Atributo, AcertoStr, Tipo),
+    habilidade(Habilidade, _, _, Atributo, Acerto, Tipo),
     personagemTemResistencia(Alvo, Tipo),!,
     atributoPersonagem(Emissor, Atributo, Valor),
     menorDado(D1, D2, Dmenor),
-    atom_number(AcertoStr, Acerto),
     Valor + Dmenor >= Acerto,!,
     \+consegueEsquivar(Emissor, Alvo, D3).
 
 acertouHabilidade(Emissor, Habilidade, Alvo, D1, D2, D3) :-
-    habilidade(Habilidade, _, _, Atributo, AcertoStr, Tipo),
+    habilidade(Habilidade, _, _, Atributo, Acerto, Tipo),
     \+personagemTemResistencia(Alvo, Tipo),!,
     atributoPersonagem(Emissor, Atributo, Valor),
     maiorDado(D1, D2, Dmaior),
-    atom_number(AcertoStr, Acerto),
     Valor + Dmaior >= Acerto,!,
     \+consegueEsquivar(Emissor, Alvo, D3).
 
