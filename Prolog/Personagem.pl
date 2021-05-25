@@ -107,7 +107,8 @@ listarResistenciasPersonagem(Nome) :-
 
 aumentaXp(Nome, XpAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+        Carisma, Velocidade, Ouro, XpStr, XpUp, Nivel),
+    atom_number(XpStr, Xp),
     NewXp is Xp + XpAdicional,
     NewXp < XpUp,
     retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
@@ -115,8 +116,20 @@ aumentaXp(Nome, XpAdicional) :-
         Carisma, Velocidade, Ouro, NewXp, XpUp, Nivel).
 
 aumentaXp(Nome, XpAdicional) :-
-    personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+    personagem(Nome, Raca, Classe, VidaMaximaStr, VidaStr, ForcaStr, InteligenciaStr, SabedoriaStr, DestrezaStr, ConstituicaoStr,
+        CarismaStr, VelocidadeStr, Ouro, XpStr, XpUpStr, NivelStr),
+    atom_number(VidaStr, Vida),
+    atom_number(VidaMaximaStr, VidaMaxima),
+    atom_number(ForcaStr, Forca),
+    atom_number(InteligenciaStr, Inteligencia),
+    atom_number(SabedoriaStr, Sabedoria),
+    atom_number(DestrezaStr, Destreza),
+    atom_number(ConstituicaoStr, Constituicao),
+    atom_number(CarismaStr, Carisma),
+    atom_number(VelocidadeStr, Velocidade),
+    atom_number(XpStr, Xp),
+    atom_number(XpUpStr, XpUp),
+    atom_number(NivelStr, Nivel),
     NewVida is Vida + 20,
     NewVidaMaxima is VidaMaxima + 20,
     NewForca is Forca + 1,
@@ -135,7 +148,8 @@ aumentaXp(Nome, XpAdicional) :-
 
 aumentaOuro(Nome, OuroAdicional) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-        Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
+        Carisma, Velocidade, OuroStr, Xp, XpUp, Nivel),
+    atom_number(OuroStr, Ouro),
     NewOuro is Ouro + OuroAdicional,
     retractall_personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _),
     assert_personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
