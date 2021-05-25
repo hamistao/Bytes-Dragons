@@ -1,10 +1,12 @@
-:- persistent consumivel(nome:any, raca:any, classe:any, vidaMaxima:any, vida:any, forca:any, inteligencia:any, sabedoria:any,
+:- persistent personagem(nome:any, raca:any, classe:any, vidaMaxima:any, vida:any, forca:any, inteligencia:any, sabedoria:any,
     destreza:any, constituicao:any, carisma:any, velocidade:any, ouro:any, xp:any, xpUp:any, nivel:any).
 :- persistent personagemTemEquipavel(nomePersonagem:any, nomeEquipavel:any).
 :- persistent personagemTemConsumivel(nomePersonagem:any, nomeConsumivel:any).
 :- persistent personagemTemHabilidade(nomePersonagem:any, nomeHabilidade:any).
 :- persistent personagemTemResistencia(nomePersonagem:any, nomeResistencia:any).
 
+:- include('Raca.pl').
+:- include('Classe.pl').
 
 criaPersonagem(Nome, Raca, Classe) :-
     vidaMaxima(Classe, VidaMaximaClasse),
@@ -41,7 +43,7 @@ criaPersonagem(Nome, Raca, Classe) :-
 
 exibePersonagem(Nome) :-
     personagem(Nome, Raca, Classe, VidaMaxima, Vida, Forca, Inteligencia, Sabedoria, Destreza, Constituicao,
-    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel, Equipaveis, Consumiveis, Habilidades, Imunidades, Resistencias),
+    Carisma, Velocidade, Ouro, Xp, XpUp, Nivel),
     nl, write("Nome: "),
 	writeln(Nome),
 	write("Raca: "),
@@ -85,7 +87,7 @@ exibePersonagem(Nome) :-
     listarResistenciasPersonagem(Nome).
 
 listarPersonagens :-
-    foreach(equipavel(Nome, _, _, _, _, _, _, _, _, _), writeln(Nome)).
+    foreach(personagem(Nome, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _), writeln(Nome)).
 
 listarEquipaveisPersonagem(Nome) :-
     foreach(personagemTemEquipavel(Nome, Habilidade), writeln(Habilidade)).
