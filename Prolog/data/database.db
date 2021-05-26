@@ -21,3 +21,16 @@ retractall(participaDaBatalha("asd"),1).
 assert(loja("lolja")).
 assert(lojaTemConsumivel("lolja","lucas","10")).
 retractall(personagemTemConsumivel("asd","lucas",_),1).
+assert(habilidade("Bola de fogo",-4,0,"Integencia",13,"Fogo")).
+retractall(habilidade("pedro",_,_,_,_,_),1).
+retractall(personagemTemHabilidade(_,"pedro"),1).
+assert(personagem("Lucas","Bruxo","Elfo",90,90,0,2,3,2,0,2,2,0,0,1000,1)).
+assert(personagemTemHabilidade("Lucas","Bola de fogo")).
+assert(participaDaBatalha("Lucas")).
+retractall(participaDaBatalha("Lucas"),1).
+assert(participaDaBatalha("asd")).
+retractall(participaDaBatalha("asd"),1).
+assert(participaDaBatalha("Lucas")).
+retractall(participaDaBatalha("Lucas"),1).
+retractall(habilidade("Bola de fogo",_,_,_,_,_),1).
+retractall(personagemTemHabilidade(_,"Bola de fogo"),1).

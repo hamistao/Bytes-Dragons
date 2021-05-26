@@ -22,7 +22,7 @@ menuBatalha("1") :-
     readEntrada(Habilidade),
     personagemTemHabilidadeEquipavel(Nome, Habilidade),
     writeln('Em quem sera usado a Habilidade?'),
-    readEntrada(Alvo),
+    readEntrada(Alvo),!,
     writeResultadosDaHabilidade(Nome, Habilidade, Alvo),
     readEntrada(_),
     menuBatalha(0).
@@ -162,6 +162,8 @@ encerraBatalha :-
 
 verificaPersonagens("") :-
     participaDaBatalha(_).
+verificaPersonagens("") :-
+    menuBatalha(0).
 verificaPersonagens(Nome) :-
     personagemExiste(Nome),
     assert_participaDaBatalha(Nome),

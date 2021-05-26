@@ -33,10 +33,12 @@ menuHabilis("2"):-
     readEntradaInt(ImpactoVelocidade),
     writeln('Qual o Atributo da Habilidade (Forca | Inteligencia | Sabedoria | Destreza | Constituicao | Carisma) ?'),
     readEntrada(AtributoRelacionado),
+    tipoAtributo(AtributoRelacionado),
     writeln('Quantos pontos sao nececessarios para o acerto da habilidade?'),
     readEntradaInt(PontosParaAcerto),
     writeln('Qual o tipo de dano da habilidade (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico) ?'),
     readEntrada(TipoDeDano),
+    tipoDano(TipoDeDano),
     assert_habilidade(Nome, ImpactoVida, ImpactoVelocidade, AtributoRelacionado, PontosParaAcerto, TipoDeDano),
     writeln('Habilidade cadastrada com sucesso.'),
     writeln('\nEnter para continuar'),
@@ -64,4 +66,5 @@ menuHabilis("9").
 
 menuHabilis(_):-
     writeln('\nEntrada invalida.'),
+    readEntrada(_),
     menuHabilis.

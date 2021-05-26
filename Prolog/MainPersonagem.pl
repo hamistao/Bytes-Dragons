@@ -77,6 +77,7 @@ menuPersg("5") :-
 menuPersg("6") :-
     writeln('Qual a Resistencia? (Cortante | Magico | Venenoso | Fogo | Gelo | Fisico)'),
     readEntrada(Tipo),
+    tipoDano(Tipo),
     writeln('Qual o Nome do Personagem?'),
     readEntrada(Nome),
     personagemExiste(Nome),
