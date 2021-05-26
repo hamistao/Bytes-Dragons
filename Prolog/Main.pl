@@ -146,16 +146,16 @@ writeComMarcador(Str) :-
 	writeln(Str).
 
 
-tipoDano('Cortante').
-tipoDano('Magico').
-tipoDano('Venenoso').
-tipoDano('Fogo').
-tipoDano('Gelo').
-tipoDano('Fisico').
+tipoDano("Cortante").
+tipoDano("Magico").
+tipoDano("Venenoso").
+tipoDano("Fogo").
+tipoDano("Gelo").
+tipoDano("Fisico").
 
-tipoAtributo('Forca').
-tipoAtributo('Inteligencia').
-tipoAtributo('Sabedoria').
-tipoAtributo('Destreza').
-tipoAtributo('Constituicao').
-tipoAtributo('Carisma').
+tipoAtributo("Forca").
+tipoAtributo("Inteligencia").
+tipoAtributo("Sabedoria").
+tipoAtributo("Destreza").
+tipoAtributo("Constituicao").
+tipoAtributo("Carisma").
