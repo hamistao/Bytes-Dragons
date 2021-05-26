@@ -79,8 +79,9 @@ detalheItem("2") :-
 	exibeConsumivel(Nome).
 
 detalheItem(_) :-
-    write('tipo de item so pode ser \'1\' ou \'2\''),
-    menuItem("4").
+    write('Entrada invalida'),
+    readEntrada(_),
+    menuItem.
 
 excluiItem("1") :-
     writeln('Qual o nome do Equipavel?'),
@@ -96,7 +97,9 @@ excluiItem("2") :-
     deletaConsumivel(Nome).
 
 excluiItem(_) :- 
-    writeln('tais trolando brother?').
+    write('Entrada invalida'),
+    readEntrada(_),
+    menuItem.
 
 deletaConsumivel(Nome) :-
     retractall_consumivel(Nome, _, _, _),
@@ -151,5 +154,7 @@ cadastraItem("2") :-
     writeln('Item cadastrado com sucesso.\nEnter para continuar').
 
 cadastraItem(_) :-
-    writeln('\nEntrada invalida').
+    write('Entrada invalida'),
+    readEntrada(_),
+    menuItem.
 
